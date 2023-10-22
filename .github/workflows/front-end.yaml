@@ -2,8 +2,8 @@ name: Front end Build
 
 on:
   push:
-    paths:
-      - "front-client/**"
+    # paths:
+    #   - "front-client/**"
 
 jobs:
   base:
@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "16"
-          cache: "yarn"
+          cache: "yarn.lock"
       - name: 🏎️ Cache Dependencies
         uses: actions/cache@v3
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
