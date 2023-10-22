@@ -26,11 +26,9 @@ jobs:
         uses: actions/cache@v3
         id: yarn-cache
         with:
-          # path: ${{ steps.yarn-cache.outputs.dir }}
           path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          key: ${{ runner.os }}-yarn
+
       - name: 📦 Install Dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
@@ -50,12 +48,12 @@ jobs:
         with:
           node-version: "16"
           cache: "yarn"
-          cache-dependency-path: front-client/yarn.lock
+          # cache-dependency-path: front-client/yarn.lock
       - name: 🏎️ Cache Dependencies
         uses: actions/cache@v3
         with:
-          # path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          key: ${{ runner.os }}-yarn
+          restore-keys: ${{ runner.os }}-yarn
       - name: 📦 Build front
         run: yarn test
