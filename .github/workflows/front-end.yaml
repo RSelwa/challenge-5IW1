@@ -34,8 +34,6 @@ jobs:
       - name: 📦 Install Dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
-      - name: 📦 Install dependencies
-        run: yarn install
   build:
     name: 📦 Build
     needs: base
