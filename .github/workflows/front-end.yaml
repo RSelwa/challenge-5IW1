@@ -35,6 +35,7 @@ jobs:
         run: yarn install
   build:
     name: 📦 Build
+    needs: base
     runs-on: ubuntu-latest
     defaults:
       run:
