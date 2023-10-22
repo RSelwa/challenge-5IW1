@@ -58,4 +58,4 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
       - name: 📦 Build front
-        run: yarn build
+        run: yarn test
