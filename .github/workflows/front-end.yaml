@@ -50,6 +50,7 @@ jobs:
           cache-dependency-path: front-client/yarn.lock
       - name: 🏎️ Cache Dependencies
         uses: actions/cache@v3
+        id: yarn-cache
         with:
           path: front-client/node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('front-client/yarn.lock') }}
