@@ -21,6 +21,7 @@ jobs:
         with:
           node-version: "16"
           cache: "yarn"
+          cache-dependency-path: front-client/yarn.lock
       - name: 🏎️ Cache Dependencies
         uses: actions/cache@v3
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
