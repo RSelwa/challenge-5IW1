@@ -9,8 +9,6 @@ jobs:
   base:
     name: ✨ Base
     runs-on: ubuntu-latest
-    env:
-      Workspace: front-client
     steps:
       - name: ✨ Checkout
         uses: actions/checkout@v3
@@ -33,6 +31,8 @@ jobs:
     name: 📦 Build
     needs: base
     runs-on: ubuntu-latest
+     env:
+      Workspace: front-client
     steps:
       - name: ✨ Checkout
         uses: actions/checkout@v3
