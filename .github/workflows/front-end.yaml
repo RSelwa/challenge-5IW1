@@ -42,24 +42,22 @@ jobs:
           node-version: "16"
           cache: "yarn"
           cache-dependency-path: yarn.lock
-      - name: 🏎️ Cache Dependencies and Cache Build
+      - name: 🏎️ Cache Dependencies 
         uses: actions/cache@v3
-        id: yarn-cache-and-build-cache
+        id: yarn-cache
         with:
-          path: | 
-            node_modules
-            ${{ github.workspace }}/$Workspace/.next/cache
+          path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
 
-      # - name: Cache Build
-      #   uses: actions/cache@v3
-      #   id: build-cache-front
-      #   with:
-      #     path: ${{ github.workspace }}/$Workspace/.next/cache
-      #     key: ${{ runner.os }}-build-${{ hashFiles('yarn.lock') }}
-      #     restore-keys: ${{ runner.os }}-build-${{ hashFiles('yarn.lock') }}
+      - name: 📦Cache Build
+        uses: actions/cache@v3
+        id: build-cache-front
+        with:
+          path: ${{ github.workspace }}/$Workspace/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('yarn.lock') }}
+          restore-keys: ${{ runner.os }}-nextjs-${{ hashFiles('yarn.lock') }}
       
       - name: 📦 Build front
-        if: steps.yarn-cache-and-build-cache.outputs.cache-hit != 'true'
+        if: steps.build-cache-front.outputs.cache-hit != 'true'
         run: yarn workspace $Workspace build
