@@ -9,10 +9,8 @@ jobs:
   base:
     name: ✨ Base
     runs-on: ubuntu-latest
-    # defaults:
-    #   run:
-    #     # put the steps in subfolder front-client
-    #     working-directory: front-client
+    env:
+      Workspace: front-client
     steps:
       - name: ✨ Checkout
         uses: actions/checkout@v3
@@ -27,7 +25,7 @@ jobs:
         id: yarn-cache
         with:
           path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('front-client/yarn.lock') }}front-client/
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
       - name: 📦 Install Dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
@@ -35,10 +33,6 @@ jobs:
     name: 📦 Build
     needs: base
     runs-on: ubuntu-latest
-    # defaults:
-    #   run:
-    #     # put the steps in subfolder front-client
-    #     working-directory: front-client
     steps:
       - name: ✨ Checkout
         uses: actions/checkout@v3
@@ -52,8 +46,10 @@ jobs:
         uses: actions/cache@v3
         id: yarn-cache
         with:
-          path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('front-client/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('front-client/yarn.lock') }}
+          path: |
+           node_modules
+           ${{ github.workspace }}/$Workspace/.next/cache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
       - name: 📦 Build front
-        run: yarn workspace front-client build
+        run: yarn workspace $Workspace build
