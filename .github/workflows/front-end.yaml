@@ -55,7 +55,7 @@ jobs:
             echo "$Workspace/.next/cache"
       - name: echo where
         run: 
-            ls
+            ls $Workspace
 
       - name: 📦Cache Build
         uses: actions/cache@v3
