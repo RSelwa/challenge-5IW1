@@ -54,7 +54,7 @@ jobs:
         uses: actions/cache@v3
         id: build-cache-front
         with:
-          path: ${{ github.workspace }}/$Workspace/.next/cache
+          path: $Workspace/.next/cache
           key: ${{ runner.os }}-build-cache-front-${{ hashFiles('yarn.lock') }}
           restore-keys: ${{ runner.os }}-build-cache-front-${{ hashFiles('yarn.lock') }}
       
