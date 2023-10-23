@@ -42,7 +42,7 @@ jobs:
           node-version: "16"
           cache: "yarn"
           cache-dependency-path: yarn.lock
-      - name: 🏎️ Cache Dependencies & Cache Build
+      - name: 🏎️ Cache Dependencies and Cache Build
         uses: actions/cache@v3
         id: yarn-cache-and-build-cache
         with:
@@ -61,5 +61,5 @@ jobs:
       #     restore-keys: ${{ runner.os }}-build-${{ hashFiles('yarn.lock') }}
       
       - name: 📦 Build front
-        if: steps.yarn-cache-&-build-cache.outputs.cache-hit != 'true'
+        if: steps.yarn-cache-and-build-cache.outputs.cache-hit != 'true'
         run: yarn workspace $Workspace build
