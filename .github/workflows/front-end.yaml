@@ -55,8 +55,8 @@ jobs:
         id: build-cache-front
         with:
           path: $Workspace/.next/cache
-          key: ${{ runner.os }}-build-cache-front-${{ hashFiles('yarn.lock') }}
-          restore-keys: ${{ runner.os }}-build-cache-front-${{ hashFiles('yarn.lock') }}
+          key: ${{ runner.os }}-build-front-${{ hashFiles('yarn.lock') }}
+          restore-keys: ${{ runner.os }}-build-front-${{ hashFiles('yarn.lock') }}
       
       - name: 📦 Build front
         if: steps.build-cache-front.outputs.cache-hit != 'true'
