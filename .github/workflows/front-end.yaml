@@ -46,10 +46,18 @@ jobs:
         uses: actions/cache@v3
         id: yarn-cache
         with:
-          path: |
-           node_modules
-           ${{ github.workspace }}/$Workspace/.next/cache
+          path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+
+      - name: Cache Build
+        uses: actions/cache@v3
+        id: build-cache-front
+        with:
+          path: ${{ github.workspace }}/$Workspace/.next/cache
+          key: ${{ runner.os }}-build-cache-front-${{ hashFiles('yarn.lock') }}
+          restore-keys: ${{ runner.os }}-build-cache-front-${{ hashFiles('yarn.lock') }}
+      
       - name: 📦 Build front
+        if: steps.build-cache-front.outputs.cache-hit != 'true'
         run: yarn workspace $Workspace build
