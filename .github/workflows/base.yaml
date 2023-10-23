@@ -1,4 +1,4 @@
-name: Base
+name: ✨ Base
 
 on:
   workflow_call:
