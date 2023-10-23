@@ -44,7 +44,7 @@ jobs:
           cache-dependency-path: yarn.lock
       - name: 🏎️ Cache Dependencies & Cache Build
         uses: actions/cache@v3
-        id: yarn-cache-&-build-cache
+        id: yarn-cache-and-build-cache
         with:
           path: | 
             node_modules
