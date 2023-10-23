@@ -26,7 +26,7 @@ jobs:
         uses: actions/cache@v3
         id: yarn-cache
         with:
-          path: front-client/node_modules
+          path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('front-client/yarn.lock') }}front-client/
       - name: 📦 Install Dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
@@ -52,7 +52,7 @@ jobs:
         uses: actions/cache@v3
         id: yarn-cache
         with:
-          path: front-client/node_modules
+          path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('front-client/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('front-client/yarn.lock') }}
       - name: 📦 Build front
