@@ -50,11 +50,18 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
 
+      - name: echo
+        run: 
+            echo "$Workspace/.next/cache"
+      - name: echo where
+        run: 
+            ls
+
       - name: 📦Cache Build
         uses: actions/cache@v3
         id: build-cache-front
         with:
-          path: ${{ github.workspace }}/$Workspace/.next/cache
+          path: $Workspace/.next/cache
           key: ${{ runner.os }}-nextjs-${{ hashFiles('yarn.lock') }}
           restore-keys: ${{ runner.os }}-nextjs-${{ hashFiles('yarn.lock') }}
       
