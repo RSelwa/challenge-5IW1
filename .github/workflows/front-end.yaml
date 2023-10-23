@@ -7,26 +7,7 @@ on:
 
 jobs:
   base:
-    name: ✨ Base
-    runs-on: ubuntu-latest
-    steps:
-      - name: ✨ Checkout
-        uses: actions/checkout@v3
-      - name: 🧶 Install Yarn
-        uses: actions/setup-node@v3
-        with:
-          node-version: "16"
-          cache: "yarn"
-          cache-dependency-path: yarn.lock
-      - name: 🏎️ Cache Dependencies
-        uses: actions/cache@v3
-        id: yarn-cache
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-      - name: 📦 Install Dependencies
-        if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn install
+    uses: ./.github/workflows/base.yaml
   build:
     name: 📦 Build
     needs: base
@@ -42,7 +23,7 @@ jobs:
           node-version: "16"
           cache: "yarn"
           cache-dependency-path: yarn.lock
-      - name: 🏎️ Cache Dependencies 
+      - name: 🏎️ Cache Dependencies
         uses: actions/cache@v3
         id: yarn-cache
         with:
@@ -57,11 +38,10 @@ jobs:
           path: $Workspace/.next/cache
           key: ${{ runner.os }}-nextjs-${{ hashFiles('yarn.lock') }}
           restore-keys: ${{ runner.os }}-nextjs-${{ hashFiles('yarn.lock') }}
-      
+
       - name: 📦 Build front
         if: steps.build-cache-front.outputs.cache-hit != 'true'
         run: yarn workspace $Workspace build
 
       - name: echo where
-        run: 
-            ls $Workspace
+        run: ls $Workspace
