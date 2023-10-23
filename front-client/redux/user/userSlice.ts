@@ -1,29 +1,29 @@
-import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
-import { reduxUser } from '@/types/user'
-import { RootState } from '@/redux/store'
+import { createSlice } from "@reduxjs/toolkit"
+import type { PayloadAction } from "@reduxjs/toolkit"
+import { RootState } from "@/front-client/redux/store"
+import { reduxUserFront } from "@/monorepo/types/users"
 
 // Define the initial state using that type
-const initialState: reduxUser = {
-    email: "",
-    status:""
+const initialState: reduxUserFront = {
+  email: "",
+  status: ""
 }
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
     //use this for constant
     resetUser: (state) => {
-      state.email =""
-      state.status =""
+      state.email = ""
+      state.status = ""
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
     changeEmail: (state, action: PayloadAction<string>) => {
       state.email = action.payload
-    },
-  },
+    }
+  }
 })
 
 const { actions, reducer } = userSlice
