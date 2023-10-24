@@ -62,7 +62,7 @@ jobs:
         run: yarn workspace $Workspace test
   cypress-run: 
     name: 🖼️ Cypress
-    needs: base
+    needs: build
     runs-on: ubuntu-latest
     env:
       Workspace: front-client
@@ -85,5 +85,6 @@ jobs:
       - name: 🖼️ Cypress run
         uses: cypress-io/github-action@v6
         with:
+            build: yarn workspace $Workspace build
             start: yarn workspace $Workspace dev
             browser: chrome
