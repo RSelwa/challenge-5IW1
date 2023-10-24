@@ -89,5 +89,5 @@ jobs:
         with:
           working-directory: front-client
           # build: yarn workspace $Workspace build
-          # start: yarn workspace $Workspace dev
+          start: yarn workspace $Workspace serve
           browser: chrome
