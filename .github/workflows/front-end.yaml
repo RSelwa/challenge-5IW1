@@ -60,13 +60,13 @@ jobs:
           restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
       - name: 🧪 Units Test
         run: yarn workspace $Workspace test
-  cypress-run: 
+  cypress-run:
     name: 🖼️ Cypress
     needs: build
     runs-on: ubuntu-latest
     env:
       Workspace: front-client
-    steps: 
+    steps:
       - name: ✨ Checkout
         uses: actions/checkout@v3
       - name: 🧶 Install Yarn
@@ -82,9 +82,11 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+      - name: 📦 Install Cypress binaries
+        run: npx cypress install
       - name: 🖼️ Cypress run
         uses: cypress-io/github-action@v6
         with:
-            build: yarn workspace $Workspace build
-            start: yarn workspace $Workspace dev
-            browser: chrome
+          # build: yarn workspace $Workspace build
+          # start: yarn workspace $Workspace dev
+          browser: chrome
