@@ -87,6 +87,7 @@ jobs:
       - name: 🖼️ Cypress run
         uses: cypress-io/github-action@v6
         with:
+          working-directory: $Workspace
           # build: yarn workspace $Workspace build
           # start: yarn workspace $Workspace dev
           browser: chrome
