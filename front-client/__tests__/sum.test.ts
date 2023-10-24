@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals"
-import { sum } from "@/monorepo/utils"
+import { sum } from "monorepo/utils"
 
 describe("sum module", () => {
   test("adds 1 + 2 to equal 3", () => {
