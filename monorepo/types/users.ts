@@ -1,4 +1,8 @@
+export type Client = {
+  email: string
+}
+
 export type reduxUserFront = {
-  email: string;
-  status: string;
-};
+  email: string
+  status: string
+}
