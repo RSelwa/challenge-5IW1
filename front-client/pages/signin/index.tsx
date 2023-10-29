@@ -1,3 +1,4 @@
+import Btn from "@/front-client/components/btn"
 import Button from "@/monorepo/components/ui/Button"
 
 
@@ -9,8 +10,9 @@ const Signin = (p:Test) => {
     <div>
       <form>
         {/* <Input variant={"default"} stateRegister={""} register={undefined} /> */}
-        <Button  onClick={()=>console.log('test')}/>
+        {/* <Button  onClick={()=>console.log('test')}/> */}
         test {p.label}
+        <Btn text="dsfdf" />
       </form>
     </div>
   )
