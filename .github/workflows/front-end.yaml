@@ -89,5 +89,5 @@ jobs:
         with:
           working-directory: front-client
           build: yarn build
-          start: yarn serve
+          start: yarn dev
           browser: chrome
