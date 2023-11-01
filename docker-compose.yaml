@@ -6,13 +6,12 @@ services:
       context: .
       dockerfile: ./front-client/Dockerfile
     ports:
-      - '3000:3000'
+      - '5173:5173'
     volumes:
       - ./monorepo:/home/monorepo
       - ./front-client:/home/front-client
       - /home/front-client/node_modules
-      - /home/node_modules
-      - /home/front-client/.next
+      - /home/monorepo/node_modules
   server:
     extra_hosts:
       - "host.docker.internal:host-gateway"
