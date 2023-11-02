@@ -14,7 +14,7 @@ jobs:
     needs: base
     runs-on: ubuntu-latest
     env:
-      Workspace: front/front-client
+      Workspace: front-client
     defaults:
       run:
         working-directory: front
@@ -44,7 +44,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     env:
-      Workspace: front/front-client
+      Workspace: front-client
     steps:
       - name: ✨ Checkout
         uses: actions/checkout@v3
@@ -68,7 +68,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     env:
-      Workspace: front/front-client
+      Workspace: front-client
     steps:
       - name: ✨ Checkout
         uses: actions/checkout@v3
