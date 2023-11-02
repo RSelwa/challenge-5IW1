@@ -5,12 +5,17 @@ import { Provider } from "react-redux"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { store } from "@/redux/store.ts"
 import App from "@/App"
+import Signin from "@/pages/signin"
 import Team from "@/pages/team"
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />
+  },
+  {
+    path: "/signin",
+    element: <Signin />
   },
   {
     path: "teams/:teamId",

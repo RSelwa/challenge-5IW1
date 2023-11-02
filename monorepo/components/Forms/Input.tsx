@@ -1,7 +1,7 @@
-import React, { InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes } from "react"
 import type { VariantProps } from "class-variance-authority"
 import { cva } from "class-variance-authority"
-import { cn } from "@/monorepo/utils"
+import { cn } from "@/utils"
 
 type InputVariant = "default" | "outline" | "subtle" | "ghost"
 
@@ -37,53 +37,56 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> &
     label?: string
   }
 const Input = ({
-    id,
-    label,
-    placeholder,
-    stateRegister,
-    register,
-    urlRedirect,
-    className,
-    labelClassName,
-    containerClassName,
-    variant = "default",
-    type = "text",
-    name,
-    required,
-    disabled,
-    ...props
-  }: InputProps) => {
-    return (
-      <div className={containerClassName}>
-        {label && (
-          <label onClick={()=>console.log(urlRedirect)} htmlFor={id} className={labelClassName}>
-            {label}
-          </label>
-        )}
-        <input
+  id,
+  label,
+  placeholder,
+  stateRegister,
+  register,
+  urlRedirect,
+  className,
+  labelClassName,
+  containerClassName,
+  variant = "default",
+  type = "text",
+  name,
+  required,
+  disabled,
+  ...props
+}: InputProps) => {
+  return (
+    <div className={containerClassName}>
+      {label && (
+        <label
+          onClick={() => console.log(urlRedirect)}
+          htmlFor={id}
+          className={labelClassName}
+        >
+          {label}
+        </label>
+      )}
+      <input
         {...props}
-          id={id}
-          placeholder={placeholder}
-          name={name}
-          required={required}
-          disabled={disabled}
-          type={type || "text"}
-          {...register(stateRegister, {
-            ...(type === "number" && { valueAsNumber: true }),
-            ...(type === "date" && { valueAsDate: true }),
-            required,
-            disabled
-          })}
-          className={cn(
-            inputVariants({ variant, className }),
-            type === "number" && "pr-8",
-            type === "date" && "text-sm",
-            "border-gray-200"
-          )}
-        />
-      </div>
-    )
-  }
-
+        id={id}
+        placeholder={placeholder}
+        name={name}
+        required={required}
+        disabled={disabled}
+        type={type || "text"}
+        {...register(stateRegister, {
+          ...(type === "number" && { valueAsNumber: true }),
+          ...(type === "date" && { valueAsDate: true }),
+          required,
+          disabled
+        })}
+        className={cn(
+          inputVariants({ variant, className }),
+          type === "number" && "pr-8",
+          type === "date" && "text-sm",
+          "border-gray-200"
+        )}
+      />
+    </div>
+  )
+}
 
 export default Input
