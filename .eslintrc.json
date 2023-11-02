@@ -1,13 +1,12 @@
 {
   "$schema": "https://json.schemastore.org/eslintrc",
   "extends": [
-    "next/core-web-vitals",
     "plugin:import/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:tailwindcss/recommended",
     "prettier"
   ],
-  "plugins": ["@typescript-eslint", "typescript-sort-keys", "unused-imports"],
+  "plugins": ["@typescript-eslint", "unused-imports"],
   "rules": {
     "unused-imports/no-unused-imports": "error",
     "unused-imports/no-unused-vars": [

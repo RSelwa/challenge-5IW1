@@ -1,7 +1,7 @@
 import React, { InputHTMLAttributes } from "react"
 import type { VariantProps } from "class-variance-authority"
 import { cva } from "class-variance-authority"
-import { cn } from "@/utils"
+import { cn } from "../../utils"
 
 type InputVariant = "default" | "outline" | "subtle" | "ghost"
 
