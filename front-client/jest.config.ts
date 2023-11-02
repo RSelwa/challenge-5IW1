@@ -4,7 +4,7 @@ const config: Config = {
   verbose: true,
   moduleNameMapper: {
     // Aliases
-    "^@/(.*)$": "<rootDir>/../$1"
+    "^@/(.*)$": "<rootDir>/src/../$1"
   },
   testPathIgnorePatterns: [
     "<rootDir>/node_modules/",
