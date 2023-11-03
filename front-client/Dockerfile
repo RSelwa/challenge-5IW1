@@ -7,11 +7,15 @@ COPY package.json ./
 
 RUN yarn 
 
-WORKDIR /home/front-client
-
-COPY front-client/package.json ./
-
+WORKDIR /home/monorepo
+COPY monorepo/package.json ./
 RUN yarn
+
+WORKDIR /home/front-client
+COPY front-client/package.json ./
+RUN yarn
+
+
 
 EXPOSE 3000
 
