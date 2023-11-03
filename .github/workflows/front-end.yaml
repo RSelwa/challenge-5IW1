@@ -23,14 +23,14 @@ jobs:
         with:
           node-version: "16"
           cache: "yarn"
-          cache-dependency-path: front/yarn.lock
+          cache-dependency-path: yarn.lock
       - name: 🏎️ Cache Dependencies
         uses: actions/cache@v3
         id: yarn-cache
         with:
           path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('front/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('front/yarn.lock') }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
       - name: 📦 Build front
         run: yarn workspace front-client build
 
@@ -48,14 +48,14 @@ jobs:
         with:
           node-version: "16"
           cache: "yarn"
-          cache-dependency-path: front/yarn.lock
+          cache-dependency-path: yarn.lock
       - name: 🏎️ Cache Dependencies
         uses: actions/cache@v3
         id: yarn-cache
         with:
           path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('front/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('front/yarn.lock') }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
       - name: 🧪 Units Test
         run: yarn workspace $Workspace test
   cypress-run:
@@ -72,14 +72,14 @@ jobs:
         with:
           node-version: "16"
           cache: "yarn"
-          cache-dependency-path: front/yarn.lock
+          cache-dependency-path: yarn.lock
       - name: 🏎️ Cache Dependencies
         uses: actions/cache@v3
         id: yarn-cache
         with:
           path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('front/yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('front/yarn.lock') }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
       - name: 📦 Install Cypress binaries
         run: npx cypress install
       - name: 🖼️ Cypress run
