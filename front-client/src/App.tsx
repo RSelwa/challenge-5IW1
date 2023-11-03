@@ -1,5 +1,12 @@
+import Layout from "@/Layout"
+
 function App() {
-  return <div className="text-green-500">test</div>
+  return (
+    <>
+      <Layout />
+      <div className="text-green-500">test</div>
+    </>
+  )
 }
 
 export default App
