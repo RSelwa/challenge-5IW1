@@ -2,8 +2,8 @@ name: 🖌️ Front end
 
 on:
   push:
-    # paths:
-    #   - "front/front-client/**"
+    paths:
+      - "front-client/**"
 
 jobs:
   base:
@@ -13,9 +13,8 @@ jobs:
     name: 📦 Build
     needs: base
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: front
+    env:
+      Workspace: front-client
     steps:
       - name: ✨ Checkout
         uses: actions/checkout@v3
@@ -86,7 +85,7 @@ jobs:
       - name: 🖼️ Cypress run
         uses: cypress-io/github-action@v6
         with:
-          working-directory: front/front-client
+          working-directory: front-client
           build: yarn build
           start: yarn dev
           browser: chrome
