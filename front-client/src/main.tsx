@@ -4,9 +4,11 @@ import "./index.css"
 import "@radix-ui/themes/styles.css"
 import { Provider } from "react-redux"
 import { Theme } from "@radix-ui/themes"
-import { createBrowserRouter, Router, RouterProvider } from "react-router-dom"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { store } from "@/redux/store.ts"
 import App from "@/App"
+import Layout from "@/Layout"
+import Planning from "@/pages/planning"
 import Signin from "@/pages/signin"
 import SigninEntreprisesPage from "@/pages/signinEntreprises"
 import Team from "@/pages/team"
@@ -14,19 +16,48 @@ import Team from "@/pages/team"
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />
+    element: (
+      <>
+        <Layout />
+        <App />
+      </>
+    )
   },
   {
     path: "/signin",
-    element: <Signin />
+    element: (
+      <>
+        <Layout />
+        <Signin />
+      </>
+    )
   },
   {
     path: "/SigninEntreprisesPage",
-    element: <SigninEntreprisesPage />
+    element: (
+      <>
+        <Layout />
+        <SigninEntreprisesPage />
+      </>
+    )
   },
   {
     path: "teams/:teamId",
-    element: <Team />
+    element: (
+      <>
+        <Layout />
+        <Team />
+      </>
+    )
+  },
+  {
+    path: "planning",
+    element: (
+      <>
+        <Layout />
+        <Planning />
+      </>
+    )
   }
 ])
 ReactDOM.createRoot(document.getElementById("root")!).render(

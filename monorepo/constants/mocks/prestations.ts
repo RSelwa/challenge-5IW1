@@ -1,4 +1,4 @@
-import type { PrestationsWithId } from "@/monorepo/types/withId"
+import type { PrestationsWithId } from "@/types/withId"
 
 export const prestationsMock: PrestationsWithId = {
   id: "prestationId",

@@ -1,4 +1,4 @@
-import { ClientWithId } from "../../types/withId"
+import type { ClientWithId } from "../../types/withId"
 
 export const clientMock: ClientWithId = {
   id: "clientId",
