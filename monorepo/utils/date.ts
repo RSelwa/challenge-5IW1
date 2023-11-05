@@ -52,5 +52,10 @@ export const differenceDaysBetweenTwoDates = (date1: Date, date2: Date) => {
 }
 
 export const getInitialDay = (date: Date): Date => {
-  return new Date(date.setHours(0, 0, 0, 0))
+  return new Date(date.setUTCHours(0, 0, 0, 0))
+}
+export const dateToString = (date: Date) => {
+  // 01 Jan
+  const list = date.toUTCString().split(" ")
+  return list[1] + " " + list[2]
 }
