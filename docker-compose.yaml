@@ -39,9 +39,9 @@ services:
   database:
     image: postgres:15.4-alpine
     environment:
-      POSTGRES_DB: symfony
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
+      POSTGRES_DB: esgi_challenge_s3
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
     volumes:
       - database_data:/var/lib/postgresql/data:rw
     ports:
