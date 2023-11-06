@@ -32,10 +32,8 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
       - name: 📦 Build front
-        run: yarn workspace $Workspace build
+        run: yarn workspace front-client build
 
-      - name: echo where
-        run: ls $Workspace
   units-test:
     name: 🧪 Units Test
     needs: build
