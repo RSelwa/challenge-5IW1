@@ -1,4 +1,8 @@
-import { dayInSeconds, weekInSeconds } from "monorepo/constants/date"
+import {
+  dayInSeconds,
+  daysInWeek,
+  weekInSeconds
+} from "monorepo/constants/date"
 
 export const convertMinutesToMilliseconds = (minute: number) => {
   return minute * 60 * 1000
@@ -58,4 +62,10 @@ export const dateToString = (date: Date) => {
   // 01 Jan
   const list = date.toUTCString().split(" ")
   return list[1] + " " + list[2]
+}
+
+export const dayOfWeek = (date: Date, short?: boolean) => {
+  return short
+    ? daysInWeek[date.getDay()].substring(0, 3)
+    : daysInWeek[date.getDay()]
 }

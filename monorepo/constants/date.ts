@@ -13,6 +13,7 @@ export const monthNames = [
   "December"
 ]
 
+export const daysInWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 export const hourInSeconds = 3600
 export const dayInSeconds = 86400
 export const weekInSeconds = 604800
