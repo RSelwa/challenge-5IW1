@@ -2,8 +2,8 @@ name: 🖌️ Front end
 
 on:
   push:
-    # paths:
-    #   - "front/**"
+    paths:
+      - "front/**"
 
 jobs:
   base:

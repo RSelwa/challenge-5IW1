@@ -4,13 +4,9 @@ const config: Config = {
   verbose: true,
   moduleNameMapper: {
     // Aliases
-    "^@/(.*)$": "<rootDir>/src/../$1"
+    "^@/(.*)$": "<rootDir>/src/$1"
   },
-  testPathIgnorePatterns: [
-    "<rootDir>/node_modules/",
-    "<rootDir>/.next/",
-    "<rootDir>/cypress/"
-  ],
+  testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/cypress/"],
   moduleFileExtensions: ["ts", "js", "json", "node"],
   testMatch: ["**/__tests__/**/*.ts?(x)", "**/?(*.)+(spec|test).ts?(x)"],
   transform: {
