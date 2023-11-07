@@ -2,6 +2,6 @@ export type Organization = {
   manager: {
     email: string
   }
-  kbis: any
+  kbis: string
   clinicIds: string[]
 }

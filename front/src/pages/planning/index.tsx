@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react"
 import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons"
 import { Button } from "@radix-ui/themes"
-import { dayInSeconds, weekInSeconds } from "monorepo/constants/date"
+import { dayInSeconds, weekInSeconds } from "@/constants/date"
 import {
   dateToString,
   dayOfWeek,
   differenceDaysBetweenTwoDates,
   getDateFromWeek,
   getInitialDay
-} from "monorepo/utils/date"
+} from "@/utils/date"
 
 const Planning = () => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date())

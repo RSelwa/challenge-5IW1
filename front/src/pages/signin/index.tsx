@@ -1,4 +1,4 @@
-import { LoginWithPassword } from "monorepo"
+import LoginWithPassword from "@/components/Forms/Login"
 
 const Signin = () => {
   return (

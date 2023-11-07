@@ -1,8 +1,4 @@
-import {
-  dayInSeconds,
-  daysInWeek,
-  weekInSeconds
-} from "monorepo/constants/date"
+import { dayInSeconds, daysInWeek, weekInSeconds } from "@/constants/date"
 
 export const convertMinutesToMilliseconds = (minute: number) => {
   return minute * 60 * 1000

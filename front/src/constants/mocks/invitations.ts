@@ -1,4 +1,4 @@
-import type { InvitationWithId } from "@/monorepo/types/withId"
+import type { InvitationWithId } from "@/types/withId"
 
 export const invitationMock: InvitationWithId = {
   email: "invite@yopmail.com",

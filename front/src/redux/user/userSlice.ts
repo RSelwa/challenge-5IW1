@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 import type { PayloadAction } from "@reduxjs/toolkit"
-import { reduxUserFront } from "monorepo/types/users"
+import { reduxUserFront } from "@/types/users"
 import { RootState } from "@/redux/store"
 
 // Define the initial state using that type

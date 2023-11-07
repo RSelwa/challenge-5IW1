@@ -1,11 +1,11 @@
-import type { Admin } from "@/monorepo/types/admin"
-import type { Clinic } from "@/monorepo/types/clinic"
-import type { Invitation } from "@/monorepo/types/invitations"
-import type { Organization } from "@/monorepo/types/organization"
-import type { Practitioner } from "@/monorepo/types/practitioner"
-import type { Prestations } from "@/monorepo/types/prestations"
-import type { Reservation } from "@/monorepo/types/reservations"
-import type { Client } from "@/monorepo/types/users"
+import { Admin } from "@/types/admin"
+import { Clinic } from "@/types/clinic"
+import { Invitation } from "@/types/invitations"
+import { Organization } from "@/types/organization"
+import { Practitioner } from "@/types/practitioner"
+import { Prestations } from "@/types/prestations"
+import { Reservation } from "@/types/reservations"
+import { Client } from "@/types/users"
 
 export type AdminWithId = DocumentWithId<Admin>
 export type ClientWithId = DocumentWithId<Client>

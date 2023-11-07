@@ -1,5 +1,5 @@
 export type Clinic = {
-  location: any
+  location: string
   name: string
   practitionerIds: string[]
   organizationId: string
