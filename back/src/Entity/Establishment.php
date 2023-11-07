@@ -53,7 +53,7 @@ class Establishment
         return $this->id;
     }
 
-    public function set(string $id): static
+    public function setId(string $id): static
     {
         $this->id = $id;
 

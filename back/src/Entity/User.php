@@ -10,6 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\Table(name: "\"user\"")]
 #[ApiResource]
 class User
 {
@@ -41,6 +42,7 @@ class User
     {
         return $this->id;
     }
+
     public function setId(string $id): static
     {
         $this->id = $id;
