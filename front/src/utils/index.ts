@@ -1,5 +1,6 @@
 import type { ClassArray } from "clsx"
 import clsx from "clsx"
+// eslint-disable-next-line no-restricted-imports
 import { twMerge } from "tailwind-merge"
 
 export const logHello = () => {
