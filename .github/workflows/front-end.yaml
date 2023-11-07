@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: "16"
           cache: "yarn"
-          cache-dependency-path: front/yarn.lock
+          cache-dependency-path: yarn.lock
       - name: 🏎️ Cache Dependencies
         uses: actions/cache@v3
         id: yarn-cache
@@ -50,7 +50,7 @@ jobs:
         with:
           node-version: "16"
           cache: "yarn"
-          cache-dependency-path: front/yarn.lock
+          cache-dependency-path: yarn.lock
       - name: 🏎️ Cache Dependencies
         uses: actions/cache@v3
         id: yarn-cache
@@ -75,7 +75,7 @@ jobs:
         with:
           node-version: "16"
           cache: "yarn"
-          cache-dependency-path: front/yarn.lock
+          cache-dependency-path: yarn.lock
       - name: 🏎️ Cache Dependencies
         uses: actions/cache@v3
         id: yarn-cache
