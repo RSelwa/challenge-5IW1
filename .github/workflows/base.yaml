@@ -20,7 +20,7 @@ jobs:
         uses: actions/cache@v3
         id: yarn-cache
         with:
-          path: node_modules
+          path: front/node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: 📦 Install Dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
