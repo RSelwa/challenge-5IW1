@@ -3,7 +3,7 @@ name: 🖌️ Front end
 on:
   push:
     paths:
-      - "front-client/**"
+      - "front/**"
 
 jobs:
   base:
@@ -13,8 +13,6 @@ jobs:
     name: 📦 Build
     needs: base
     runs-on: ubuntu-latest
-    env:
-      Workspace: front-client
     steps:
       - name: ✨ Checkout
         uses: actions/checkout@v3
@@ -23,23 +21,22 @@ jobs:
         with:
           node-version: "16"
           cache: "yarn"
-          cache-dependency-path: yarn.lock
+          cache-dependency-path: front/yarn.lock
       - name: 🏎️ Cache Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache/restore@v3
         id: yarn-cache
         with:
-          path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          path: front/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          # restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: 📦 Build front
-        run: yarn workspace front-client build
+        run: yarn build
+        working-directory: front
 
   units-test:
     name: 🧪 Units Test
     needs: build
     runs-on: ubuntu-latest
-    env:
-      Workspace: front-client
     steps:
       - name: ✨ Checkout
         uses: actions/checkout@v3
@@ -48,22 +45,22 @@ jobs:
         with:
           node-version: "16"
           cache: "yarn"
-          cache-dependency-path: yarn.lock
+          cache-dependency-path: front/yarn.lock
       - name: 🏎️ Cache Dependencies
-        uses: actions/cache@v3
+        uses: actions/cache/restore@v3
         id: yarn-cache
         with:
-          path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          path: front/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          # restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: 🧪 Units Test
-        run: yarn workspace $Workspace test
+        run: yarn test
+        working-directory: front
+
   cypress-run:
     name: 🖼️ Cypress
     needs: build
     runs-on: ubuntu-latest
-    env:
-      Workspace: front-client
     steps:
       - name: ✨ Checkout
         uses: actions/checkout@v3
@@ -72,20 +69,20 @@ jobs:
         with:
           node-version: "16"
           cache: "yarn"
-          cache-dependency-path: yarn.lock
+          cache-dependency-path: front/yarn.lock
       - name: 🏎️ Cache Dependencies
         uses: actions/cache@v3
         id: yarn-cache
         with:
-          path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
-          restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+          path: front/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: 📦 Install Cypress binaries
         run: npx cypress install
       - name: 🖼️ Cypress run
         uses: cypress-io/github-action@v6
         with:
-          working-directory: front-client
+          working-directory: front
           build: yarn build
           start: yarn dev
           browser: chrome
