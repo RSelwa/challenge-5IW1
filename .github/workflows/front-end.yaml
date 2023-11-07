@@ -3,7 +3,7 @@ name: 🖌️ Front end
 on:
   push:
     paths:
-      - "front-client/**"
+      - "front/**"
 
 jobs:
   base:
@@ -13,8 +13,9 @@ jobs:
     name: 📦 Build
     needs: base
     runs-on: ubuntu-latest
-    env:
-      Workspace: front-client
+    defaults:
+      run:
+        working-directory: front
     steps:
       - name: ✨ Checkout
         uses: actions/checkout@v3
@@ -32,14 +33,15 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
       - name: 📦 Build front
-        run: yarn workspace front-client build
+        run: yarn build
 
   units-test:
     name: 🧪 Units Test
     needs: build
     runs-on: ubuntu-latest
-    env:
-      Workspace: front-client
+    defaults:
+      run:
+        working-directory: front
     steps:
       - name: ✨ Checkout
         uses: actions/checkout@v3
@@ -57,13 +59,14 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
       - name: 🧪 Units Test
-        run: yarn workspace $Workspace test
+        run: yarn test
   cypress-run:
     name: 🖼️ Cypress
     needs: build
     runs-on: ubuntu-latest
-    env:
-      Workspace: front-client
+    defaults:
+      run:
+        working-directory: front
     steps:
       - name: ✨ Checkout
         uses: actions/checkout@v3
@@ -85,7 +88,6 @@ jobs:
       - name: 🖼️ Cypress run
         uses: cypress-io/github-action@v6
         with:
-          working-directory: front-client
           build: yarn build
           start: yarn dev
           browser: chrome
