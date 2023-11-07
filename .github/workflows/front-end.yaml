@@ -13,9 +13,6 @@ jobs:
     name: 📦 Build
     needs: base
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: front
     steps:
       - name: ✨ Checkout
         uses: actions/checkout@v3
@@ -34,14 +31,12 @@ jobs:
           restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('front/yarn.lock') }}
       - name: 📦 Build front
         run: yarn build
+        working-directory: front
 
   units-test:
     name: 🧪 Units Test
     needs: build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: front
     steps:
       - name: ✨ Checkout
         uses: actions/checkout@v3
@@ -60,13 +55,12 @@ jobs:
           # restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('front/yarn.lock') }}
       - name: 🧪 Units Test
         run: yarn test
+        working-directory: front
+
   cypress-run:
     name: 🖼️ Cypress
     needs: build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: front
     steps:
       - name: ✨ Checkout
         uses: actions/checkout@v3
@@ -88,6 +82,7 @@ jobs:
       - name: 🖼️ Cypress run
         uses: cypress-io/github-action@v6
         with:
+          working-directory: front
           build: yarn build
           start: yarn dev
           browser: chrome
