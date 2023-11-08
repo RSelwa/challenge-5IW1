@@ -12,49 +12,9 @@ import Planning from "@/pages/planning"
 import Signin from "@/pages/signin"
 import SigninEntreprisesPage from "@/pages/signinEntreprises"
 import Team from "@/pages/team"
+import { routes } from "@/routes"
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: (
-      <Layout>
-        <App />
-      </Layout>
-    )
-  },
-  {
-    path: "/signin",
-    element: (
-      <Layout>
-        <Signin />
-      </Layout>
-    )
-  },
-  {
-    path: "/SigninEntreprisesPage",
-    element: (
-      <Layout>
-        <SigninEntreprisesPage />
-      </Layout>
-    )
-  },
-  {
-    path: "teams/:teamId",
-    element: (
-      <Layout>
-        <Team />
-      </Layout>
-    )
-  },
-  {
-    path: "planning",
-    element: (
-      <Layout>
-        <Planning />
-      </Layout>
-    )
-  }
-])
+const router = createBrowserRouter([...routes])
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Provider store={store}>

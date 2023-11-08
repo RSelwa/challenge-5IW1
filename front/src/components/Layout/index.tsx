@@ -1,8 +1,9 @@
-import AdminLayout from "@/src/components/Layout/AdminLayout"
-import ClientLayout from "@/src/components/Layout/ClientLayout"
-import DefaultLayout from "@/src/components/Layout/DefaultLayout"
-import PracticionerLayout from "@/src/components/Layout/PracticionerLayout"
-import { useAppSelector } from "@/src/redux/hook"
+import { Link } from "react-router-dom"
+import { useAppSelector } from "@/redux/hook"
+import AdminLayout from "@/components/Layout/AdminLayout"
+import ClientLayout from "@/components/Layout/ClientLayout"
+import DefaultLayout from "@/components/Layout/DefaultLayout"
+import PracticionerLayout from "@/components/Layout/PracticionerLayout"
 
 const Layout = ({ children }: { children: JSX.Element }) => {
   const userStatus = useAppSelector((state) => state.user.status)
@@ -18,14 +19,17 @@ const Layout = ({ children }: { children: JSX.Element }) => {
         return <DefaultLayout />
 
       default:
-        break
+        return <DefaultLayout />
     }
   }
 
   return (
     <>
       <div className="flex w-full justify-between px-5 py-4">
-        <div>Logo</div>
+        <Link to="/">
+          <div>Logo</div>
+        </Link>
+        <Link to="/planning">Planning</Link>
         {layoutHandler()}
       </div>
       {children}
