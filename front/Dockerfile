@@ -1,11 +1,11 @@
 FROM node:18.18-alpine
 
-WORKDIR /home
+WORKDIR /home/app
 
-COPY tsconfig.json package.json yarn.lock* ./
+COPY package.json ./
 
-RUN yarn install
+RUN yarn
 
-EXPOSE 5173
+EXPOSE 3000
 
 CMD [ "yarn", "dev:docker" ]
