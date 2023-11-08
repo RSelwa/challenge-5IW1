@@ -29,7 +29,6 @@ const Layout = ({ children }: { children: JSX.Element }) => {
         <Link to="/">
           <div>Logo</div>
         </Link>
-        <Link to="/planning">Planning</Link>
         {layoutHandler()}
       </div>
       {children}

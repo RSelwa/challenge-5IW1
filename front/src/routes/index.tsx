@@ -7,40 +7,28 @@ import Signin from "@/pages/signin"
 import SigninEntreprisesPage from "@/pages/signinEntreprises"
 import Team from "@/pages/team"
 
+const getLayout = (element: JSX.Element): JSX.Element => (
+  <Layout>{element}</Layout>
+)
+
 const defaultRoutes: RouteObject[] = [
   {
     path: "/",
-    element: (
-      <Layout>
-        <App />
-      </Layout>
-    )
+    element: getLayout(<App />)
   },
   {
     path: "planning",
-    element: (
-      <Layout>
-        <Planning />
-      </Layout>
-    )
+    element: getLayout(<Planning />)
   }
 ]
 const authRoutes: RouteObject[] = [
   {
     path: "/signin",
-    element: (
-      <Layout>
-        <Signin />
-      </Layout>
-    )
+    element: getLayout(<Signin />)
   },
   {
     path: "/login",
-    element: (
-      <Layout>
-        <Login />
-      </Layout>
-    )
+    element: getLayout(<Login />)
   }
 ]
 const adminRoutes: RouteObject[] = []
@@ -49,19 +37,11 @@ const clientRoutes: RouteObject[] = []
 const devRoutes: RouteObject[] = [
   {
     path: "/SigninEntreprisesPage",
-    element: (
-      <Layout>
-        <SigninEntreprisesPage />
-      </Layout>
-    )
+    element: getLayout(<SigninEntreprisesPage />)
   },
   {
     path: "teams/:teamId",
-    element: (
-      <Layout>
-        <Team />
-      </Layout>
-    )
+    element: getLayout(<Team />)
   }
 ]
 
