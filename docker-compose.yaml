@@ -3,14 +3,13 @@ version: "3"
 services:
   front:
     build:
-      context: "./front"
-      dockerfile: "./Dockerfile"
+      context: ./front
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     volumes:
-      - ./front:/home/app
-      - /home/app/node_modules
-
+      - /home/node_modules
+      - ./front:/home/
   server:
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -24,7 +23,6 @@ services:
       - php
     ports:
       - "8888:80"
-
   php:
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -36,7 +34,6 @@ services:
       - ./back/.docker/php/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
       - ~/.config/composer:/home/prod/.composer
       - ./back:/srv/app
-
   database:
     image: postgres:15.4-alpine
     environment:

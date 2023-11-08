@@ -1,10 +1,10 @@
 FROM node:18.18-alpine
 
-WORKDIR /home/app
+WORKDIR /home
 
-COPY package.json ./
+COPY tsconfig.json package.json yarn.lock* ./
 
-RUN yarn
+RUN yarn install
 
 EXPOSE 3000
 
