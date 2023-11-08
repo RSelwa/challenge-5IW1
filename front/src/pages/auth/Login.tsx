@@ -1,7 +1,11 @@
-import React from "react"
+import React, { useEffect } from "react"
+import { Router, useNavigate, useParams } from "react-router-dom"
+import { DbTableLogin } from "@/types/auth"
+import { dbTableLogin } from "@/constants/auth"
+import LoginWithPassword from "@/components/Forms/Login"
 
 const Login = () => {
-  return <div>Login</div>
+  return <LoginWithPassword />
 }
 
 export default Login

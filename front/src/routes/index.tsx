@@ -1,4 +1,4 @@
-import { RouteObject } from "react-router-dom"
+import type { RouteObject } from "react-router-dom"
 import Layout from "@/components/Layout"
 import App from "@/App"
 import Login from "@/pages/auth/Login"
@@ -28,7 +28,8 @@ const authRoutes: RouteObject[] = [
   },
   {
     path: "/login",
-    element: getLayout(<Login />)
+    element: getLayout(<Login />),
+    children: [{ path: "/login/:db", element: getLayout(<Login />) }]
   }
 ]
 const adminRoutes: RouteObject[] = []
