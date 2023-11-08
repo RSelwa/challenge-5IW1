@@ -32,6 +32,7 @@ class EmployeeWeekTimeTableFixtures extends Fixture implements DependentFixtureI
 
             $manager->persist($employeeWeekTimeTable);
         }
+        
         foreach($days as $day) {
             $employeeWeekTimeTable = new EmployeeWeekTimeTable();
             $employeeWeekTimeTable->setId(Uuid::v4());
