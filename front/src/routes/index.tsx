@@ -1,3 +1,5 @@
+import { Fragment } from "react"
+import { Toaster } from "react-hot-toast"
 import type { RouteObject } from "react-router-dom"
 import Layout from "@/components/Layout"
 import App from "@/App"
@@ -8,7 +10,12 @@ import SigninEntreprisesPage from "@/pages/signinEntreprises"
 import Team from "@/pages/team"
 
 const getLayout = (element: JSX.Element): JSX.Element => (
-  <Layout>{element}</Layout>
+  <Layout>
+    <Fragment>
+      {element}
+      <Toaster position="bottom-right" />
+    </Fragment>
+  </Layout>
 )
 
 const defaultRoutes: RouteObject[] = [
