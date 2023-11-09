@@ -15,7 +15,6 @@
     "^(react-redux/(.*)$)|^(react-redux$)",
     "<THIRD_PARTY_MODULES>",
     "@/types/(.*)$",
-    "@/constants",
     "@/constants/(.*)$",
     "@/lib/(.*)$",
     "@/services/(.*)$",
@@ -35,8 +34,9 @@
   "importOrderMergeDuplicateImports": true,
   "importOrderCombineTypeAndValueImports": true,
   "plugins": [
-    "prettier-plugin-tailwindcss",
-    "@ianvs/prettier-plugin-sort-imports"
+    "@ianvs/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
   ],
-  "pluginSearchDirs": false
+  "pluginSearchDirs": false,
+  "tailwindConfig": "./tailwind.config.js"
 }
