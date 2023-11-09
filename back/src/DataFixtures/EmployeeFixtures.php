@@ -11,6 +11,8 @@ use Doctrine\Persistence\ObjectManager;
 
 class EmployeeFixtures extends Fixture implements DependentFixtureInterface
 {
+    const EMPLOYEE_REFERENCE = "antoine-dupont";
+    
     public function getDependencies()
     {
         return array(
@@ -25,6 +27,8 @@ class EmployeeFixtures extends Fixture implements DependentFixtureInterface
         $employee->setFirstname("Antoine");
         $employee->setLastname("Dupont");
         $employee->setEstablishment($this->getReference(EstablishmentFixtures::ESTABLISHMENT_REFERENCE));
+
+        $this->addReference(self::EMPLOYEE_REFERENCE, $employee);
 
         $manager->persist($employee);
 

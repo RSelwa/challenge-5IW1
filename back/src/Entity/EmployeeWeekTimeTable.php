@@ -29,11 +29,6 @@ class EmployeeWeekTimeTable
     #[ORM\Column(length: 255)]
     private ?string $endTime = null;
 
-    public function __construct()
-    {
-        $this->employee = new ArrayCollection();
-    }
-
     public function getId(): ?int
     {
         return $this->id;
