@@ -21,7 +21,7 @@ class Service
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $type = null;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }

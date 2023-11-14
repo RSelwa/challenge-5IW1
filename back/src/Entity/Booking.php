@@ -35,7 +35,7 @@ class Booking
     #[ORM\Column(length: 255)]
     private ?string $endTime = null;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }

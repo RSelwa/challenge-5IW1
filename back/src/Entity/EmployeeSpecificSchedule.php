@@ -30,7 +30,7 @@ class EmployeeSpecificSchedule
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $endTime = null;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
