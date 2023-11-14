@@ -31,7 +31,7 @@ class Employee
     private Collection $bookings;
 
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: EmployeeWeekTimeTable::class)]
-    private Collection $employeeWeekTimeTable;
+    private Collection $employeeWeekTimeTables;
 
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: EmployeeSpecificSchedule::class)]
     private Collection $employeeSpecificSchedules;
@@ -42,7 +42,7 @@ class Employee
         $this->employeeSpecificSchedules = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
