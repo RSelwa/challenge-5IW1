@@ -11,6 +11,8 @@ class Admin
 {
     #[ORM\Id]
     #[ORM\Column(type: Types::GUID)]
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]

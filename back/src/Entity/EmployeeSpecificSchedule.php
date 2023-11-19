@@ -6,28 +6,39 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\EmployeeSpecificScheduleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EmployeeSpecificScheduleRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    denormalizationContext: [ 'groups' => ['post:employee-specific-schedule']]
+)]
 class EmployeeSpecificSchedule
 {
     #[ORM\Id]
     #[ORM\Column(type: Types::GUID)]
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[Groups(['get:establishment', 'get:employee'])]
     private ?string $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'employeeSpecificSchedules')]
+    #[Groups(['post:employee-specific-schedule'])]
     private ?Employee $employee = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['get:establishment', 'get:employee', 'post:employee-specific-schedule'])]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:establishment', 'get:employee', 'post:employee-specific-schedule'])]
     private ?string $type = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['get:establishment', 'get:employee', 'post:employee-specific-schedule'])]
     private ?string $startTime = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['get:establishment', 'get:employee', 'post:employee-specific-schedule'])]
     private ?string $endTime = null;
 
     public function getId(): ?string

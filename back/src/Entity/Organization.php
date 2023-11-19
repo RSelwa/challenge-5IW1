@@ -8,40 +8,57 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: OrganizationRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: [ 'groups' => ['get:organization', 'get:service']],
+    denormalizationContext: [ 'groups' => ['post:organization']]
+)]
+
 class Organization
 {
     #[ORM\Id]
     #[ORM\Column(type: Types::GUID)]
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[Groups(['get:organization'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:organization', 'post:organization'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:organization', 'post:organization'])]
     private ?string $managerFirstname = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:organization', 'post:organization'])]
     private ?string $managerLastname = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:organization', 'post:organization'])]
     private ?string $kbis = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['get:organization', 'post:organization'])]
     private ?string $siret = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:organization', 'post:organization'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['post:organization'])]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $status = null;
+    #[Groups(['get:organization', 'put:admin'])]
+    private ?string $status = 'PENDING';
 
     #[ORM\OneToMany(mappedBy: 'organization', targetEntity: Establishment::class)]
+    #[Groups(['get:organization'])]
     private Collection $establishments;
 
     public function __construct()

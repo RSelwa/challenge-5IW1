@@ -8,29 +8,39 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: "\"user\"")]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: [ 'groups' => ['get:user', 'get:booking']]
+)]
 class User
 {
     #[ORM\Id]
     #[ORM\Column(type: Types::GUID)]
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[Groups(['get:user'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:user'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:user'])]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:user'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Booking::class)]
+    #[Groups(['get:user'])]
     private Collection $bookings;
 
     public function __construct()

@@ -4,29 +4,37 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\EmployeeWeekTimeTableRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EmployeeWeekTimeTableRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    denormalizationContext: [ 'groups' => ['post:employee-week-time-table']]
+)]
 class EmployeeWeekTimeTable
 {
     #[ORM\Id]
     #[ORM\Column(type: Types::GUID)]
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[Groups(['get:establishment', 'get:employee'])]
     private ?string $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'employeeWeekTimeTables')]
+    #[Groups(['post:employee-week-time-table'])]
     private ?Employee $employee = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:establishment', 'get:employee', 'post:employee-week-time-table'])]
     private ?string $dayOfTheWeek = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:establishment', 'get:employee', 'post:employee-week-time-table'])]
     private ?string $startTime = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:establishment', 'get:employee', 'post:employee-week-time-table'])]
     private ?string $endTime = null;
 
     public function getId(): ?string

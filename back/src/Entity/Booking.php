@@ -6,33 +6,46 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\BookingRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BookingRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: [ 'groups' => ['get:booking']],
+    denormalizationContext: [ 'groups' => ['post:booking']]
+)]
 class Booking
 {
     #[ORM\Id]
     #[ORM\Column(type: Types::GUID)]
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[Groups(['get:booking'])]
     private ?string $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'bookings')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['post:booking'])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'bookings')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['post:booking'])]
     private ?Employee $employee = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:booking', 'post:booking'])]
     private ?string $status = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['get:booking', 'post:booking'])]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:booking', 'post:booking'])]
     private ?string $startTime = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:booking', 'post:booking'])]
     private ?string $endTime = null;
 
     public function getId(): ?string

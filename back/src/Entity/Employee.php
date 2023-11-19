@@ -8,32 +8,44 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: [ 'groups' => ['get:employee', 'get:booking']],
+    denormalizationContext: [ 'groups' => ['post:employee']]
+)]
+
 class Employee
 {
     #[ORM\Id]
     #[ORM\Column(type: Types::GUID)]
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[Groups(['get:organization', 'get:establishment', 'get:employee'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:organization', 'get:establishment', 'get:employee', 'post:employee'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:organization', 'get:establishment', 'get:employee', 'post:employee'])]
     private ?string $lastname = null;
 
     #[ORM\ManyToOne(inversedBy: 'employees')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['get:employee', 'post:employee'])]
     private ?Establishment $establishment = null;
 
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Booking::class)]
+    #[Groups(['get:establishment', 'get:employee'])]
     private Collection $bookings;
-
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: EmployeeWeekTimeTable::class)]
+    #[Groups(['get:establishment', 'get:employee'])]
     private Collection $employeeWeekTimeTables;
-
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: EmployeeSpecificSchedule::class)]
+    #[Groups(['get:establishment', 'get:employee'])]
     private Collection $employeeSpecificSchedules;
 
     public function __construct()
