@@ -11,6 +11,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -124,9 +125,12 @@ class Organization
         return $this;
     }
 
-    public function getKbis(): ?string
+    public function getKbis(): ?File
     {
-        return $this->kbis;
+        $filePath = __DIR__ . '/../../public/uploads/' . $this->kbis;
+        $response = new BinaryFileResponse($filePath);
+
+        return $response->getFile();
     }
 
     public function setKbis(string $kbis): static
