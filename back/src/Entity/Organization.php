@@ -3,17 +3,23 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\OpenApi\Model;
+use App\Controller\CreateOrganizationController;
 use App\Repository\OrganizationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
+#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: OrganizationRepository::class)]
 #[ApiResource(
     normalizationContext: [ 'groups' => ['get:organization', 'get:service']],
-    denormalizationContext: [ 'groups' => ['post:organization']]
+    denormalizationContext: [ 'groups' => ['post:organization']],
 )]
 
 class Organization
@@ -38,8 +44,12 @@ class Organization
     private ?string $managerLastname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:organization', 'post:organization'])]
+    #[Groups(['get:organization'])]
     private ?string $kbis = null;
+
+    #[Vich\UploadableField(mapping: 'kbis_upload', fileNameProperty: 'kbis')]
+    #[Groups(['post:organization'])]
+    private ?File $kbisFile = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['get:organization', 'post:organization'])]
@@ -122,6 +132,18 @@ class Organization
     public function setKbis(string $kbis): static
     {
         $this->kbis = $kbis;
+
+        return $this;
+    }
+
+    public function getKbisFile(): File
+    {
+        return $this->kbisFile;
+    }
+
+    public function setKbisFile(File $kbisFile): static
+    {
+        $this->kbisFile = $kbisFile;
 
         return $this;
     }
