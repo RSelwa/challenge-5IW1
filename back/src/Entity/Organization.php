@@ -3,16 +3,19 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\OpenApi\Model;
-use App\Controller\CreateOrganizationController;
+use ApiPlatform\Metadata\Put;
 use App\Repository\OrganizationRepository;
+use App\State\UserPasswordHasher;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -21,9 +24,14 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ApiResource(
     normalizationContext: [ 'groups' => ['get:organization', 'get:service']],
     denormalizationContext: [ 'groups' => ['post:organization']],
+    operations: [
+        new Post(processor: UserPasswordHasher::class),
+        new Put(processor: UserPasswordHasher::class),
+        new Patch(processor: UserPasswordHasher::class),
+    ],
 )]
 
-class Organization
+class Organization implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: Types::GUID)]
@@ -61,7 +69,6 @@ class Organization
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['post:organization'])]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
@@ -71,6 +78,11 @@ class Organization
     #[ORM\OneToMany(mappedBy: 'organization', targetEntity: Establishment::class)]
     #[Groups(['get:organization'])]
     private Collection $establishments;
+
+    private ?array $roles = ['ROLE_ORGANIZATION'];
+
+    #[Groups(['post:organization'])]
+    private ?string $plainPassword = null;
 
     public function __construct()
     {
@@ -228,5 +240,54 @@ class Organization
         }
 
         return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        $this->plainPassword = null;
     }
 }
