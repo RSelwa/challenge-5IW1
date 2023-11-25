@@ -7,20 +7,22 @@ security:
         App\Entity\Admin: auto
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        # used to reload user from session & other features (e.g. switch_user)
-        # users:
-        #     entity:
-        #         class: App\Entity\User
-        #         property: email
-        users:
+        user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+        organization_provider:
             entity:
                 class: App\Entity\Organization
                 property: email
-        # admins:
-        #     entity:
-        #         class: App\Entity\Admin
-        #         property: email
-
+        admin_provider:
+            entity:
+                class: App\Entity\Admin
+                property: email
+        users:
+            chain: 
+                providers: ['user_provider', 'organization_provider', 'admin_provider']
+            
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -37,6 +39,7 @@ security:
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            provider: users
 
     role_hierarchy:
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ALLOWED_TO_SWITCH]
