@@ -5,5 +5,5 @@
 #    type: attribute
 
 auth:
-    path: /auth/organization
+    path: /auth
     methods: ['POST']

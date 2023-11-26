@@ -9,7 +9,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: EstablishmentRepository::class)]
 #[ApiResource(
@@ -50,11 +49,6 @@ class Establishment
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['post:establishment'])]
     private ?Organization $organization = null;
-
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['get:organization', 'get:establishment', 'post:establishment'])]
-    private ?Service $service = null;
 
     #[ORM\OneToMany(mappedBy: 'establishment', targetEntity: Employee::class)]
     #[Groups(['get:organization', 'get:establishment'])]
@@ -145,18 +139,6 @@ class Establishment
     public function setOrganization(?Organization $organization): static
     {
         $this->organization = $organization;
-
-        return $this;
-    }
-
-    public function getService(): ?Service
-    {
-        return $this->service;
-    }
-
-    public function setService(?Service $service): static
-    {
-        $this->service = $service;
 
         return $this;
     }
