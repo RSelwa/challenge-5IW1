@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Get;
 use App\Repository\UserRepository;
 use App\State\UserPasswordHasher;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -21,6 +23,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     normalizationContext: [ 'groups' => ['get:user', 'get:slot']],
     operations: [
+        new Get(),
+        new GetCollection(),
         new Post(processor: UserPasswordHasher::class),
         new Put(processor: UserPasswordHasher::class),
         new Patch(processor: UserPasswordHasher::class),
