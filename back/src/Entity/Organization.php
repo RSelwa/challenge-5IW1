@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
@@ -25,6 +27,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
     normalizationContext: [ 'groups' => ['get:organization', 'get:service']],
     denormalizationContext: [ 'groups' => ['post:organization']],
     operations: [
+        new Get(),
+        new GetCollection(),
         new Post(processor: UserPasswordHasher::class),
         new Put(processor: UserPasswordHasher::class),
         new Patch(processor: UserPasswordHasher::class),
