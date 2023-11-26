@@ -8,39 +8,50 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EstablishmentRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: [ 'groups' => ['get:establishment', 'get:service']],
+    denormalizationContext: [ 'groups' => ['post:establishment']]
+)]
+
 class Establishment
 {
     #[ORM\Id]
     #[ORM\Column(type: Types::GUID)]
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[Groups(['get:organization', 'get:establishment'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:organization', 'get:establishment', 'post:establishment'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:organization', 'get:establishment', 'post:establishment'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:organization', 'get:establishment', 'post:establishment'])]
     private ?string $zipCode = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:organization', 'get:establishment', 'post:establishment'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:organization', 'get:establishment', 'post:establishment'])]
     private ?string $country = null;
 
     #[ORM\ManyToOne(inversedBy: 'establishments')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['post:establishment'])]
     private ?Organization $organization = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Service $Service = null;
-
     #[ORM\OneToMany(mappedBy: 'establishment', targetEntity: Employee::class)]
+    #[Groups(['get:organization', 'get:establishment'])]
     private Collection $employees;
 
     public function __construct()
@@ -128,18 +139,6 @@ class Establishment
     public function setOrganization(?Organization $organization): static
     {
         $this->organization = $organization;
-
-        return $this;
-    }
-
-    public function getService(): ?Service
-    {
-        return $this->Service;
-    }
-
-    public function setService(?Service $Service): static
-    {
-        $this->Service = $Service;
 
         return $this;
     }

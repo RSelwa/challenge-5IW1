@@ -17,6 +17,7 @@ class EmployeeFixtures extends Fixture implements DependentFixtureInterface
     {
         return array(
             EstablishmentFixtures::class,
+            ServiceFixtures::class,
         );
     }
 
@@ -27,6 +28,7 @@ class EmployeeFixtures extends Fixture implements DependentFixtureInterface
         $employee->setFirstname("Antoine");
         $employee->setLastname("Dupont");
         $employee->setEstablishment($this->getReference(EstablishmentFixtures::ESTABLISHMENT_REFERENCE));
+        $employee->setService($this->getReference(ServiceFixtures::SERVICE_REFERENCE));
 
         $this->addReference(self::EMPLOYEE_REFERENCE, $employee);
 

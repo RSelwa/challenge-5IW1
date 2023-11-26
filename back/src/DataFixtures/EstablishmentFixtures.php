@@ -18,7 +18,6 @@ class EstablishmentFixtures extends Fixture implements DependentFixtureInterface
     {
         return array(
             OrganizationFixtures::class,
-            ServiceFixtures::class,
         );
     }
 
@@ -32,7 +31,6 @@ class EstablishmentFixtures extends Fixture implements DependentFixtureInterface
         $establishment->setZipCode("75012");
         $establishment->setCountry("France");
         $establishment->setOrganization($this->getReference(OrganizationFixtures::ORGANIZATION_REFERENCE));
-        $establishment->setService($this->getReference(ServiceFixtures::SERVICE_REFERENCE));
 
         $this->addReference(self::ESTABLISHMENT_REFERENCE, $establishment);
 

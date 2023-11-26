@@ -3,46 +3,86 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\OrganizationRepository;
+use App\State\UserPasswordHasher;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
+#[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: OrganizationRepository::class)]
-#[ApiResource]
-class Organization
+#[ApiResource(
+    normalizationContext: [ 'groups' => ['get:organization', 'get:service']],
+    denormalizationContext: [ 'groups' => ['post:organization']],
+    operations: [
+        new Post(processor: UserPasswordHasher::class),
+        new Put(processor: UserPasswordHasher::class),
+        new Patch(processor: UserPasswordHasher::class),
+    ],
+)]
+
+class Organization implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: Types::GUID)]
+    #[ORM\GeneratedValue('CUSTOM')]
+    #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
+    #[Groups(['get:organization'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:organization', 'post:organization'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:organization', 'post:organization'])]
     private ?string $managerFirstname = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:organization', 'post:organization'])]
     private ?string $managerLastname = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:organization'])]
     private ?string $kbis = null;
 
+    #[Vich\UploadableField(mapping: 'kbis_upload', fileNameProperty: 'kbis')]
+    #[Groups(['post:organization'])]
+    private ?File $kbisFile = null;
+
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['get:organization', 'post:organization'])]
     private ?string $siret = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['get:organization', 'post:organization'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $status = null;
+    #[Groups(['get:organization', 'put:admin'])]
+    private ?string $status = 'PENDING';
 
     #[ORM\OneToMany(mappedBy: 'organization', targetEntity: Establishment::class)]
+    #[Groups(['get:organization'])]
     private Collection $establishments;
+
+    private ?array $roles = ['ROLE_ORGANIZATION'];
+
+    #[Groups(['post:organization'])]
+    private ?string $plainPassword = null;
 
     public function __construct()
     {
@@ -97,14 +137,29 @@ class Organization
         return $this;
     }
 
-    public function getKbis(): ?string
+    public function getKbis(): ?File
     {
-        return $this->kbis;
+        $filePath = __DIR__ . '/../../public/uploads/' . $this->kbis;
+        $response = new BinaryFileResponse($filePath);
+
+        return $response->getFile();
     }
 
     public function setKbis(string $kbis): static
     {
         $this->kbis = $kbis;
+
+        return $this;
+    }
+
+    public function getKbisFile(): File
+    {
+        return $this->kbisFile;
+    }
+
+    public function setKbisFile(File $kbisFile): static
+    {
+        $this->kbisFile = $kbisFile;
 
         return $this;
     }
@@ -185,5 +240,54 @@ class Organization
         }
 
         return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        $this->plainPassword = null;
     }
 }
