@@ -30,10 +30,6 @@ const defaultRoutes: RouteObject[] = [
 ]
 const authRoutes: RouteObject[] = [
   {
-    path: "/signin",
-    element: getLayout(<Signin />)
-  },
-  {
     path: "/login",
     element: getLayout(<Login />),
     children: [{ path: "/login/:db", element: getLayout(<Login />) }]

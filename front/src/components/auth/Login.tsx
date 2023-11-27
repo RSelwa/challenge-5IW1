@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import type { DbTableLogin } from "@/types/auth"
 import type { LoginFormData } from "@/types/formData"
 import { dbTableLogin } from "@/constants/auth"
+import { handleCorrespondingDb, handleSubmitTextDb } from "@/utils/db"
 
 const LoginWithPassword = () => {
   const navigate = useNavigate()
@@ -16,27 +17,16 @@ const LoginWithPassword = () => {
     if (!dbTableLogin.includes(db as DbTableLogin)) navigate("/login")
   }, [])
 
-  const handleSubmitText = () => {
-    switch (db as DbTableLogin) {
-      case "admin":
-        return "Login as admin"
-      case "practitioner":
-        return "Login as practitioner"
-      case "users":
-        return "Login"
-      default:
-        return "Login"
-    }
-  }
+
 
   const onSubmit = async (data: LoginFormData) => {
-    console.log("try to log on db", db)
+    console.log("try to log on db", handleCorrespondingDb(db))
     console.log(data)
     await new Promise((r) => setTimeout(r, 2000))
   }
 
   return (
-    <div className="w-10/11 md:w-1/2 mx-auto">
+    <div className="w-10/11 mx-auto md:w-1/2">
       <form
         onSubmit={handleSubmit((data) =>
           toast.promise(onSubmit(data), {
@@ -62,7 +52,7 @@ const LoginWithPassword = () => {
           type="password"
           {...register("password")}
         />
-        <Button type="submit">{handleSubmitText()}</Button>
+        <Button type="submit">{handleSubmitTextDb(db)}</Button>
       </form>
     </div>
   )

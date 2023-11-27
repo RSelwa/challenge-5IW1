@@ -1,4 +1,4 @@
-import SigninEntreprises from "@/components/Forms/Signin/entreprises"
+import SigninEntreprises from "@/components/auth/Signin/entreprises"
 
 const SigninEntreprisesPage = () => {
   return <SigninEntreprises />

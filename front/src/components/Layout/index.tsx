@@ -25,7 +25,7 @@ const Layout = ({ children }: { children: JSX.Element }) => {
 
   return (
     <>
-      <div className="flex w-full justify-between px-5 py-4">
+      <div className="flex w-full justify-between bg-neutral-300 px-5 py-4">
         <Link to="/">
           <div>Logo</div>
         </Link>
