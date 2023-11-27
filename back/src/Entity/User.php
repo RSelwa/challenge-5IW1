@@ -8,11 +8,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: "\"user\"")]
 #[ApiResource]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: Types::GUID)]
@@ -32,6 +36,10 @@ class User
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Booking::class)]
     private Collection $bookings;
+
+    #[ORM\Column]
+    private array $roles = ["ROLE_USER"];
+
 
     public function __construct()
     {
@@ -96,6 +104,43 @@ class User
         $this->password = $password;
 
         return $this;
+    }
+
+
+     /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+   
+   /**
+ * @see UserInterface
+ */
+public function getRoles(): array
+{
+    $roles = $this->roles;
+    // garantir que chaque utilisateur a au moins ROLE_USER
+    $roles[] = 'ROLE_USER';
+
+    return array_unique($roles);
+}
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+      /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
     }
 
     /**
