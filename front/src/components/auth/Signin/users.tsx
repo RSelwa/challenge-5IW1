@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import * as Checkbox from "@radix-ui/react-checkbox"
 import { CheckIcon } from "@radix-ui/react-icons"
 import { Button, TextField } from "@radix-ui/themes"
@@ -10,13 +10,28 @@ import { handleCorrespondingDb } from "@/utils/db"
 
 const SigninUsers = () => {
   const { db } = useParams<{ db: string }>()
-  const { handleSubmit, register } = useForm<SigninUserFormData>()
-  const [termsChecked, setTermsChecked] = useState(false)
+  const { handleSubmit, register, setValue } = useForm<SigninUserFormData>({
+    defaultValues: { terms: false }
+  })
+
   const onSubmit = async (data: SigninUserFormData) => {
-    console.log("try to log on db", handleCorrespondingDb(db || ""))
-    console.log(data)
-    await new Promise((r) => setTimeout(r, 2000))
+    const headers = new Headers()
+    headers.append("Content-Type", "application/json")
+    const requestOptions = {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers
+    }
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/${handleCorrespondingDb(db || "")}`,
+      requestOptions
+    )
+    if (!response.ok) throw new Error("Something went wrong")
+
+    const responseData = await response.json()
+    console.log(responseData)
   }
+
   return (
     <div>
       <form
@@ -45,23 +60,23 @@ const SigninUsers = () => {
         <div className="flex items-center gap-4 text-neutral-800">
           <Checkbox.Root
             className="CheckboxRoot"
-            checked={termsChecked}
             onCheckedChange={(checked) =>
-              setTermsChecked(checked === "indeterminate" ? false : checked)
+              setValue("terms", checked === "indeterminate" ? false : checked)
             }
-            id="c1"
+            id="terms"
           >
             <Checkbox.Indicator className="CheckboxIndicator">
               <CheckIcon />
             </Checkbox.Indicator>
           </Checkbox.Root>
-          <label className="Label" htmlFor="c1">
+          <label className="Label" htmlFor="terms">
             Accept terms and conditions.
           </label>
         </div>
         <Button
           type="submit"
-          className="w-full bg-amber-400 font-bold text-neutral-800 hover:bg-amber-500"
+          color="amber"
+          className="w-full bg-amber-400 font-bold capitalize text-neutral-800 hover:bg-amber-500"
         >
           S'inscrire
         </Button>

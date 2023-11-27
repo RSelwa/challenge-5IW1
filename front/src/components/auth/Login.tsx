@@ -17,8 +17,6 @@ const LoginWithPassword = () => {
     if (!dbTableLogin.includes(db as DbTableLogin)) navigate("/login")
   }, [])
 
-
-
   const onSubmit = async (data: LoginFormData) => {
     console.log("try to log on db", handleCorrespondingDb(db))
     console.log(data)
@@ -52,7 +50,9 @@ const LoginWithPassword = () => {
           type="password"
           {...register("password")}
         />
-        <Button type="submit">{handleSubmitTextDb(db)}</Button>
+        <Button color="amber" type="submit">
+          {handleSubmitTextDb(db || "")}
+        </Button>
       </form>
     </div>
   )
