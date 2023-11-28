@@ -1,6 +1,7 @@
 import React from "react"
 import * as Accordion from "@radix-ui/react-accordion"
 import LoginWithPassword from "@/components/auth/Login"
+import SigninEntreprises from "@/components/auth/Signin/entreprises"
 import SigninUsers from "@/components/auth/Signin/users"
 
 const Login = () => {
@@ -32,6 +33,17 @@ const Login = () => {
           </Accordion.Trigger>
           <Accordion.Content className="mt-6">
             <SigninUsers />
+          </Accordion.Content>
+        </Accordion.Item>
+        <Accordion.Item
+          className="mx-auto w-1/2 rounded bg-white p-4"
+          value="organisation"
+        >
+          <Accordion.Trigger className=" w-full text-center text-lg font-bold">
+            Organization
+          </Accordion.Trigger>
+          <Accordion.Content className="mt-6">
+            <SigninEntreprises />
           </Accordion.Content>
         </Accordion.Item>
       </Accordion.Root>

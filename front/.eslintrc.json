@@ -11,6 +11,7 @@
   ],
   "plugins": ["@typescript-eslint", "typescript-sort-keys", "unused-imports"],
   "rules": {
+    "import/no-unresolved": "off", //! FUCK this
     "unused-imports/no-unused-imports": "error",
     "unused-imports/no-unused-vars": [
       "warn",

@@ -13,14 +13,16 @@ export const handleSubmitTextDb = (db: string) => {
   }
 }
 export const handleCorrespondingDb = (db: string) => {
-  switch (db as DbTableLogin) {
+  switch (db) {
     case "admin":
       return "admin"
+    case "organizations":
+      return "organizations"
     case "practitioner":
       return "practitioner"
     case "users":
-      return "users"
+      return "user"
     default:
-      return "users"
+      return "user"
   }
 }
