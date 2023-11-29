@@ -3,7 +3,7 @@ export type SigninUserFormData = {
   email: string
   firstname: string
   lastname: string
-  password: string
+  plainPassword: string
   terms: boolean
 }
 

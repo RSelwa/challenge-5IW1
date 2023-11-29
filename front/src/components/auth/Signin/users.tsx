@@ -4,41 +4,18 @@ import { CheckIcon } from "@radix-ui/react-icons"
 import { Button } from "@radix-ui/themes"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
-import { useParams } from "react-router-dom"
 import type { SigninUserFormData } from "@/types/formData"
-import { handleCorrespondingDb } from "@/utils/db"
+import { signInUser } from "@/lib/auth"
 
 const SigninUsers = () => {
-  const { db } = useParams<{ db: string }>()
-  const { handleSubmit, register, setValue } = useForm<SigninUserFormData>({
-    defaultValues: { terms: false }
-  })
-
-  const onSubmit = async (data: SigninUserFormData) => {
-    const headers = new Headers()
-    headers.append("Content-Type", "application/json")
-    const requestOptions = {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers
-    }
-
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/${handleCorrespondingDb(db || "")}`,
-      requestOptions
-    )
-    if (!response.ok) throw new Error("Something went wrong")
-
-    const responseData = await response.json()
-    console.log(responseData)
-  }
+  const { handleSubmit, register, setValue } = useForm<SigninUserFormData>()
 
   return (
     <div>
       <form
         className="grid grid-cols-1 gap-4 md:grid-cols-2"
         onSubmit={handleSubmit((data) =>
-          toast.promise(onSubmit(data), {
+          toast.promise(signInUser(data), {
             success: "Vous voilà inscrit",
             error: (error) => {
               console.log(error)
@@ -60,7 +37,7 @@ const SigninUsers = () => {
           className="col-span-2"
           placeholder="Password"
           type="password"
-          {...register("password")}
+          {...register("plainPassword")}
         />
         <div className="col-span-2 flex items-center gap-4 text-neutral-800">
           <Checkbox.Root

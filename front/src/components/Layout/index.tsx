@@ -13,7 +13,7 @@ const Layout = ({ children }: { children: JSX.Element }) => {
         return <AdminLayout />
       case "practitioner":
         return <PracticionerLayout />
-      case "client":
+      case "user":
         return <ClientLayout />
       case "vistitor":
         return <DefaultLayout />

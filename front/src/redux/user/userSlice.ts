@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 import type { PayloadAction } from "@reduxjs/toolkit"
-import { reduxUserFront } from "@/types/redux/user"
+import { reduxStatus, reduxUserFront } from "@/types/redux/user"
 import { RootState } from "@/redux/store"
 
 // Define the initial state using that type
@@ -22,13 +22,20 @@ export const userSlice = createSlice({
     // Use the PayloadAction type to declare the contents of `action.payload`
     changeEmail: (state, action: PayloadAction<string>) => {
       state.email = action.payload
+    },
+    userLogged: (
+      state,
+      action: PayloadAction<{ email: string; status: reduxStatus }>
+    ) => {
+      state.email = action.payload.email
+      state.status = action.payload.status
     }
   }
 })
 
 const { actions, reducer } = userSlice
 // export actions and reducer
-export const { resetUser, changeEmail } = actions
+export const { resetUser, changeEmail, userLogged } = actions
 export default reducer
 
 // Other code such as selectors can use the imported `RootState` type

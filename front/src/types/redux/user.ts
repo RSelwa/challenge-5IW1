@@ -1,4 +1,4 @@
-export type reduxStatus = "vistitor" | "client" | "practitioner" | "admin"
+export type reduxStatus = "vistitor" | "user" | "practitioner" | "admin"
 
 export type reduxUserFront = {
   email: string
