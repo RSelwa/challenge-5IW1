@@ -1,12 +1,17 @@
 import React from "react"
-import { Button } from "@radix-ui/themes"
-import { logout } from "@/lib/auth"
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
+import LogoutButton from "@/components/Layout/logoutButton"
 
 const ClientLayout = () => {
   return (
-    <div>
-      <Button onClick={logout}>Logout</Button>
-    </div>
+    <DropdownMenu.Content className="DropdownMenuContent text-red-500">
+      <DropdownMenu.Item className="DropdownMenuItem">
+        Simple users
+      </DropdownMenu.Item>
+      <DropdownMenu.Item className="DropdownMenuItem">
+        <LogoutButton />
+      </DropdownMenu.Item>
+    </DropdownMenu.Content>
   )
 }
 

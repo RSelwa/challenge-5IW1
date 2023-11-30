@@ -33,7 +33,12 @@ const authRoutes: RouteObject[] = [
     children: [{ path: "/login/:db", element: getLayout(<Login />) }]
   }
 ]
-const adminRoutes: RouteObject[] = []
+const adminRoutes: RouteObject[] = [
+  {
+    path: "/admin/users",
+    element: getLayout(<div>users</div>)
+  }
+]
 const practitionerRoutes: RouteObject[] = []
 const clientRoutes: RouteObject[] = []
 const devRoutes: RouteObject[] = [
