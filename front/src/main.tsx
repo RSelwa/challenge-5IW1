@@ -17,6 +17,7 @@ const Redux = () => {
       tokenToRedux(localStorage.getItem("token") || "", dispatch)
     )
   })
+  tokenToRedux(localStorage.getItem("token") || "", dispatch)
 
   return null
 }
