@@ -1,6 +1,8 @@
-import type { ClientWithId } from "../../types/withId"
+import type { UsersWithId } from "@/types/withId"
 
-export const clientMock: ClientWithId = {
+export const clientMock: UsersWithId = {
   id: "clientId",
-  email: "mock1@yopmail.com"
+  email: "mock1@yopmail.com",
+  firstname: "firstname",
+  lastname: "lastname"
 }

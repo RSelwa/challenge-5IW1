@@ -1,14 +1,14 @@
-import { Admin } from "@/types/admin"
-import { Clinic } from "@/types/clinic"
-import { Invitation } from "@/types/invitations"
-import { Organization } from "@/types/organization"
-import { Practitioner } from "@/types/practitioner"
-import { Prestations } from "@/types/prestations"
-import { Reservation } from "@/types/reservations"
-import { Client } from "@/types/users"
+import type { Admin } from "@/types/admin"
+import type { Clinic } from "@/types/clinic"
+import type { Invitation } from "@/types/invitations"
+import type { Organization } from "@/types/organization"
+import type { Practitioner } from "@/types/practitioner"
+import type { Prestations } from "@/types/prestations"
+import type { Reservation } from "@/types/reservations"
+import type { Users } from "@/types/users"
 
 export type AdminWithId = DocumentWithId<Admin>
-export type ClientWithId = DocumentWithId<Client>
+export type UsersWithId = DocumentWithId<Users>
 
 export type PractitionerWithId = DocumentWithId<Practitioner>
 export type InvitationWithId = DocumentWithId<Invitation>

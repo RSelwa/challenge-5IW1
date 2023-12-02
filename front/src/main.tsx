@@ -22,15 +22,17 @@ const Redux = () => {
   return null
 }
 const router = createBrowserRouter([...routes])
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <Theme>
-        <>
-          <RouterProvider router={router} />
-          <Redux />
-        </>
-      </Theme>
-    </Provider>
-  </React.StrictMode>
+ReactDOM.createRoot(
+  document.getElementById("root") || document.createDocumentFragment()
+).render(
+  // <React>
+  <Provider store={store}>
+    <Theme>
+      <>
+        <RouterProvider router={router} />
+        <Redux />
+      </>
+    </Theme>
+  </Provider>
+  // </React>
 )
