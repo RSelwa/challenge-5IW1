@@ -48,14 +48,21 @@ const authRoutes: RouteObject[] = [
 export const adminRoutes: RouteObject[] = [
   {
     path: "/admin/users",
-    element: getLayout(<UsersAdmin />),
-    children: [{ path: "/admin/users:id", element: getLayout(<UserIdAdmin />) }]
+    element: getLayout(<UsersAdmin />)
+    // children: [
+    //   { path: "/admin/users/:id", element: getLayout(<div>test</div>) }
+    //   // { path: "/admin/users/:id", element: getLayout(<UserIdAdmin />) }
+    // ]
+  },
+  {
+    path: "/admin/users/:id",
+    element: getLayout(<UserIdAdmin />)
   },
   {
     path: "/admin/slots",
     element: getLayout(<SlotsAdmin />),
     children: [
-      { path: "/admin/slots:id", element: getLayout(<SlotsIdAdmin />) }
+      { path: "/admin/slots/:id", element: getLayout(<SlotsIdAdmin />) }
     ]
   },
   {
@@ -63,7 +70,7 @@ export const adminRoutes: RouteObject[] = [
     element: getLayout(<OrganizationsAdmin />),
     children: [
       {
-        path: "/admin/organizations:id",
+        path: "/admin/organizations/:id",
         element: getLayout(<OrganizationsIdAdmin />)
       }
     ]
@@ -73,7 +80,7 @@ export const adminRoutes: RouteObject[] = [
     element: getLayout(<EstablishmentsAdmin />),
     children: [
       {
-        path: "/admin/establishments:id",
+        path: "/admin/establishments/:id",
         element: getLayout(<EstablishmentsIdAdmin />)
       }
     ]
@@ -83,7 +90,7 @@ export const adminRoutes: RouteObject[] = [
     element: getLayout(<EmployeesAdmin />),
     children: [
       {
-        path: "/admin/employees:id",
+        path: "/admin/employees/:id",
         element: getLayout(<EmployeesIdAdmin />)
       }
     ]
@@ -93,7 +100,7 @@ export const adminRoutes: RouteObject[] = [
     element: getLayout(<EmployeeSpecificSchedulesAdmin />),
     children: [
       {
-        path: "/admin/employeeSpecificSchedules:id",
+        path: "/admin/employeeSpecificSchedules/:id",
         element: getLayout(<EmployeeSpecificSchedulesIdAdmin />)
       }
     ]
@@ -102,7 +109,7 @@ export const adminRoutes: RouteObject[] = [
     path: "/admin/slots",
     element: getLayout(<SlotsAdmin />),
     children: [
-      { path: "/admin/slots:id", element: getLayout(<SlotsIdAdmin />) }
+      { path: "/admin/slots/:id", element: getLayout(<SlotsIdAdmin />) }
     ]
   }
 ]
