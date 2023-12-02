@@ -1,4 +1,4 @@
-import { DbTableLogin } from "@/types/auth"
+import type { DbTableLogin } from "@/types/auth"
 
 export const handleSubmitTextDb = (db: string) => {
   switch (db as DbTableLogin) {

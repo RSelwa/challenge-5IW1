@@ -3,6 +3,7 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { Link } from "react-router-dom"
 import LogoutButton from "@/components/Layout/logoutButton"
 import { dropdownMenuSideOffset } from "@/constants"
+import { adminRoutes } from "@/routes"
 
 const AdminLayout = () => {
   return (
@@ -14,9 +15,13 @@ const AdminLayout = () => {
         Admin layout
       </DropdownMenu.Item>
       <DropdownMenu.Separator className="DropdownMenuSeparator" />
-      <DropdownMenu.Item className="DropdownMenuItem">
-        <Link to="/admin/users">users </Link>
-      </DropdownMenu.Item>
+      {adminRoutes.map((route, index) => (
+        <DropdownMenu.Item key={index} className="DropdownMenuItem">
+          <Link to={route.path || ""}>
+            {route.path?.replace("/admin/", "")}{" "}
+          </Link>
+        </DropdownMenu.Item>
+      ))}
       <DropdownMenu.Separator className="DropdownMenuSeparator" />
       <DropdownMenu.Item className="DropdownMenuItem">
         <LogoutButton />

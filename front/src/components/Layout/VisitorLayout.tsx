@@ -2,12 +2,12 @@ import React from "react"
 import { Button } from "@radix-ui/themes"
 import { Link } from "react-router-dom"
 
-const DefaultLayout = () => {
+const VisitorLayout = () => {
   return (
     <div>
       <div className="flex gap-2">
-        <Link to="/signin">
-          <Button color="amber">Signin</Button>
+        <Link to="/login/admin">
+          <Button color="amber">Login as Admin</Button>
         </Link>
         <Link to="/login">
           <Button>Login</Button>
@@ -17,4 +17,4 @@ const DefaultLayout = () => {
   )
 }
 
-export default DefaultLayout
+export default VisitorLayout

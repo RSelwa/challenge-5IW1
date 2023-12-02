@@ -8,8 +8,8 @@ import { useAppSelector } from "@/redux/hook"
 import Logo from "@/components/icons/logo"
 import AdminLayout from "@/components/Layout/AdminLayout"
 import ClientLayout from "@/components/Layout/ClientLayout"
-import DefaultLayout from "@/components/Layout/DefaultLayout"
 import PracticionerLayout from "@/components/Layout/PracticionerLayout"
+import VisitorLayout from "@/components/Layout/VisitorLayout"
 
 const Layout = ({ children }: { children: JSX.Element }) => {
   const userStatus = useAppSelector((state) => state.user.status)
@@ -22,10 +22,10 @@ const Layout = ({ children }: { children: JSX.Element }) => {
       case "user":
         return <ClientLayout />
       case "vistitor":
-        return <DefaultLayout />
+        return <VisitorLayout />
 
       default:
-        return <DefaultLayout />
+        return <VisitorLayout />
     }
   }
   // console.log(Avatar)
