@@ -1,6 +1,6 @@
 import type { AnyAction, Dispatch } from "@reduxjs/toolkit"
 import type { RoleUser, TokenApi } from "@/types/redux/token"
-import { reduxStatus } from "@/types/redux/user"
+import type { reduxStatus } from "@/types/redux/user"
 import { resetUser, userLogged } from "@/redux/user/userSlice"
 
 export const tokenToRedux = (
@@ -19,6 +19,7 @@ export const tokenToRedux = (
     email: token.username,
     status: mapReduxStatus(token.roles[0])
   }
+  console.log(reduxUser)
 
   dispatch(userLogged(reduxUser))
 }
@@ -44,5 +45,6 @@ export const mapReduxStatus = (status: RoleUser): reduxStatus => {
 
     default:
       return "admin"
+      return "user"
   }
 }
