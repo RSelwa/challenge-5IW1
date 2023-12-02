@@ -7,9 +7,7 @@ import { fetchUsers } from "@/lib/users"
 
 const UsersAdmin = () => {
   const [users, setUsers] = useState<UsersWithId[]>([])
-  const fetchUsersList = async () => {
-    console.log("test")
-
+  const fetchUsersList = async () =>
     toast.promise(fetchUsers(), {
       error: (err) => {
         return err
@@ -20,7 +18,7 @@ const UsersAdmin = () => {
         return "fetcheds"
       }
     })
-  }
+
   useEffect(() => {
     fetchUsersList()
   }, [])
@@ -32,7 +30,6 @@ const UsersAdmin = () => {
           {user.email}
           {user.id}
           <Link to={`/admin/users/${user.id}`}>
-            {" "}
             <Button>View</Button>
           </Link>
         </div>
