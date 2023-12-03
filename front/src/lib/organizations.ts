@@ -1,9 +1,10 @@
 import type { OrganizationsWithId } from "@/types/withId"
+import { ORGANIZATION_API_ROUTES } from "@/constants/db"
 import { requestOptions } from "@/utils/db"
 
 export const fetchOrganizations = async (): Promise<OrganizationsWithId[]> => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/organizations`,
+    `${import.meta.env.VITE_API_URL}${ORGANIZATION_API_ROUTES}`,
     requestOptions("GET")
   )
   if (!response.ok) throw new Error("Something went wrong")
@@ -15,7 +16,7 @@ export const fetchOrganization = async (
   id: string
 ): Promise<OrganizationsWithId> => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/organizations/${id}`,
+    `${import.meta.env.VITE_API_URL}${ORGANIZATION_API_ROUTES}/${id}`,
     requestOptions("GET")
   )
   if (!response.ok) throw new Error("Something went wrong")

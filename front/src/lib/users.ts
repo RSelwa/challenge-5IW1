@@ -1,9 +1,10 @@
 import type { UsersWithId } from "@/types/withId"
+import { USER_API_ROUTES } from "@/constants/db"
 import { requestOptions } from "@/utils/db"
 
 export const fetchUsers = async (): Promise<UsersWithId[]> => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/users`,
+    `${import.meta.env.VITE_API_URL}${USER_API_ROUTES}`,
     requestOptions("GET")
   )
   if (!response.ok) throw new Error("Something went wrong")
@@ -13,7 +14,7 @@ export const fetchUsers = async (): Promise<UsersWithId[]> => {
 }
 export const fetchUser = async (id: string): Promise<UsersWithId> => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/users/${id}`,
+    `${import.meta.env.VITE_API_URL}${USER_API_ROUTES}/${id}`,
     requestOptions("GET")
   )
   if (!response.ok) throw new Error("Something went wrong")
