@@ -1,3 +1,5 @@
+import type { Dispatch, SetStateAction } from "react"
+import toast from "react-hot-toast"
 import type { DbTableLogin } from "@/types/auth"
 
 export const requestOptions = (method: "POST" | "GET", data?: any) => {
@@ -8,6 +10,24 @@ export const requestOptions = (method: "POST" | "GET", data?: any) => {
     body: data ? JSON.stringify(data) : undefined,
     headers
   }
+}
+
+export const fetchData = async <T>(
+  promise: Promise<T>,
+  setter: Dispatch<SetStateAction<T>>
+) => {
+  toast.promise(promise, {
+    error: (err) => {
+      return err
+    },
+    loading: "fetching...",
+    success: (dataFetched) => {
+      console.log(dataFetched)
+
+      setter(dataFetched)
+      return "fetched"
+    }
+  })
 }
 
 export const handleSubmitTextDb = (db: string) => {

@@ -1,35 +1,27 @@
+import type { Dispatch, SetStateAction } from "react"
 import React, { useEffect, useState } from "react"
-import toast from "react-hot-toast"
+import { LoaderIcon } from "react-hot-toast"
 import { useParams } from "react-router-dom"
 import type { UsersWithId } from "@/types/withId"
 import { fetchUser } from "@/lib/users"
+import { fetchData } from "@/utils/db"
 import BackButton from "@/components/ui/BackButton"
 
 const UserIdAdmin = () => {
   const { id } = useParams()
   const [user, setUser] = useState<UsersWithId>()
-  const fetchUsersList = async () =>
-    toast.promise(fetchUser(id || ""), {
-      error: (err) => {
-        return err
-      },
-      loading: "fetching users...",
-      success: (userFetch) => {
-        setUser(userFetch)
-        console.log(userFetch)
-        console.log(user)
-
-        return "fetcheds"
-      }
-    })
-
   useEffect(() => {
-    fetchUsersList()
+    fetchData(
+      fetchUser(id || ""),
+      setUser as Dispatch<SetStateAction<UsersWithId>>
+    )
   }, [])
+  if (!user) return <LoaderIcon />
+
   return (
     <div>
       <BackButton />
-      UsersAdmin
+      {user.id}
     </div>
   )
 }

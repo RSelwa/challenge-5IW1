@@ -1,26 +1,15 @@
 import React, { useEffect, useState } from "react"
 import { Button } from "@radix-ui/themes"
-import toast from "react-hot-toast"
 import { Link } from "react-router-dom"
 import type { UsersWithId } from "@/types/withId"
 import { fetchUsers } from "@/lib/users"
+import { fetchData } from "@/utils/db"
 
 const UsersAdmin = () => {
   const [users, setUsers] = useState<UsersWithId[]>([])
-  const fetchUsersList = async () =>
-    toast.promise(fetchUsers(), {
-      error: (err) => {
-        return err
-      },
-      loading: "fetching users...",
-      success: (usersFetch) => {
-        setUsers(usersFetch)
-        return "fetcheds"
-      }
-    })
 
   useEffect(() => {
-    fetchUsersList()
+    fetchData(fetchUsers(), setUsers)
   }, [])
 
   return (

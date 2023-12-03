@@ -1,5 +1,7 @@
 import type { Admin } from "@/types/admin"
 import type { Clinic } from "@/types/clinic"
+import type { Employees } from "@/types/employees"
+import type { EmployeeSpecificSchedules } from "@/types/employeeSpecificSchedule"
 import type { Establishments } from "@/types/establishment"
 import type { Invitation } from "@/types/invitations"
 import type { Organizations } from "@/types/organization"
@@ -16,6 +18,9 @@ export type SlotsWithId = DocumentWithId<Slots>
 export type ServicesWithId = DocumentWithId<Services>
 export type OrganizationsWithId = DocumentWithId<Organizations>
 export type EstablishmentsWithId = DocumentWithId<Establishments>
+export type EmployeesWithId = DocumentWithId<Employees>
+export type EmployeeSpecificSchedulesWithId =
+  DocumentWithId<EmployeeSpecificSchedules>
 
 export type PractitionerWithId = DocumentWithId<Practitioner>
 export type InvitationWithId = DocumentWithId<Invitation>

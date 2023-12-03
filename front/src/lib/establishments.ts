@@ -13,7 +13,7 @@ export const fetchEstablishments = async (): Promise<
   const establishments: EstablishmentsWithId[] = await response.json()
   return establishments
 }
-export const fetchOrganization = async (
+export const fetchEstablishment = async (
   id: string
 ): Promise<EstablishmentsWithId> => {
   const response = await fetch(
