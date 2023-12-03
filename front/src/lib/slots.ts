@@ -5,7 +5,7 @@ import { requestOptions } from "@/utils/db"
 export const fetchSlots = async (): Promise<SlotsWithId[]> => {
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}${SLOT_API_ROUTES}`,
-    requestOptions("GET")
+    requestOptions({ method: "GET" })
   )
   if (!response.ok) throw new Error("Something went wrong")
 
@@ -15,7 +15,7 @@ export const fetchSlots = async (): Promise<SlotsWithId[]> => {
 export const fetchSlot = async (id: string): Promise<SlotsWithId> => {
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}${SLOT_API_ROUTES}/${id}`,
-    requestOptions("GET")
+    requestOptions({ method: "GET" })
   )
   if (!response.ok) throw new Error("Something went wrong")
 

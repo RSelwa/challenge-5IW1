@@ -5,7 +5,7 @@ import { requestOptions } from "@/utils/db"
 export const fetchEmployees = async (): Promise<EmployeesWithId[]> => {
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}${EMPLOYEE_API_ROUTES}`,
-    requestOptions("GET")
+    requestOptions({ method: "GET" })
   )
   if (!response.ok) throw new Error("Something went wrong")
 
@@ -15,7 +15,7 @@ export const fetchEmployees = async (): Promise<EmployeesWithId[]> => {
 export const fetchEmployee = async (id: string): Promise<EmployeesWithId> => {
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}${EMPLOYEE_API_ROUTES}/${id}`,
-    requestOptions("GET")
+    requestOptions({ method: "GET" })
   )
   if (!response.ok) throw new Error("Something went wrong")
 

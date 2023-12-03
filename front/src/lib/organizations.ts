@@ -5,7 +5,7 @@ import { requestOptions } from "@/utils/db"
 export const fetchOrganizations = async (): Promise<OrganizationsWithId[]> => {
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}${ORGANIZATION_API_ROUTES}`,
-    requestOptions("GET")
+    requestOptions({ method: "GET" })
   )
   if (!response.ok) throw new Error("Something went wrong")
 
@@ -17,7 +17,7 @@ export const fetchOrganization = async (
 ): Promise<OrganizationsWithId> => {
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}${ORGANIZATION_API_ROUTES}/${id}`,
-    requestOptions("GET")
+    requestOptions({ method: "GET" })
   )
   if (!response.ok) throw new Error("Something went wrong")
 

@@ -7,7 +7,7 @@ export const fetchEstablishments = async (): Promise<
 > => {
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}${ESTABLISHMENT_API_ROUTES}`,
-    requestOptions("GET")
+    requestOptions({ method: "GET" })
   )
   if (!response.ok) throw new Error("Something went wrong")
 
@@ -19,7 +19,7 @@ export const fetchEstablishment = async (
 ): Promise<EstablishmentsWithId> => {
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}${ESTABLISHMENT_API_ROUTES}/${id}`,
-    requestOptions("GET")
+    requestOptions({ method: "GET" })
   )
   if (!response.ok) throw new Error("Something went wrong")
 
