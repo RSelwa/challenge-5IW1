@@ -29,8 +29,6 @@ export const fetchData = async <T>(
     },
     loading: "fetching...",
     success: (dataFetched) => {
-      console.log(dataFetched)
-
       setter(dataFetched)
       return "fetched"
     }

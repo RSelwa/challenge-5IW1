@@ -1,5 +1,5 @@
 import type {
-  EmployeeSpecificScheduleWithId,
+  EmployeeSpecificSchedulesWithId,
   SlotsWithId
 } from "@/types/withId"
 
@@ -8,5 +8,5 @@ export type Employees = {
   lastname: string
   establishment: string
   slots: SlotsWithId[]
-  employeeSpecificSchedules: EmployeeSpecificScheduleWithId[]
+  employeeSpecificSchedules: EmployeeSpecificSchedulesWithId[]
 }
