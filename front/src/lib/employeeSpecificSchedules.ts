@@ -7,7 +7,7 @@ export const fetchEmployeeSpecificSchedules = async (): Promise<
 > => {
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}${EMPLOYEESPECIFICSCHEDULE_API_ROUTES}`,
-    requestOptions("GET")
+    requestOptions({ method: "GET" })
   )
   if (!response.ok) throw new Error("Something went wrong")
 
@@ -22,7 +22,7 @@ export const fetchEmployeeSpecificSchedule = async (
     `${
       import.meta.env.VITE_API_URL
     }${EMPLOYEESPECIFICSCHEDULE_API_ROUTES}/${id}`,
-    requestOptions("GET")
+    requestOptions({ method: "GET" })
   )
   if (!response.ok) throw new Error("Something went wrong")
 

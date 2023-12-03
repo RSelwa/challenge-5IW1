@@ -2,7 +2,13 @@ import type { Dispatch, SetStateAction } from "react"
 import toast from "react-hot-toast"
 import type { DbTableLogin } from "@/types/auth"
 
-export const requestOptions = (method: "POST" | "GET", data?: any) => {
+export const requestOptions = ({
+  method,
+  data
+}: {
+  method: "POST" | "GET"
+  data?: any
+}) => {
   const headers = new Headers()
   headers.append("Content-Type", "application/json")
   return {
@@ -18,7 +24,8 @@ export const fetchData = async <T>(
 ) => {
   toast.promise(promise, {
     error: (err) => {
-      return err
+      console.trace(err)
+      return "error"
     },
     loading: "fetching...",
     success: (dataFetched) => {

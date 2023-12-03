@@ -1,18 +1,14 @@
 import type { LoginFormData, SigninUserFormData } from "@/types/formData"
+import { requestOptions } from "@/utils/db"
 import { removeLocalStorage, setLocalStorage } from "@/utils/localStorage"
 
 export const loginUser = async (data: LoginFormData) => {
   const headers = new Headers()
   headers.append("Content-Type", "application/json")
-  const requestOptions = {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers
-  }
 
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}/auth`,
-    requestOptions
+    requestOptions({ method: "POST", data: JSON.stringify(data) })
   )
   if (!response.ok) throw new Error("Something went wrong")
 
@@ -23,15 +19,10 @@ export const loginUser = async (data: LoginFormData) => {
 export const signInUser = async (data: SigninUserFormData) => {
   const headers = new Headers()
   headers.append("Content-Type", "application/json")
-  const requestOptions = {
-    method: "POST",
-    body: JSON.stringify(data),
-    headers
-  }
 
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}/api/users`,
-    requestOptions
+    requestOptions({ method: "POST", data: JSON.stringify(data) })
   )
   if (!response.ok) throw new Error("Something went wrong")
 
