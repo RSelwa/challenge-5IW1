@@ -15,13 +15,15 @@ const AdminLayout = () => {
         Admin layout
       </DropdownMenu.Item>
       <DropdownMenu.Separator className="DropdownMenuSeparator" />
-      {adminRoutes.map((route, index) => (
-        <DropdownMenu.Item key={index} className="DropdownMenuItem">
-          <Link to={route.path || ""}>
-            {route.path?.replace("/admin/", "")}{" "}
-          </Link>
-        </DropdownMenu.Item>
-      ))}
+      {adminRoutes
+        .filter((route) => !route.path?.includes(":id"))
+        .map((route, index) => (
+          <DropdownMenu.Item key={index} className="DropdownMenuItem">
+            <Link to={route.path || ""}>
+              {route.path?.replace("/admin/", "")}{" "}
+            </Link>
+          </DropdownMenu.Item>
+        ))}
       <DropdownMenu.Separator className="DropdownMenuSeparator" />
       <DropdownMenu.Item className="DropdownMenuItem">
         <LogoutButton />
