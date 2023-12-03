@@ -1,11 +1,12 @@
 import type { EmployeeSpecificSchedulesWithId } from "@/types/withId"
+import { EMPLOYEESPECIFICSCHEDULE_API_ROUTES } from "@/constants/db"
 import { requestOptions } from "@/utils/db"
 
 export const fetchEmployeeSpecificSchedules = async (): Promise<
   EmployeeSpecificSchedulesWithId[]
 > => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/employee_specific_schedules`,
+    `${import.meta.env.VITE_API_URL}${EMPLOYEESPECIFICSCHEDULE_API_ROUTES}`,
     requestOptions("GET")
   )
   if (!response.ok) throw new Error("Something went wrong")
@@ -18,7 +19,9 @@ export const fetchEmployeeSpecificSchedule = async (
   id: string
 ): Promise<EmployeeSpecificSchedulesWithId> => {
   const response = await fetch(
-    `${import.meta.env.VITE_API_URL}/api/employee_specific_schedules/${id}`,
+    `${
+      import.meta.env.VITE_API_URL
+    }${EMPLOYEESPECIFICSCHEDULE_API_ROUTES}/${id}`,
     requestOptions("GET")
   )
   if (!response.ok) throw new Error("Something went wrong")
