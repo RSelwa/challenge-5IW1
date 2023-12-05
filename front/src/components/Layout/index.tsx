@@ -4,48 +4,35 @@ import { ChevronDownIcon } from "@radix-ui/react-icons"
 import Avatar from "boring-avatars"
 import { Toaster } from "react-hot-toast"
 import { Link } from "react-router-dom"
+import type { reduxUserFront } from "@/types/redux/user"
 import { useAppSelector } from "@/redux/hook"
-import Logo from "@/components/icons/logo"
 import AdminLayout from "@/components/Layout/AdminLayout"
 import ClientLayout from "@/components/Layout/ClientLayout"
-import PracticionerLayout from "@/components/Layout/PracticionerLayout"
 import VisitorLayout from "@/components/Layout/VisitorLayout"
+import { dropdownMenuSideOffset } from "@/constants"
 
 const Layout = ({ children }: { children: JSX.Element }) => {
-  const userStatus = useAppSelector((state) => state.user.status)
-  const layoutHandler = () => {
-    switch (userStatus) {
-      case "admin":
-        return <AdminLayout />
-      case "practitioner":
-        return <PracticionerLayout />
-      case "user":
-        return <ClientLayout />
-      case "vistitor":
-        return <VisitorLayout />
-
-      default:
-        return <VisitorLayout />
-    }
-  }
-  // console.log(Avatar)
+  const userStatus = useAppSelector(
+    (state) => (state.user as reduxUserFront).status
+  )
 
   return (
     <>
       <div className="flex w-full items-center justify-between bg-sky-500 px-5 py-4">
         <Link to="/">
-          <Logo className="text-white" size="40" />
+          DOCTOGES
+          {/* <Logo className="text-white" size="40" /> */}
         </Link>
-        {userStatus === "vistitor" ? (
-          layoutHandler()
+        {userStatus.includes("VISTOR") ? (
+          <VisitorLayout />
         ) : (
           <DropdownMenu.Root>
             <DropdownMenu.Trigger className="group flex items-center gap-2">
               <Avatar
                 size={32}
-                name="Maria Mitchell"
-                variant="marble"
-                colors={["#92A1C6", "#146A7C", "#F0AB3D", "#C271B4", "#C20D90"]}
+                name="Maya Angelou"
+                variant={userStatus.includes("ROLE_ADMIN") ? "marble" : "beam"}
+                colors={["#92A1C6", "#146A7C", "#fff", "#C271B4", "#74FFC9"]}
               />
               <ChevronDownIcon
                 color="white"
@@ -53,7 +40,15 @@ const Layout = ({ children }: { children: JSX.Element }) => {
               />
             </DropdownMenu.Trigger>
 
-            <DropdownMenu.Portal>{layoutHandler()}</DropdownMenu.Portal>
+            <DropdownMenu.Portal>
+              <DropdownMenu.Content
+                sideOffset={dropdownMenuSideOffset}
+                className="DropdownMenuContent text-red-500"
+              >
+                {userStatus.includes("ROLE_USER") && <ClientLayout />}
+                {userStatus.includes("ROLE_ADMIN") && <AdminLayout />}
+              </DropdownMenu.Content>
+            </DropdownMenu.Portal>
           </DropdownMenu.Root>
         )}
       </div>

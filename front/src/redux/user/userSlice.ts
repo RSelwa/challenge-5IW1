@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit"
 import type { PayloadAction } from "@reduxjs/toolkit"
-import { reduxStatus, reduxUserFront } from "@/types/redux/user"
-import { RootState } from "@/redux/store"
+import type { reduxStatus, reduxUserFront } from "@/types/redux/user"
+import type { RootState } from "@/redux/store"
 
 // Define the initial state using that type
 const initialState: reduxUserFront = {
   email: "",
-  status: "vistitor"
+  status: ["VISTOR"]
 }
 
 export const userSlice = createSlice({
@@ -16,8 +16,8 @@ export const userSlice = createSlice({
   reducers: {
     //use this for constant
     resetUser: (state) => {
-      state.email = ""
-      state.status = "vistitor"
+      state.email = initialState.email
+      state.status = initialState.status
     },
     // Use the PayloadAction type to declare the contents of `action.payload`
     changeEmail: (state, action: PayloadAction<string>) => {
@@ -25,7 +25,7 @@ export const userSlice = createSlice({
     },
     userLogged: (
       state,
-      action: PayloadAction<{ email: string; status: reduxStatus }>
+      action: PayloadAction<{ email: string; status: reduxStatus[] }>
     ) => {
       state.email = action.payload.email
       state.status = action.payload.status
