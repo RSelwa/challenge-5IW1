@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EstablishmentRepository::class)]
 #[ApiResource(
-    normalizationContext: [ 'groups' => ['get:establishment', 'get:service']],
+    normalizationContext: [ 'groups' => ['get:establishment', 'get:service, get:employee']],
     denormalizationContext: [ 'groups' => ['post:establishment']]
 )]
 
@@ -22,32 +22,32 @@ class Establishment
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    #[Groups(['get:organization', 'get:establishment'])]
+    #[Groups(['get:organization', 'get:establishment', 'get:employee'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:organization', 'get:establishment', 'post:establishment'])]
+    #[Groups(['get:organization', 'get:establishment', 'post:establishment', 'get:employee'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:organization', 'get:establishment', 'post:establishment'])]
+    #[Groups(['get:organization', 'get:establishment', 'post:establishment', 'get:employee'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:organization', 'get:establishment', 'post:establishment'])]
+    #[Groups(['get:organization', 'get:establishment', 'post:establishment', 'get:employee'])]
     private ?string $zipCode = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:organization', 'get:establishment', 'post:establishment'])]
+    #[Groups(['get:organization', 'get:establishment', 'post:establishment', 'get:employee'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:organization', 'get:establishment', 'post:establishment'])]
+    #[Groups(['get:organization', 'get:establishment', 'post:establishment', 'get:employee'])]
     private ?string $country = null;
 
     #[ORM\ManyToOne(inversedBy: 'establishments')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['post:establishment'])]
+    #[Groups(['post:establishment', 'get:employee'])]
     private ?Organization $organization = null;
 
     #[ORM\OneToMany(mappedBy: 'establishment', targetEntity: Employee::class)]

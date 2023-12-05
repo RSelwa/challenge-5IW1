@@ -24,7 +24,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: OrganizationRepository::class)]
 #[ApiResource(
-    normalizationContext: [ 'groups' => ['get:organization', 'get:service']],
+    normalizationContext: [ 'groups' => ['get:organization', 'get:service', 'get:employee']],
     denormalizationContext: [ 'groups' => ['post:organization']],
     operations: [
         new Get(),
@@ -41,19 +41,19 @@ class Organization implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    #[Groups(['get:organization'])]
+    #[Groups(['get:organization', 'get:employee'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:organization', 'post:organization'])]
+    #[Groups(['get:organization', 'post:organization', 'get:employee'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:organization', 'post:organization'])]
+    #[Groups(['get:organization', 'post:organization', 'get:employee'])]
     private ?string $managerFirstname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:organization', 'post:organization'])]
+    #[Groups(['get:organization', 'post:organization', 'get:employee'])]
     private ?string $managerLastname = null;
 
     #[ORM\Column(length: 255)]
@@ -65,18 +65,18 @@ class Organization implements UserInterface, PasswordAuthenticatedUserInterface
     private ?File $kbisFile = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['get:organization', 'post:organization'])]
+    #[Groups(['get:organization', 'post:organization', 'get:employee'])]
     private ?string $siret = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:organization', 'post:organization'])]
+    #[Groups(['get:organization', 'post:organization', 'get:employee'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:organization', 'put:admin'])]
+    #[Groups(['get:organization', 'put:admin', 'get:employee'])]
     private ?string $status = 'PENDING';
 
     #[ORM\OneToMany(mappedBy: 'organization', targetEntity: Establishment::class)]
