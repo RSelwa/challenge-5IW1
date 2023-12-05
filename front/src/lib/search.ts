@@ -5,7 +5,12 @@ import { requestOptions } from "@/utils/db"
 export type SearchResponse = (EmployeesWithId | EstablishmentsWithId)[]
 
 export const fetchSearch = async (): Promise<SearchResponse> => {
-  const [employeesResponse, establishementResponse] = await Promise.all([
+  // endpoint:
+  // - lieu(x,y?)
+  // - services name
+  // - firstname and lastname employees
+  // - date available employees
+  const [employeesResponse, establishmentResponse] = await Promise.all([
     fetch(
       `${import.meta.env.VITE_API_URL}${EMPLOYEE_API_ROUTES}`,
       requestOptions({ method: "GET" })
@@ -15,13 +20,13 @@ export const fetchSearch = async (): Promise<SearchResponse> => {
       requestOptions({ method: "GET" })
     )
   ])
-  if (!employeesResponse.ok || !establishementResponse.ok)
+  if (!employeesResponse.ok || !establishmentResponse.ok)
     throw new Error("Something went wrong")
 
-  const [employees, establishement] = await Promise.all([
+  const [employees, establishment] = await Promise.all([
     employeesResponse.json(),
-    establishementResponse.json()
+    establishmentResponse.json()
   ])
 
-  return [...employees, ...establishement]
+  return [...employees, ...establishment]
 }
