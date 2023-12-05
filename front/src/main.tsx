@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import "./index.css"
 import "@radix-ui/themes/styles.css"
+import "./index.css"
 import { Provider, useDispatch } from "react-redux"
 import { Theme } from "@radix-ui/themes"
 import { createBrowserRouter, RouterProvider } from "react-router-dom"

@@ -18,7 +18,7 @@ const Layout = ({ children }: { children: JSX.Element }) => {
 
   return (
     <>
-      <div className="flex w-full items-center justify-between bg-sky-500 px-5 py-4">
+      <div className="bg-primary flex w-full items-center justify-between px-5 py-4">
         <Link to="/">
           <h1 className="font-black italic tracking-widest text-white">
             DOCTOGES
