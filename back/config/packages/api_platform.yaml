@@ -16,3 +16,19 @@ api_platform:
         jsonld: ['application/json+ld']
         html: ['text/html']
         multipart: ['multipart/form-data']
+
+
+    mapping:
+        App\Entity\Email:
+            collectionOperations:
+                post:
+                    method: 'POST'
+                    path: '/email'
+                    controller: 'App\Controller\EmailController::sendEmail'
+                    input: 'App\Dto\EmailDto'
+                    output: false
+                    denormalization_context:
+                        groups: ['email']
+            itemOperations: []
+            normalizationContext:
+                groups: ['email']
