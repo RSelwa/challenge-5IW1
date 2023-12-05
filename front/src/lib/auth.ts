@@ -8,7 +8,7 @@ export const loginUser = async (data: LoginFormData) => {
 
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}/auth`,
-    requestOptions({ method: "POST", data: JSON.stringify(data) })
+    requestOptions({ method: "POST", data: data })
   )
   if (!response.ok) throw new Error("Something went wrong")
 

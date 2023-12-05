@@ -1,16 +1,12 @@
-import React from "react"
+import React, { Fragment } from "react"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { Link } from "react-router-dom"
 import LogoutButton from "@/components/Layout/logoutButton"
-import { dropdownMenuSideOffset } from "@/constants"
 import { adminRoutes } from "@/routes"
 
 const AdminLayout = () => {
   return (
-    <DropdownMenu.Content
-      sideOffset={dropdownMenuSideOffset}
-      className="DropdownMenuContent text-red-500"
-    >
+    <Fragment>
       <DropdownMenu.Item className="DropdownMenuItem">
         Admin layout
       </DropdownMenu.Item>
@@ -28,7 +24,7 @@ const AdminLayout = () => {
       <DropdownMenu.Item className="DropdownMenuItem">
         <LogoutButton />
       </DropdownMenu.Item>
-    </DropdownMenu.Content>
+    </Fragment>
   )
 }
 

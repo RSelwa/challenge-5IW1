@@ -20,7 +20,7 @@ export const requestOptions = ({
 
 export const fetchData = async <T>(
   promise: Promise<T>,
-  setter: Dispatch<SetStateAction<T>>
+  setter: Dispatch<SetStateAction<T>> | Dispatch<SetStateAction<T>>[]
 ) => {
   toast.promise(promise, {
     error: (err) => {
@@ -29,7 +29,11 @@ export const fetchData = async <T>(
     },
     loading: "fetching...",
     success: (dataFetched) => {
-      setter(dataFetched)
+      if (Array.isArray(setter)) {
+        setter.forEach((s) => s(dataFetched))
+      } else {
+        setter(dataFetched)
+      }
       return "fetched"
     }
   })

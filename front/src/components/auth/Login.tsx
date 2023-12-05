@@ -23,7 +23,10 @@ const LoginWithPassword = () => {
       <form
         onSubmit={handleSubmit((data) =>
           toast.promise(loginUser(data), {
-            success: "logged",
+            success: () => {
+              navigate("/")
+              return "logged"
+            },
             error: (error) => {
               console.trace(error)
               return "Error while login"

@@ -1,5 +1,5 @@
 import type { AnyAction, Dispatch } from "@reduxjs/toolkit"
-import type { RoleUser, TokenApi } from "@/types/redux/token"
+import type { TokenApi } from "@/types/redux/token"
 import type { reduxStatus } from "@/types/redux/user"
 import { resetUser, userLogged } from "@/redux/user/userSlice"
 
@@ -13,10 +13,11 @@ export const tokenToRedux = (
   }
 
   const token: TokenApi = parseJwt(tokenApi) as TokenApi
+  console.log(token)
 
-  const reduxUser: { email: string; status: reduxStatus } = {
+  const reduxUser: { email: string; status: reduxStatus[] } = {
     email: token.username,
-    status: mapReduxStatus(token.roles[0])
+    status: token.roles
   }
   dispatch(userLogged(reduxUser))
 }
@@ -34,14 +35,4 @@ export const parseJwt = (token: string) => {
   )
 
   return JSON.parse(jsonPayload)
-}
-export const mapReduxStatus = (status: RoleUser): reduxStatus => {
-  switch (status) {
-    case "ROLE_ADMIN":
-      return "admin"
-
-    default:
-      return "admin"
-      return "user"
-  }
 }
