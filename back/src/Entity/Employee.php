@@ -46,6 +46,7 @@ class Employee
     private Collection $employeeSpecificSchedules;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[Groups(['get:establishment', 'get:employee'])]
     private ?Service $service = null;
 
     public function __construct()
