@@ -5,11 +5,17 @@ button {
   all: unset;
   cursor: pointer !important;
 }
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
+}
 input[type="text"],
 input[type="email"],
 input[type="password"],
 #label-input-file {
-  @apply w-full cursor-pointer rounded border-2 border-gray-300 px-2 py-1 focus:border-blue-500 focus:outline-none;
+  @apply w-full cursor-pointer rounded border-2 border-gray-300 px-2 py-1 outline-none focus:border-blue-500 focus:outline-none;
 }
 
 .CheckboxRoot {
