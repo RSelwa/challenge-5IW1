@@ -25,7 +25,6 @@ const router = createBrowserRouter([...routes])
 ReactDOM.createRoot(
   document.getElementById("root") || document.createDocumentFragment()
 ).render(
-  // <React>
   <Provider store={store}>
     <Theme>
       <>
@@ -34,5 +33,4 @@ ReactDOM.createRoot(
       </>
     </Theme>
   </Provider>
-  // </React>
 )

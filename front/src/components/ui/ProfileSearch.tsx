@@ -32,7 +32,7 @@ const ProfileSearch = (props: Props) => {
           </div>
         </div>
       </div>
-      <div className="ml-24">
+      <div className="ml-24 mt-4">
         <Button className="">Prendre rendez-vous</Button>
       </div>
     </div>

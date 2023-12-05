@@ -19,7 +19,6 @@ import UsersAdmin from "@/pages/admin/users"
 import UserIdAdmin from "@/pages/admin/users/id"
 import Login from "@/pages/auth/Login"
 import Planning from "@/pages/planning"
-import Team from "@/pages/team"
 
 const getLayout = (element: JSX.Element): JSX.Element => (
   <Layout>
@@ -113,20 +112,9 @@ export const adminRoutes: RouteObject[] = [
     element: getLayout(<SlotsIdAdmin />)
   }
 ]
-const practitionerRoutes: RouteObject[] = []
-const clientRoutes: RouteObject[] = []
-const devRoutes: RouteObject[] = [
-  {
-    path: "teams/:teamId",
-    element: getLayout(<Team />)
-  }
-]
 
 export const routes: RouteObject[] = [
   ...defaultRoutes,
   ...adminRoutes,
-  ...authRoutes,
-  ...clientRoutes,
-  ...practitionerRoutes,
-  ...devRoutes
+  ...authRoutes
 ]

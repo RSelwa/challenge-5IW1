@@ -13,7 +13,7 @@ const EmployeeRowSearch = ({ employee }: Props) => {
     <ProfileSearch
       address="7 rue TAMER"
       service="Ostéopathe"
-      name="Victor MARTINS"
+      name={(employee.firstname, employee.lastname)}
       urlImage=""
       zipCode="75011"
     />
