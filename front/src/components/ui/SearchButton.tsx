@@ -13,7 +13,7 @@ type Props = {
 
 const SearchButton = ({ searchQuery, setSearchQuery }: Props) => {
   return (
-    <div className="flex w-fit items-center rounded-full bg-white ring-4 ring-white  ">
+    <div className="flex w-fit items-center rounded-full bg-white  ring-4 ring-white  ">
       <div className="flex h-full items-center gap-1 rounded-l-full  border-r-2 border-gray-200 pl-4 text-base ">
         <label className="cursor-text" htmlFor="searchInput">
           <MagnifyingGlassIcon color="gray" strokeWidth="10" />

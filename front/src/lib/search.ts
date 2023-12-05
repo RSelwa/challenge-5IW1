@@ -2,9 +2,9 @@ import type { EmployeesWithId, EstablishmentsWithId } from "@/types/withId"
 import { EMPLOYEE_API_ROUTES, ESTABLISHMENT_API_ROUTES } from "@/constants/db"
 import { requestOptions } from "@/utils/db"
 
-export type SearchResponse = (EmployeesWithId | EstablishmentsWithId)[]
+export type SearchResponse = EmployeesWithId | EstablishmentsWithId
 
-export const fetchSearch = async (): Promise<SearchResponse> => {
+export const fetchSearch = async (): Promise<SearchResponse[]> => {
   // endpoint:
   // - lieu(x,y?)
   // - services name

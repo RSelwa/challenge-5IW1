@@ -20,7 +20,9 @@ const Layout = ({ children }: { children: JSX.Element }) => {
     <>
       <div className="flex w-full items-center justify-between bg-sky-500 px-5 py-4">
         <Link to="/">
-          DOCTOGES
+          <h1 className="font-black italic tracking-widest text-white">
+            DOCTOGES
+          </h1>
           {/* <Logo className="text-white" size="40" /> */}
         </Link>
         {userStatus.includes("VISTOR") ? (
