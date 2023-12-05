@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { servicesList } from "@/constants/utils"
 import { getRandomInt } from "@/utils"
 
-const UserTittle = () => {
+const UserTitle = () => {
   const [count, setCount] = useState<number>(0)
 
   useEffect(() => {
@@ -22,4 +22,4 @@ const UserTittle = () => {
   )
 }
 
-export default UserTittle
+export default UserTitle

@@ -23,7 +23,6 @@ const Layout = ({ children }: { children: JSX.Element }) => {
           <h1 className="font-black italic tracking-widest text-white">
             DOCTOGES
           </h1>
-          {/* <Logo className="text-white" size="40" /> */}
         </Link>
         {userStatus.includes("VISTOR") ? (
           <VisitorLayout />
