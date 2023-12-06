@@ -1,24 +1,34 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import GoogleMapReact from "google-map-react"
+import type { MapsLocationData } from "@/types/maps"
 import { defaultLocation } from "@/constants/maps"
 
-export default function SimpleMap() {
-  const defaultProps = {
-    center: {
-      lat: defaultLocation.lat,
-      lng: defaultLocation.lng
-    },
-    zoom: 14
+const MapComponent = () => {
+  const [userLocation, setUserLocation] =
+    useState<MapsLocationData>(defaultLocation)
+
+  const getCurrentPositionSuccess = (position: GeolocationPosition) => {
+    setUserLocation({
+      lat: position.coords.latitude,
+      lng: position.coords.longitude
+    })
   }
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(getCurrentPositionSuccess)
+  }, [])
 
   return (
     // Important! Always set the container height explicitly
     <div style={{ height: "100vh", width: "100%" }}>
       <GoogleMapReact
         bootstrapURLKeys={{ key: import.meta.env.VITE_KEY_GOOGLE_MAPS }}
-        defaultCenter={defaultProps.center}
-        defaultZoom={defaultProps.zoom}
+        defaultCenter={defaultLocation}
+        defaultZoom={14}
+        center={userLocation}
       />
     </div>
   )
 }
+
+export default MapComponent
