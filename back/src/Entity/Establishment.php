@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EstablishmentRepository::class)]
 #[ApiResource(
-    normalizationContext: [ 'groups' => ['get:establishment', 'get:service, get:employee']],
+    normalizationContext: [ 'groups' => ['establishment:read', 'service:read, employee:read']],
     denormalizationContext: [ 'groups' => ['post:establishment']]
 )]
 
@@ -22,36 +22,36 @@ class Establishment
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    #[Groups(['get:organization', 'get:establishment', 'get:employee'])]
+    #[Groups(['organization:read', 'establishment:read', 'employee:read'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:organization', 'get:establishment', 'post:establishment', 'get:employee'])]
+    #[Groups(['organization:read', 'establishment:read', 'post:establishment', 'employee:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:organization', 'get:establishment', 'post:establishment', 'get:employee'])]
+    #[Groups(['organization:read', 'establishment:read', 'post:establishment', 'employee:read'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:organization', 'get:establishment', 'post:establishment', 'get:employee'])]
+    #[Groups(['organization:read', 'establishment:read', 'post:establishment', 'employee:read'])]
     private ?string $zipCode = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:organization', 'get:establishment', 'post:establishment', 'get:employee'])]
+    #[Groups(['organization:read', 'establishment:read', 'post:establishment', 'employee:read'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:organization', 'get:establishment', 'post:establishment', 'get:employee'])]
+    #[Groups(['organization:read', 'establishment:read', 'post:establishment', 'employee:read'])]
     private ?string $country = null;
 
     #[ORM\ManyToOne(inversedBy: 'establishments')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['post:establishment', 'get:employee'])]
+    #[Groups(['post:establishment', 'employee:read'])]
     private ?Organization $organization = null;
 
     #[ORM\OneToMany(mappedBy: 'establishment', targetEntity: Employee::class)]
-    #[Groups(['get:organization', 'get:establishment'])]
+    #[Groups(['organization:read', 'establishment:read'])]
     private Collection $employees;
 
     public function __construct()

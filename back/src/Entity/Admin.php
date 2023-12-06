@@ -26,7 +26,7 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
 
     private ?array $roles = ['ROLE_ADMIN'];
 
-    #[Groups(['post:admin'])]
+    #[Groups(['admin:write'])]
     private ?string $plainPassword = null;
 
     public function getId(): ?string

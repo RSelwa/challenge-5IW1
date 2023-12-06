@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EmployeeSpecificScheduleRepository::class)]
 #[ApiResource(
-    denormalizationContext: [ 'groups' => ['post:employee-specific-schedule']]
+    denormalizationContext: [ 'groups' => ['employee-specific-schedule:write']]
 )]
 class EmployeeSpecificSchedule
 {
@@ -18,27 +18,27 @@ class EmployeeSpecificSchedule
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    #[Groups(['get:establishment', 'get:employee'])]
+    #[Groups(['establishment:read', 'employee:read'])]
     private ?string $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'employeeSpecificSchedules')]
-    #[Groups(['post:employee-specific-schedule'])]
+    #[Groups(['employee-specific-schedule:write'])]
     private ?Employee $employee = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['get:establishment', 'get:employee', 'post:employee-specific-schedule'])]
+    #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:write'])]
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:establishment', 'get:employee', 'post:employee-specific-schedule'])]
+    #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:write'])]
     private ?string $type = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['get:establishment', 'get:employee', 'post:employee-specific-schedule'])]
+    #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:write'])]
     private ?string $startTime = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['get:establishment', 'get:employee', 'post:employee-specific-schedule'])]
+    #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:write'])]
     private ?string $endTime = null;
 
     public function getId(): ?string

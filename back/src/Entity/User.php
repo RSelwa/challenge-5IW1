@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: "\"user\"")]
 #[ApiResource(
-    normalizationContext: [ 'groups' => ['get:user', 'get:slot']],
+    normalizationContext: [ 'groups' => ['user:read', 'slot:read']],
     operations: [
         new Get(),
         new GetCollection(),
@@ -37,31 +37,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    #[Groups(['get:user'])]
+    #[Groups(['user:read'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:user'])]
+    #[Groups(['user:read'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:user'])]
+    #[Groups(['user:read'])]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:user'])]
+    #[Groups(['user:read'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Slot::class)]
-    #[Groups(['get:user'])]
+    #[Groups(['user:read'])]
     private Collection $slots;
 
     private ?array $roles = ['ROLE_USER'];
 
-    #[Groups(['post:user'])]
+    #[Groups(['user:write'])]
     private ?string $plainPassword = null;
 
 
