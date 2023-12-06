@@ -11,8 +11,8 @@ use Symfony\Component\Validator\Constraints\Date;
 
 #[ORM\Entity(repositoryClass: SlotRepository::class)]
 #[ApiResource(
-    normalizationContext: [ 'groups' => ['get:slot']],
-    denormalizationContext: [ 'groups' => ['post:slot']]
+    normalizationContext: [ 'groups' => ['slot:read']],
+    denormalizationContext: [ 'groups' => ['slot:read']]
 )]
 class Slot
 {
@@ -20,32 +20,32 @@ class Slot
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    #[Groups(['get:slot'])]
+    #[Groups(['slot:read'])]
     private ?string $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'slots')]
     #[ORM\JoinColumn(nullable: true)]
-    #[Groups(['post:slot'])]
+    #[Groups(['slot:read'])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'slots')]
-    #[Groups(['get:slot', 'post:slot'])]
+    #[Groups(['slot:read', 'slot:read'])]
     private ?Employee $employee = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:establishment', 'get:employee', 'get:slot', 'post:slot'])]
+    #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:read'])]
     private ?Date $date = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:establishment', 'get:employee', 'get:slot', 'post:slot'])]
+    #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:read'])]
     private ?string $startTime = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:establishment', 'get:employee', 'get:slot', 'post:slot'])]
+    #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:read'])]
     private ?string $endTime = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:slot', 'post:slot'])]
+    #[Groups(['slot:read', 'slot:read'])]
     private ?string $status = null;
 
     public function getId(): ?string

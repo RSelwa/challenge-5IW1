@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ServiceRepository::class)]
 #[ApiResource(
-    normalizationContext: [ 'groups' => ['get:service', 'get:employee']]
+    normalizationContext: [ 'groups' => ['service:read', 'employee:read']]
 )]
 
 class Service
@@ -19,15 +19,15 @@ class Service
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    #[Groups(['get:service', 'get:employee'])]
+    #[Groups(['service:read', 'employee:read'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:service', 'get:employee'])]
+    #[Groups(['service:read', 'employee:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['get:service', 'get:employee'])]
+    #[Groups(['service:read', 'employee:read'])]
     private ?string $type = null;
 
     public function getId(): ?string

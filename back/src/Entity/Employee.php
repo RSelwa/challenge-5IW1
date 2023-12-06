@@ -12,8 +12,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
 #[ApiResource(
-    normalizationContext: [ 'groups' => ['get:employee', 'get:slot']],
-    denormalizationContext: [ 'groups' => ['post:employee']]
+    normalizationContext: [ 'groups' => ['employee:read', 'slot:read']],
+    denormalizationContext: [ 'groups' => ['employee:write']]
 )]
 
 class Employee
@@ -22,31 +22,32 @@ class Employee
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    #[Groups(['get:organization', 'get:establishment', 'get:employee'])]
+    #[Groups(['organization:read', 'establishment:read', 'employee:read'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:organization', 'get:establishment', 'get:employee', 'post:employee'])]
+    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:write'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['get:organization', 'get:establishment', 'get:employee', 'post:employee'])]
+    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:write'])]
     private ?string $lastname = null;
 
     #[ORM\ManyToOne(inversedBy: 'employees')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['get:employee', 'post:employee'])]
+    #[Groups(['employee:read', 'employee:write'])]
     private ?Establishment $establishment = null;
 
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Slot::class)]
-    #[Groups(['get:establishment', 'get:employee'])]
+    #[Groups(['establishment:read', 'employee:read'])]
     private Collection $slots;
+    
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: EmployeeSpecificSchedule::class)]
-    #[Groups(['get:establishment', 'get:employee'])]
+    #[Groups(['establishment:read', 'employee:read'])]
     private Collection $employeeSpecificSchedules;
 
     #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[Groups(['get:establishment', 'get:employee'])]
+    #[Groups(['establishment:read', 'employee:read'])]
     private ?Service $service = null;
 
     public function __construct()
