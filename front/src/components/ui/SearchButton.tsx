@@ -5,6 +5,7 @@ import {
   MagnifyingGlassIcon,
   SewingPinIcon
 } from "@radix-ui/react-icons"
+import { usePlacesWidget } from "react-google-autocomplete"
 
 type Props = {
   searchQuery: string
@@ -13,6 +14,10 @@ type Props = {
 }
 
 const SearchButton = ({ searchQuery, setSearchQuery, onClick }: Props) => {
+  const { ref } = usePlacesWidget({
+    apiKey: import.meta.env.VITE_KEY_GOOGLE_MAPS,
+    onPlaceSelected: (place) => console.log(place)
+  })
   return (
     <div className="flex w-fit items-center rounded-full bg-white  ring-4 ring-white  ">
       <div className="flex h-full items-center gap-1 rounded-l-full  border-r-2 border-gray-200 pl-4 text-base ">
@@ -37,6 +42,7 @@ const SearchButton = ({ searchQuery, setSearchQuery, onClick }: Props) => {
           type="search"
           id="searchInput"
           onChange={(e) => setSearchQuery(e.target.value)}
+          ref={ref}
         />
       </div>
 
