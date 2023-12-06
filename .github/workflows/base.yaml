@@ -22,7 +22,7 @@ jobs:
         with:
           path: front/node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-      - name: 🏎️ Cache Cypress Binary
+      - name: 🖼️ Cache Cypress Binary
         id: cache-cypress-binary
         uses: actions/cache@v3
         with:
