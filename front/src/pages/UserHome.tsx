@@ -1,8 +1,10 @@
 import type { Dispatch, SetStateAction } from "react"
 import React, { useEffect, useState } from "react"
+import { Wrapper } from "@googlemaps/react-wrapper"
 import type { SearchResponse } from "@/lib/search"
 import { fetchSearch } from "@/lib/search"
 import { fetchData } from "@/utils/db"
+import MapComponent from "@/components/maps/MapComponent"
 import SearchResult from "@/components/Rows/search/SearchResult"
 import SearchButton from "@/components/ui/SearchButton"
 import UserTitle from "@/components/ui/UserTitle"
@@ -35,13 +37,22 @@ const Home = () => {
       >
         <p className="col-span-2 font-bold">{resultsSearch.length} résultats</p>
         <div className=" flex w-full flex-col gap-5 overflow-y-auto p-1 ">
-          {Array(14)
-            .fill(resultsSearch[0])
-            .map((search, index) => (
+          {
+            // Array(14)
+            //   .fill(resultsSearch[0])
+            resultsSearch.map((search, index) => (
               <SearchResult searchResult={search} key={index} />
-            ))}
+            ))
+          }
         </div>
-        <div className="sticky m-1 bg-red-500">ma grosse maps</div>
+        <div className="bg- sticky m-1">
+          <Wrapper
+            apiKey={import.meta.env.VITE_KEY_GOOGLE_MAPS || ""}
+            // render={render}
+          >
+            <MapComponent />
+          </Wrapper>
+        </div>
       </div>
     </div>
   )
