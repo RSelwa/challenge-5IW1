@@ -4,20 +4,38 @@ import type { DbTableLogin } from "@/types/auth"
 
 export const requestOptions = ({
   method,
-  data
+  data,
+  body,
+  headers
 }: {
   method: "POST" | "GET"
+  headers?: Headers
   data?: any
-}) => {
-  const headers = new Headers()
-  headers.append("Content-Type", "application/json")
+  body?: BodyInit
+}): RequestInit => {
+  const newHeader = new Headers()
+  newHeader.append("Content-Type", "application/json")
+
   return {
     method: method,
-    body: data ? JSON.stringify(data) : undefined,
-    headers
+    body: body ? body : data ? JSON.stringify(data) : undefined,
+    headers: headers ? headers : newHeader
   }
 }
+export const formDataHeader = (data: any) => {
+  const headers = new Headers()
+  const formData = new FormData()
 
+  for (const [key, value] of Object.entries(data)) {
+    if (value instanceof FileList) {
+      formData.append(key, (value as FileList)[0])
+    } else {
+      formData.append(key, value as string)
+    }
+  }
+
+  return { headers, formData }
+}
 export const fetchData = async <T>(
   promise: Promise<T>,
   setter: Dispatch<SetStateAction<T>> | Dispatch<SetStateAction<T>>[]
@@ -36,6 +54,16 @@ export const fetchData = async <T>(
       }
       return "fetched"
     }
+  })
+}
+export const postData = async <T>(promise: Promise<T>) => {
+  toast.promise(promise, {
+    error: (err) => {
+      console.trace(err)
+      return "error"
+    },
+    loading: "posting...",
+    success: "fetched"
   })
 }
 

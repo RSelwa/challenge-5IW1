@@ -7,8 +7,6 @@ type Props = {
 }
 
 const EmployeeRowSearch = ({ employee }: Props) => {
-  console.log(employee)
-
   return (
     <ProfileSearch
       address="7 rue TAMER"

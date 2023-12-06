@@ -26,6 +26,7 @@ import OrganizationsRows from "@/components/Rows/admin/OrganizationsRows"
 import ServicesRows from "@/components/Rows/admin/ServicesRows"
 import SlotsRows from "@/components/Rows/admin/SlotsRows"
 import UsersRowsAdmin from "@/components/Rows/admin/UsersRows"
+import Error from "@/components/ui/Error"
 import App from "@/App"
 import EmployeesIdAdmin from "@/pages/admin/employees/id"
 import EmployeeSpecificSchedulesIdAdmin from "@/pages/admin/employeeSpecificSchedules/id"
@@ -36,6 +37,7 @@ import SlotsIdAdmin from "@/pages/admin/slots/id"
 import UserIdAdmin from "@/pages/admin/users/id"
 import AdminHome from "@/pages/AdminHome"
 import Login from "@/pages/auth/Login"
+import SigninOrganization from "@/pages/auth/SigninOrganisation"
 import Planning from "@/pages/planning"
 
 const getLayout = (element: JSX.Element): JSX.Element => (
@@ -60,8 +62,11 @@ const defaultRoutes: RouteObject[] = [
 const authRoutes: RouteObject[] = [
   {
     path: "/login",
-    element: getLayout(<Login />),
-    children: [{ path: "/login/:db", element: getLayout(<Login />) }]
+    element: getLayout(<Login />)
+  },
+  {
+    path: "/signin/organization",
+    element: getLayout(<SigninOrganization />)
   }
 ]
 export const adminRoutes: RouteObject[] = [
@@ -173,5 +178,9 @@ export const adminRoutes: RouteObject[] = [
 export const routes: RouteObject[] = [
   ...defaultRoutes,
   ...adminRoutes,
-  ...authRoutes
-]
+  ...authRoutes,
+  {
+    path: "/*",
+    element: getLayout(<div>404</div>)
+  }
+].map((route) => ({ ...route, errorElement: getLayout(<Error />) }))
