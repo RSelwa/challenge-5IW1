@@ -32,27 +32,20 @@ const Home = () => {
         </div>
       </div>
       <div
-        className="mx-auto grid w-10/12 gap-4 py-4"
+        className="relative mx-auto grid w-11/12 gap-4  py-4"
         style={{ gridTemplateColumns: "2fr 1fr" }}
       >
         <p className="col-span-2 font-bold">{resultsSearch.length} résultats</p>
         <div className=" flex w-full flex-col gap-5 overflow-y-auto p-1 ">
-          {
-            // Array(14)
-            //   .fill(resultsSearch[0])
-            resultsSearch.map((search, index) => (
+          {(resultsSearch.length ? Array(14).fill(resultsSearch[0]) : []).map(
+            (search, index) => (
               <SearchResult searchResult={search} key={index} />
-            ))
-          }
+            )
+          )}
         </div>
-        <div className="bg- sticky m-1">
-          <Wrapper
-            apiKey={import.meta.env.VITE_KEY_GOOGLE_MAPS || ""}
-            // render={render}
-          >
-            <MapComponent />
-          </Wrapper>
-        </div>
+        <Wrapper apiKey={import.meta.env.VITE_KEY_GOOGLE_MAPS || ""}>
+          <MapComponent />
+        </Wrapper>
       </div>
     </div>
   )

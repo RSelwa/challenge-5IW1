@@ -20,7 +20,7 @@ const MapComponent = () => {
 
   return (
     // Important! Always set the container height explicitly
-    <div style={{ height: "100vh", width: "100%" }}>
+    <div className="sticky top-3 h-[600px] w-full self-start  ">
       <GoogleMapReact
         bootstrapURLKeys={{ key: import.meta.env.VITE_KEY_GOOGLE_MAPS }}
         defaultCenter={defaultLocation}
