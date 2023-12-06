@@ -6,20 +6,10 @@ import { postOrganization } from "@/lib/organizations"
 import { postData } from "@/utils/db"
 
 const SigninOrganizationForm = () => {
-  const { handleSubmit, register } = useForm<SigninOrgaFormData>({
-    defaultValues: {
-      email: "test@yopmail.com",
-      managerFirstname: "first",
-      managerLastname: "last",
-      name: "name",
-      plainPassword: "test",
-      siret: "siret"
-    }
-  })
+  const { handleSubmit, register } = useForm<SigninOrgaFormData>()
 
   const onSubmit = (data: SigninOrgaFormData) =>
     postData(postOrganization(data))
-  // formDataHeader(data)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2 gap-4">
