@@ -50,7 +50,7 @@ const Home = () => {
             apiKey={import.meta.env.VITE_KEY_GOOGLE_MAPS || ""}
             // render={render}
           >
-            <MapComponent center={{ lat: 0, lng: 0 }} zoom={0} />
+            <MapComponent />
           </Wrapper>
         </div>
       </div>
