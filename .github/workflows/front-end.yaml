@@ -79,6 +79,8 @@ jobs:
           restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
       - name: 📦 Install Cypress binaries
         run: npx cypress install
+      - name: 📦 Install Cypress binaries
+        run: cypress install
       - name: 🖼️ Cypress run
         uses: cypress-io/github-action@v6
         with:
