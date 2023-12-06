@@ -1,21 +1,38 @@
 import { Fragment } from "react"
 import { Toaster } from "react-hot-toast"
 import type { RouteObject } from "react-router-dom"
+import {
+  employeesHeader,
+  employeesSpecificSchedulesHeader,
+  establishmentsHeader,
+  organizationsHeader,
+  servicesHeader,
+  slotsHeader,
+  usersHeader
+} from "@/constants/tableHeaders"
+import { fetchEmployees } from "@/lib/employees"
+import { fetchEmployeeSpecificSchedules } from "@/lib/employeeSpecificSchedules"
+import { fetchEstablishments } from "@/lib/establishments"
+import { fetchOrganizations } from "@/lib/organizations"
+import { fetchServices } from "@/lib/services"
+import { fetchSlots } from "@/lib/slots"
+import { fetchUsers } from "@/lib/users"
+import AdminView from "@/components/AdminView"
 import Layout from "@/components/Layout"
+import EmployeeSpecificScheduleRows from "@/components/Rows/admin/EmployeeSpecificScheduleRows"
+import EmployeesRows from "@/components/Rows/admin/EmployeesRows"
+import EstablishmentsRows from "@/components/Rows/admin/EstablishmentsRows"
+import OrganizationsRows from "@/components/Rows/admin/OrganizationsRows"
+import ServicesRows from "@/components/Rows/admin/ServicesRows"
+import SlotsRows from "@/components/Rows/admin/SlotsRows"
+import UsersRowsAdmin from "@/components/Rows/admin/UsersRows"
 import App from "@/App"
-import EmployeesAdmin from "@/pages/admin/employees"
 import EmployeesIdAdmin from "@/pages/admin/employees/id"
-import EmployeeSpecificSchedulesAdmin from "@/pages/admin/employeeSpecificSchedules"
 import EmployeeSpecificSchedulesIdAdmin from "@/pages/admin/employeeSpecificSchedules/id"
-import EstablishmentsAdmin from "@/pages/admin/establishments"
 import EstablishmentsIdAdmin from "@/pages/admin/establishments/id"
-import OrganizationsAdmin from "@/pages/admin/organizations"
 import OrganizationsIdAdmin from "@/pages/admin/organizations/id"
-import ServicesAdmin from "@/pages/admin/services"
 import ServicesIdAdmin from "@/pages/admin/services/id"
-import SlotsAdmin from "@/pages/admin/slots"
 import SlotsIdAdmin from "@/pages/admin/slots/id"
-import UsersAdmin from "@/pages/admin/users"
 import UserIdAdmin from "@/pages/admin/users/id"
 import AdminHome from "@/pages/AdminHome"
 import Login from "@/pages/auth/Login"
@@ -54,7 +71,14 @@ export const adminRoutes: RouteObject[] = [
   },
   {
     path: "/admin/users",
-    element: getLayout(<UsersAdmin />)
+    // element: getLayout(<UsersAdmin />)
+    element: getLayout(
+      <AdminView
+        Rows={UsersRowsAdmin}
+        promiseFetch={fetchUsers}
+        header={usersHeader}
+      />
+    )
   },
   {
     path: "/admin/users/:id",
@@ -62,7 +86,13 @@ export const adminRoutes: RouteObject[] = [
   },
   {
     path: "/admin/slots",
-    element: getLayout(<SlotsAdmin />)
+    element: getLayout(
+      <AdminView
+        Rows={SlotsRows}
+        promiseFetch={fetchSlots}
+        header={slotsHeader}
+      />
+    )
   },
   {
     path: "/admin/slots/:id",
@@ -70,7 +100,13 @@ export const adminRoutes: RouteObject[] = [
   },
   {
     path: "/admin/services",
-    element: getLayout(<ServicesAdmin />)
+    element: getLayout(
+      <AdminView
+        Rows={ServicesRows}
+        promiseFetch={fetchServices}
+        header={servicesHeader}
+      />
+    )
   },
   {
     path: "/admin/services/:id",
@@ -78,7 +114,13 @@ export const adminRoutes: RouteObject[] = [
   },
   {
     path: "/admin/organizations",
-    element: getLayout(<OrganizationsAdmin />)
+    element: getLayout(
+      <AdminView
+        Rows={OrganizationsRows}
+        promiseFetch={fetchOrganizations}
+        header={organizationsHeader}
+      />
+    )
   },
   {
     path: "/admin/organizations/:id",
@@ -86,7 +128,13 @@ export const adminRoutes: RouteObject[] = [
   },
   {
     path: "/admin/establishments",
-    element: getLayout(<EstablishmentsAdmin />)
+    element: getLayout(
+      <AdminView
+        Rows={EstablishmentsRows}
+        promiseFetch={fetchEstablishments}
+        header={establishmentsHeader}
+      />
+    )
   },
   {
     path: "/admin/establishments/:id",
@@ -94,7 +142,13 @@ export const adminRoutes: RouteObject[] = [
   },
   {
     path: "/admin/employees",
-    element: getLayout(<EmployeesAdmin />)
+    element: getLayout(
+      <AdminView
+        Rows={EmployeesRows}
+        promiseFetch={fetchEmployees}
+        header={employeesHeader}
+      />
+    )
   },
   {
     path: "/admin/employees/:id",
@@ -102,7 +156,13 @@ export const adminRoutes: RouteObject[] = [
   },
   {
     path: "/admin/employeeSpecificSchedules",
-    element: getLayout(<EmployeeSpecificSchedulesAdmin />)
+    element: getLayout(
+      <AdminView
+        Rows={EmployeeSpecificScheduleRows}
+        promiseFetch={fetchEmployeeSpecificSchedules}
+        header={employeesSpecificSchedulesHeader}
+      />
+    )
   },
   {
     path: "/admin/employeeSpecificSchedules/:id",
