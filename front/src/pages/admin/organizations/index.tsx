@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react"
-import { Button } from "@radix-ui/themes"
-import { Link } from "react-router-dom"
 import type { OrganizationsWithId } from "@/types/withId"
+import { organizationsHeader } from "@/constants/tableHeaders"
 import { fetchOrganizations } from "@/lib/organizations"
 import { fetchData } from "@/utils/db"
+import OrganizationsRows from "@/components/Rows/admin/OrganizationsRows"
+import Table from "@/components/Table"
 
 const OrganizationsAdmin = () => {
   const [organizations, setOrganizations] = useState<OrganizationsWithId[]>([])
@@ -12,16 +13,11 @@ const OrganizationsAdmin = () => {
     fetchData(fetchOrganizations(), setOrganizations)
   }, [])
   return (
-    <div>
-      {organizations.map((organization, index) => (
-        <div key={index}>
-          {organization.id}
-          <Link to={`/admin/organizations/${organization.id}`}>
-            <Button>View</Button>
-          </Link>
-        </div>
-      ))}
-    </div>
+    <Table
+      header={organizationsHeader}
+      Rows={OrganizationsRows}
+      dataT={organizations}
+    />
   )
 }
 

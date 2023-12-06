@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react"
-import { Button } from "@radix-ui/themes"
-import { Link } from "react-router-dom"
 import type { UsersWithId } from "@/types/withId"
 import { usersHeader } from "@/constants/tableHeaders"
 import { fetchUsers } from "@/lib/users"
 import { fetchData } from "@/utils/db"
+import UsersRowsAdmin from "@/components/Rows/admin/UsersRows"
 import Table from "@/components/Table"
 
 const UsersAdmin = () => {
@@ -14,20 +13,7 @@ const UsersAdmin = () => {
     fetchData(fetchUsers(), setUsers)
   }, [])
 
-  return (
-    <div>
-      <Table header={usersHeader} rows={<div>row</div>} dataT={users} />
-      {/* {users.map((user, index) => (
-        <div key={index}>
-          {user.email}
-          {user.id}
-          <Link to={`/admin/users/${user.id}`}>
-            <Button>View</Button>
-          </Link>
-        </div>
-      ))} */}
-    </div>
-  )
+  return <Table header={usersHeader} Rows={UsersRowsAdmin} dataT={users} />
 }
 
 export default UsersAdmin

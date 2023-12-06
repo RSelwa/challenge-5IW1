@@ -1,13 +1,13 @@
 import React from "react"
 import type { RowProps } from "@/types/table"
-import type { UsersWithId } from "@/types/withId"
+import type { OrganizationsWithId } from "@/types/withId"
 import AdminViewDetails from "@/components/ui/AdminViewDetails"
 
-const UsersRowsAdmin = ({ data }: RowProps<UsersWithId>) => {
+const OrganizationsRows = ({ data }: RowProps<OrganizationsWithId>) => {
   return (
     <tr>
       <td>{data.id}</td>
-      <td>{data.email}</td>
+      <td>{data.name}</td>
       <td>
         <AdminViewDetails id={data.id} />
       </td>
@@ -15,4 +15,4 @@ const UsersRowsAdmin = ({ data }: RowProps<UsersWithId>) => {
   )
 }
 
-export default UsersRowsAdmin
+export default OrganizationsRows
