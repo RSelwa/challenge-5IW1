@@ -23,8 +23,7 @@ class EmailController
         $this->mailer = $mailer;
     }
 
-    #[Route('/email', name: 'send_email', methods: ['POST'])]
-    public function sendEmail(Request $request): JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
