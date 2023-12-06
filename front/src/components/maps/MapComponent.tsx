@@ -1,23 +1,24 @@
-import React, { useEffect, useRef, useState } from "react"
+import React from "react"
+import GoogleMapReact from "google-map-react"
+import { defaultLocation } from "@/constants/maps"
 
-type Props = {
-  center: google.maps.LatLngLiteral
-  zoom: number
+export default function SimpleMap() {
+  const defaultProps = {
+    center: {
+      lat: defaultLocation.lat,
+      lng: defaultLocation.lng
+    },
+    zoom: 14
+  }
+
+  return (
+    // Important! Always set the container height explicitly
+    <div style={{ height: "100vh", width: "100%" }}>
+      <GoogleMapReact
+        bootstrapURLKeys={{ key: import.meta.env.VITE_KEY_GOOGLE_MAPS }}
+        defaultCenter={defaultProps.center}
+        defaultZoom={defaultProps.zoom}
+      />
+    </div>
+  )
 }
-
-const MapComponent = ({ center, zoom }: Props) => {
-  const ref = useRef<HTMLDivElement>(null)
-  const [map, setMap] = useState<google.maps.Map>()
-
-  useEffect(() => {
-    console.log(zoom, center)
-
-    if (ref.current && !map) {
-      setMap(new window.google.maps.Map(ref.current, {}))
-    }
-  }, [ref, map])
-
-  return <div ref={ref} id="map" />
-}
-
-export default MapComponent
