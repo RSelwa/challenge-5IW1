@@ -7,7 +7,13 @@ const VisitorLayout = () => {
     <div>
       <div className="flex gap-2">
         <Link to="/login">
-          <Button className="bg-white" color="blue" variant="outline" highContrast>Login</Button>
+          <Button
+            className=" bg-white outline-none ring-0"
+            variant="outline"
+            highContrast
+          >
+            Login
+          </Button>
         </Link>
       </div>
     </div>

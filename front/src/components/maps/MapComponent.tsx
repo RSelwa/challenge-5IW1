@@ -1,21 +1,21 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 
-type Props = {}
+type Props = {
+  center: google.maps.LatLngLiteral
+  zoom: number
+}
 
-const MapComponent = (props: Props) => {
-  const center: google.maps.LatLngLiteral = {
-    lat: 0,
-    lng: 0
-  }
-  const zoom: number = 0
+const MapComponent = ({ center, zoom }: Props) => {
   const ref = useRef<HTMLDivElement>(null)
+  const [map, setMap] = useState<google.maps.Map>()
 
   useEffect(() => {
-    new window.google.maps.Map(ref.current!, {
-      center,
-      zoom
-    })
-  }, [])
+    console.log(zoom, center)
+
+    if (ref.current && !map) {
+      setMap(new window.google.maps.Map(ref.current, {}))
+    }
+  }, [ref, map])
 
   return <div ref={ref} id="map" />
 }

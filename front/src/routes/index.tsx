@@ -17,6 +17,7 @@ import SlotsAdmin from "@/pages/admin/slots"
 import SlotsIdAdmin from "@/pages/admin/slots/id"
 import UsersAdmin from "@/pages/admin/users"
 import UserIdAdmin from "@/pages/admin/users/id"
+import AdminHome from "@/pages/AdminHome"
 import Login from "@/pages/auth/Login"
 import Planning from "@/pages/planning"
 
@@ -47,6 +48,10 @@ const authRoutes: RouteObject[] = [
   }
 ]
 export const adminRoutes: RouteObject[] = [
+  {
+    path: "/admin",
+    element: getLayout(<AdminHome />)
+  },
   {
     path: "/admin/users",
     element: getLayout(<UsersAdmin />)
