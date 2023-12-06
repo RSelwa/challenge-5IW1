@@ -22,7 +22,7 @@ const Home = () => {
 
   return (
     <div className="bg-blue-100">
-      <div className="rounded-b-[3rem] bg-sky-500 pb-2">
+      <div className="rounded-b-[3rem] bg-blue-500 pb-2">
         <UserTitle />
         <div className="mx-auto my-8 w-min">
           <SearchButton
