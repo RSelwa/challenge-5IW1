@@ -107,14 +107,6 @@ export const adminRoutes: RouteObject[] = [
   {
     path: "/admin/employeeSpecificSchedules/:id",
     element: getLayout(<EmployeeSpecificSchedulesIdAdmin />)
-  },
-  {
-    path: "/admin/slots",
-    element: getLayout(<SlotsAdmin />)
-  },
-  {
-    path: "/admin/slots/:id",
-    element: getLayout(<SlotsIdAdmin />)
   }
 ]
 

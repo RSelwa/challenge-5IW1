@@ -13,5 +13,5 @@ export interface HeaderTable {
 }
 
 export type RowProps<T> = {
-  item: T
+  data: T
 }

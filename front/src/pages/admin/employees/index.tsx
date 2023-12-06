@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react"
-import { Button } from "@radix-ui/themes"
-import { Link } from "react-router-dom"
 import type { EmployeesWithId } from "@/types/withId"
+import { employeesHeader } from "@/constants/tableHeaders"
 import { fetchEmployees } from "@/lib/employees"
 import { fetchData } from "@/utils/db"
+import EmployeesRows from "@/components/Rows/admin/EmployeesRows"
+import Table from "@/components/Table"
 
 const EmployeesAdmin = () => {
   const [employees, setEmployees] = useState<EmployeesWithId[]>([])
@@ -12,16 +13,7 @@ const EmployeesAdmin = () => {
     fetchData(fetchEmployees(), setEmployees)
   }, [])
   return (
-    <div>
-      {employees.map((employee, index) => (
-        <div key={index}>
-          {employee.id}
-          <Link to={`/admin/employees/${employee.id}`}>
-            <Button>View</Button>
-          </Link>
-        </div>
-      ))}
-    </div>
+    <Table header={employeesHeader} Rows={EmployeesRows} dataT={employees} />
   )
 }
 

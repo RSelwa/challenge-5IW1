@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react"
-import { Button } from "@radix-ui/themes"
-import { Link } from "react-router-dom"
 import type { EmployeeSpecificSchedulesWithId } from "@/types/withId"
+import { employeesSpecificSchedulesHeader } from "@/constants/tableHeaders"
 import { fetchEmployeeSpecificSchedules } from "@/lib/employeeSpecificSchedules"
 import { fetchData } from "@/utils/db"
+import EmployeeSpecificScheduleRows from "@/components/Rows/admin/EmployeeSpecificScheduleRows"
+import Table from "@/components/Table"
 
 const EmployeeSpecificSchedulesAdmin = () => {
   const [employeeSpecificSchedules, setEmployeeSpecificSchedules] = useState<
@@ -14,18 +15,11 @@ const EmployeeSpecificSchedulesAdmin = () => {
     fetchData(fetchEmployeeSpecificSchedules(), setEmployeeSpecificSchedules)
   }, [])
   return (
-    <div>
-      {employeeSpecificSchedules.map((employeeSpecificSchedule, index) => (
-        <div key={index}>
-          {employeeSpecificSchedule.id}
-          <Link
-            to={`/admin/employeeSpecificSchedules/${employeeSpecificSchedule.id}`}
-          >
-            <Button>View</Button>
-          </Link>
-        </div>
-      ))}
-    </div>
+    <Table
+      header={employeesSpecificSchedulesHeader}
+      Rows={EmployeeSpecificScheduleRows}
+      dataT={employeeSpecificSchedules}
+    />
   )
 }
 
