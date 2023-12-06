@@ -8,7 +8,7 @@ const AdminLayout = () => {
   return (
     <Fragment>
       <DropdownMenu.Item className="DropdownMenuItem">
-        Admin layout
+        <div>Admin layout</div>
       </DropdownMenu.Item>
       <DropdownMenu.Separator className="DropdownMenuSeparator" />
       {adminRoutes

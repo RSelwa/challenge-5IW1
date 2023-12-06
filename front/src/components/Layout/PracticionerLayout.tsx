@@ -10,7 +10,7 @@ const PracticionerLayout = () => {
       className="DropdownMenuContent text-red-500"
     >
       <DropdownMenu.Item className="DropdownMenuItem">
-        Practicien layout
+        <div>employee layout</div>
       </DropdownMenu.Item>
       <DropdownMenu.Item className="DropdownMenuItem">
         <LogoutButton />

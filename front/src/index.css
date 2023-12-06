@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Roboto';
-  src: url('assets/fonts/Roboto-Regular.ttf') format('ttf');
+  font-family: "Roboto";
+  src: url("assets/fonts/Roboto-Regular.ttf") format("ttf");
   font-weight: 400;
   font-style: normal;
 }
 
 .radix-themes {
-  --default-font-family: 'Roboto', sans-serif;
+  --default-font-family: "Roboto", sans-serif;
 }
 
 button {
@@ -98,13 +98,14 @@ input[type="password"],
   position: relative;
   user-select: none;
   outline: none;
+}
+.DropdownMenuItem > * {
+  text-align: start;
+  justify-content: start;
+  display: flex;
   padding: 0 5px;
   padding-left: 25px;
-}
-.DropdownMenuItem > a {
-  display: flex;
-
-  align-items: center;
+  /* align-items: center; */
   width: 100%;
   height: 100%;
 }

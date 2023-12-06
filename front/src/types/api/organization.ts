@@ -10,4 +10,13 @@ export type Organizations = {
   status: OrganizationStatus
   establishments: EstablishmentsWithId[]
 }
+export type OrganizationPost = {
+  name: string
+  managerFirstname: string
+  managerLastname: string
+  kbisFile: string
+  siret: string
+  email: string
+  plainPassword: string
+}
 type OrganizationStatus = "PENDING"

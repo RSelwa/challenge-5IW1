@@ -6,7 +6,7 @@ const ClientLayout = () => {
   return (
     <Fragment>
       <DropdownMenu.Item className="DropdownMenuItem">
-        Simple users
+        <div>users</div>
       </DropdownMenu.Item>
       <DropdownMenu.Item className="DropdownMenuItem">
         <LogoutButton />

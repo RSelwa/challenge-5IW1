@@ -1,3 +1,5 @@
+import type { ChangeEvent } from "react"
+
 export const getImageUrlFromBlob = async (
   blob: Blob
 ): Promise<string | ArrayBuffer> => {
@@ -15,4 +17,16 @@ export const getImageUrlFromBlob = async (
 
     reader.readAsDataURL(blob)
   })
+}
+
+export const handleSelectImages = async (
+  event: ChangeEvent<HTMLInputElement>
+): Promise<void> => {
+  try {
+    const file = Array.from(event.target.files || [])[0]
+
+    await getImageUrlFromBlob(file)
+  } catch (error) {
+    console.error(error)
+  }
 }

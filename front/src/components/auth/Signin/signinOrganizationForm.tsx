@@ -1,26 +1,26 @@
-import React, { ChangeEvent } from "react"
+import React from "react"
 import { Button } from "@radix-ui/themes"
 import { useForm } from "react-hook-form"
-import { SigninOrgaFormData } from "@/types/formData"
-import { getImageUrlFromBlob } from "@/utils/file"
+import type { SigninOrgaFormData } from "@/types/formData"
+import { postOrganization } from "@/lib/organizations"
+import { postData } from "@/utils/db"
 
-const SigninEntreprises = () => {
-  const { handleSubmit, register, setValue } = useForm<SigninOrgaFormData>()
-  const handleSelectImages = async (
-    event: ChangeEvent<HTMLInputElement>
-  ): Promise<void> => {
-    try {
-      console.log("eereee")
-
-      const file = Array.from(event.target.files || [])[0]
-      const urlKbis = await getImageUrlFromBlob(file)
-      setValue("kbisFile", urlKbis as string)
-    } catch (error) {
-      console.error(error)
+const SigninOrganizationForm = () => {
+  const { handleSubmit, register } = useForm<SigninOrgaFormData>({
+    defaultValues: {
+      email: "test@yopmail.com",
+      managerFirstname: "first",
+      managerLastname: "last",
+      name: "name",
+      plainPassword: "test",
+      siret: "siret"
     }
-  }
+  })
 
-  const onSubmit = (data: SigninOrgaFormData) => console.log(data)
+  const onSubmit = (data: SigninOrgaFormData) =>
+    postData(postOrganization(data))
+  // formDataHeader(data)
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2 gap-4">
       <input
@@ -63,17 +63,20 @@ const SigninEntreprises = () => {
       <input
         required
         type="file"
-        onChange={handleSelectImages}
+        // onChange={handleSelectImages}
+        {...register("kbisFile")}
         id="kbis"
         className="hidden"
         accept="application/pdf"
-        // {...register("kbisFile")}
       />
-      <Button color="amber" className="col-span-2 w-full" type="submit">
+      <Button
+        className="col-span-2 w-full bg-amber-500 text-neutral-800"
+        type="submit"
+      >
         Submit
       </Button>
     </form>
   )
 }
 
-export default SigninEntreprises
+export default SigninOrganizationForm
