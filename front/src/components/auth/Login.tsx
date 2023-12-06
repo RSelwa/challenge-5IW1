@@ -42,7 +42,10 @@ const LoginWithPassword = () => {
           type="password"
           {...register("password")}
         />
-        <Button color="amber" type="submit">
+        <Button
+          className="bg-amber-500 font-bold text-neutral-800"
+          type="submit"
+        >
           {handleSubmitTextDb(db || "")}
         </Button>
       </form>

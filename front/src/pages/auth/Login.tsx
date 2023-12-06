@@ -1,12 +1,11 @@
 import React from "react"
 import * as Accordion from "@radix-ui/react-accordion"
 import LoginWithPassword from "@/components/auth/Login"
-import SigninEntreprises from "@/components/auth/Signin/entreprises"
 import SigninUsers from "@/components/auth/Signin/users"
 
 const Login = () => {
   return (
-    <div className="h-full bg-blue-50">
+    <div className="h-[calc(100vh-64px)] bg-blue-50">
       <Accordion.Root
         className="flex flex-col gap-8 py-8"
         type="single"
@@ -35,7 +34,7 @@ const Login = () => {
             <SigninUsers />
           </Accordion.Content>
         </Accordion.Item>
-        <Accordion.Item
+        {/* <Accordion.Item
           className="mx-auto w-1/2 rounded bg-white p-4"
           value="organisation"
         >
@@ -45,7 +44,7 @@ const Login = () => {
           <Accordion.Content className="mt-6">
             <SigninEntreprises />
           </Accordion.Content>
-        </Accordion.Item>
+        </Accordion.Item> */}
       </Accordion.Root>
     </div>
   )
