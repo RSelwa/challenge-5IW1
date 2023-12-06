@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from "react"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { Wrapper } from "@googlemaps/react-wrapper"
 import type { SearchResponse } from "@/lib/search"
 import { fetchSearch } from "@/lib/search"
@@ -14,11 +14,12 @@ const Home = () => {
 
   const [searchQuery, setSearchQuery] = useState("")
 
-  useEffect(() => {
+  const submit = (searchQuery: string) => {
+    console.log(searchQuery)
     fetchData(fetchSearch(), [setResultsSearch] as Dispatch<
       SetStateAction<SearchResponse[]>
     >[])
-  }, [])
+  }
 
   return (
     <div className="min-h-[calc(100vh-64px)] bg-blue-100">
@@ -28,6 +29,7 @@ const Home = () => {
           <SearchButton
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
+            onClick={submit}
           />
         </div>
       </div>
@@ -37,11 +39,9 @@ const Home = () => {
       >
         <p className="col-span-2 font-bold">{resultsSearch.length} résultats</p>
         <div className=" flex w-full flex-col gap-5 overflow-y-auto p-1 ">
-          {(resultsSearch.length ? Array(14).fill(resultsSearch[0]) : []).map(
-            (search, index) => (
-              <SearchResult searchResult={search} key={index} />
-            )
-          )}
+          {resultsSearch.map((search, index) => (
+            <SearchResult searchResult={search} key={index} />
+          ))}
         </div>
         <Wrapper apiKey={import.meta.env.VITE_KEY_GOOGLE_MAPS || ""}>
           <MapComponent />
