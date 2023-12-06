@@ -9,9 +9,10 @@ import {
 type Props = {
   searchQuery: string
   setSearchQuery: Dispatch<SetStateAction<string>>
+  onClick: (searchQuery: string) => void
 }
 
-const SearchButton = ({ searchQuery, setSearchQuery }: Props) => {
+const SearchButton = ({ searchQuery, setSearchQuery, onClick }: Props) => {
   return (
     <div className="flex w-fit items-center rounded-full bg-white  ring-4 ring-white  ">
       <div className="flex h-full items-center gap-1 rounded-l-full  border-r-2 border-gray-200 pl-4 text-base ">
@@ -42,7 +43,7 @@ const SearchButton = ({ searchQuery, setSearchQuery }: Props) => {
       <button
         className="group flex items-center gap-3 rounded-r-full bg-blue-950 px-4  py-1 text-end text-white hover:bg-blue-700"
         type="button"
-        onClick={() => console.log(searchQuery)}
+        onClick={() => onClick(searchQuery)}
       >
         Rechercher{" "}
         <ChevronRightIcon
