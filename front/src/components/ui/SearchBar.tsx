@@ -6,17 +6,27 @@ import {
   SewingPinIcon
 } from "@radix-ui/react-icons"
 import { usePlacesWidget } from "react-google-autocomplete"
+import type { SearchQuery } from "@/types"
 
 type Props = {
-  searchQuery: string
-  setSearchQuery: Dispatch<SetStateAction<string>>
-  onClick: (searchQuery: string) => void
+  searchQuery: SearchQuery
+  setSearchQuery: Dispatch<SetStateAction<SearchQuery>>
+  onClick: (searchQuery: SearchQuery) => void
 }
 
 const SearchButton = ({ searchQuery, setSearchQuery, onClick }: Props) => {
   const { ref } = usePlacesWidget({
     apiKey: import.meta.env.VITE_KEY_GOOGLE_MAPS,
-    onPlaceSelected: (place) => console.log(place)
+    onPlaceSelected: (place) => {
+      const newLocalisation =
+        place.address_components && place.address_components.length > 0
+          ? place.address_components[0].long_name
+          : ""
+      setSearchQuery((prevState) => ({
+        ...prevState,
+        localisation: newLocalisation
+      }))
+    }
   })
   return (
     <div className="flex w-fit items-center rounded-full bg-white  ring-4 ring-white  ">
@@ -29,7 +39,12 @@ const SearchButton = ({ searchQuery, setSearchQuery, onClick }: Props) => {
           placeholder="Nom, spécialité, établissement,..."
           type="search"
           id="searchInput"
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) =>
+            setSearchQuery((prevState) => ({
+              ...prevState,
+              service: e.target.value
+            }))
+          }
         />
       </div>
       <div className="flex h-full items-center gap-1 pl-4">
@@ -41,7 +56,12 @@ const SearchButton = ({ searchQuery, setSearchQuery, onClick }: Props) => {
           placeholder="Où ?"
           type="search"
           id="searchInput"
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={(e) =>
+            setSearchQuery((prevState) => ({
+              ...prevState,
+              localisation: e.target.value
+            }))
+          }
           ref={ref}
         />
       </div>

@@ -6,15 +6,19 @@ import { fetchSearch } from "@/lib/search"
 import { fetchData } from "@/utils/db"
 import MapComponent from "@/components/maps/MapComponent"
 import SearchResult from "@/components/Rows/search/SearchResult"
-import SearchButton from "@/components/ui/SearchButton"
+import SearchButton from "@/components/ui/SearchBar"
 import UserTitle from "@/components/ui/UserTitle"
+import type { SearchQuery } from "@/types"
 
 const Home = () => {
   const [resultsSearch, setResultsSearch] = useState<SearchResponse[]>([])
 
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState<SearchQuery>({
+    service: "",
+    localisation: ""
+  })
 
-  const submit = (searchQuery: string) => {
+  const submit = (searchQuery: SearchQuery) => {
     console.log(searchQuery)
     fetchData(fetchSearch(), [setResultsSearch] as Dispatch<
       SetStateAction<SearchResponse[]>
@@ -38,7 +42,7 @@ const Home = () => {
         style={{ gridTemplateColumns: "2fr 1fr" }}
       >
         <p className="col-span-2 font-bold">{resultsSearch.length} résultats</p>
-        <div className=" flex w-full flex-col gap-5 overflow-y-auto p-1 ">
+        <div className=" flex min-h-[200px] w-full flex-col gap-5 overflow-y-auto p-1">
           {resultsSearch.map((search, index) => (
             <SearchResult searchResult={search} key={index} />
           ))}
