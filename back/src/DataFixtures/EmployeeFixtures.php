@@ -4,20 +4,23 @@ namespace App\DataFixtures;
 
 use App\Entity\Employee;
 use App\DataFixtures\EstablishmentFixtures;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Uid\Uuid;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class EmployeeFixtures extends Fixture implements DependentFixtureInterface
 {
     const EMPLOYEE_REFERENCE = "antoine-dupont";
+
     private $passwordHasher = null;
-    
+
     public function __construct(UserPasswordHasherInterface $passwordHasher)
     {
         $this->passwordHasher = $passwordHasher;
     }
+    
     public function getDependencies()
     {
         return array(
@@ -29,6 +32,7 @@ class EmployeeFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $employee = new Employee();
+        $employee->setId(Uuid::v4());
         $employee->setFirstname("Antoine");
         $employee->setLastname("Dupont");
         $employee->setEstablishment($this->getReference(EstablishmentFixtures::ESTABLISHMENT_REFERENCE));
