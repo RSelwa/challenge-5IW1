@@ -66,12 +66,13 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     private ?Service $service = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['employee:read', 'employee:write'])]
+    #[Groups(['establishment:read', 'employee:read', 'employee:write'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
     private ?string $password = null;
-    private ?array $roles = ['ROLE_EMPLOYEE'];
+
+    private ?array $roles = ['ROLE_ORGANIZATION'];
 
     #[Groups(['employee:write'])]
     private ?string $plainPassword = null;
