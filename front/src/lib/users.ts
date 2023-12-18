@@ -22,3 +22,18 @@ export const fetchUser = async (id: string): Promise<UsersWithId> => {
   const user: UsersWithId = await response.json()
   return user
 }
+
+export const editUser = async (user: UsersWithId) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}${USER_API_ROUTES}/${user.id}`,
+      requestOptions({ method: "PATCH", body: JSON.stringify(user) })
+    )
+    if (!response.ok) throw new Error("Something went wrong")
+
+    const users = await response.json()
+    return users
+  } catch (error) {
+    console.error(error)
+  }
+}
