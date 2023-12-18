@@ -8,13 +8,14 @@ export const requestOptions = ({
   body,
   headers
 }: {
-  method: "POST" | "GET"
+  method: "POST" | "GET" | "PATCH"
   headers?: Headers
   data?: any
   body?: BodyInit
 }): RequestInit => {
   const newHeader = new Headers()
-  newHeader.append("Content-Type", "application/json")
+  // newHeader.append("Content-Type", "application/json")
+  newHeader.append("Content-Type", "application/merge-patch+json")
 
   return {
     method: method,

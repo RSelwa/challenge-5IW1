@@ -17,6 +17,7 @@ import { fetchOrganizations } from "@/lib/organizations"
 import { fetchServices } from "@/lib/services"
 import { fetchSlots } from "@/lib/slots"
 import { fetchUsers } from "@/lib/users"
+import UserEdit from "@/components/admin/UserEdit"
 import AdminView from "@/components/AdminView"
 import Layout from "@/components/Layout"
 import EmployeeSpecificScheduleRows from "@/components/Rows/admin/EmployeeSpecificScheduleRows"
@@ -34,7 +35,6 @@ import EstablishmentsIdAdmin from "@/pages/admin/establishments/id"
 import OrganizationsIdAdmin from "@/pages/admin/organizations/id"
 import ServicesIdAdmin from "@/pages/admin/services/id"
 import SlotsIdAdmin from "@/pages/admin/slots/id"
-import UserIdAdmin from "@/pages/admin/users/id"
 import AdminHome from "@/pages/AdminHome"
 import Login from "@/pages/auth/Login"
 import SigninOrganization from "@/pages/auth/SigninOrganisation"
@@ -94,7 +94,7 @@ export const adminRoutes: RouteObject[] = [
   },
   {
     path: "/admin/users/:id",
-    element: getLayout(<UserIdAdmin />)
+    element: getLayout(<UserEdit />)
   },
   {
     path: "/admin/slots",
