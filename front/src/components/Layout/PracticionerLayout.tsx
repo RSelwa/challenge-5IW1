@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 import React from "react"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import LogoutButton from "@/components/Layout/logoutButton"
@@ -21,12 +20,3 @@ const PracticionerLayout = () => {
 }
 
 export default PracticionerLayout
-=======
-import React from "react"
-
-const PracticionerLayout = () => {
-  return <div>PracticionerLayout</div>
-}
-
-export default PracticionerLayout
->>>>>>> Stashed changes

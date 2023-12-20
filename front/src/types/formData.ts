@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 export type LoginFormData = { email: string; password: string }
 export type SigninUserFormData = {
   email: string
@@ -17,6 +16,3 @@ export type SigninOrgaFormData = {
   email: string
   plainPassword: string
 }
-=======
-export type LoginFormData = { email: string; password: string }
->>>>>>> Stashed changes
