@@ -265,7 +265,7 @@ class Organization implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
 
-        $roles[] = 'ROLE_USER';
+        $roles[] = 'ROLE_ORGANIZATION';
 
         return array_unique($roles);
     }

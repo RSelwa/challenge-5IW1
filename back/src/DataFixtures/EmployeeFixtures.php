@@ -8,10 +8,18 @@ use Symfony\Component\Uid\Uuid;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class EmployeeFixtures extends Fixture implements DependentFixtureInterface
 {
     const EMPLOYEE_REFERENCE = "antoine-dupont";
+
+    private $passwordHasher = null;
+
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    {
+        $this->passwordHasher = $passwordHasher;
+    }
     
     public function getDependencies()
     {
@@ -29,6 +37,8 @@ class EmployeeFixtures extends Fixture implements DependentFixtureInterface
         $employee->setLastname("Dupont");
         $employee->setEstablishment($this->getReference(EstablishmentFixtures::ESTABLISHMENT_REFERENCE));
         $employee->setService($this->getReference(ServiceFixtures::SERVICE_REFERENCE));
+        $employee->setEmail("employee@test.fr");
+        $employee->setPassword($this->passwordHasher->hashPassword($employee, "test"));
 
         $this->addReference(self::EMPLOYEE_REFERENCE, $employee);
 

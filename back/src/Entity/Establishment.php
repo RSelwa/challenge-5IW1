@@ -54,6 +54,12 @@ class Establishment
     #[Groups(['organization:read', 'establishment:read'])]
     private Collection $employees;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $latitude = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $longitude = null;
+
     public function __construct()
     {
         $this->employees = new ArrayCollection();
@@ -169,6 +175,30 @@ class Establishment
                 $employee->setEstablishment(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLatitude(): ?string
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?string $latitude): static
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getLongitude(): ?string
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(?string $longitude): static
+    {
+        $this->longitude = $longitude;
 
         return $this;
     }

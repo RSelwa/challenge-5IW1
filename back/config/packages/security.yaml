@@ -15,13 +15,17 @@ security:
             entity:
                 class: App\Entity\Organization
                 property: email
+        employee_provider:
+            entity:
+                class: App\Entity\Employee
+                property: email
         admin_provider:
             entity:
                 class: App\Entity\Admin
                 property: email
         users:
             chain: 
-                providers: ['user_provider', 'organization_provider', 'admin_provider']
+                providers: ['user_provider', 'organization_provider', 'employee_provider', 'admin_provider']
             
     firewalls:
         dev:
