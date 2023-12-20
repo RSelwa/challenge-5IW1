@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 {
   "$schema": "https://json.schemastore.org/eslintrc",
   "parser": "@typescript-eslint/parser",
@@ -70,69 +69,3 @@
     }
   }
 }
-=======
-{
-  "$schema": "https://json.schemastore.org/eslintrc",
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": { "sourceType": "module" },
-  "env": { "es6": true },
-  "extends": [
-    "plugin:import/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:tailwindcss/recommended",
-    "prettier"
-  ],
-  "plugins": ["@typescript-eslint", "typescript-sort-keys", "unused-imports"],
-  "rules": {
-    "unused-imports/no-unused-imports": "error",
-    "unused-imports/no-unused-vars": [
-      "warn",
-      {
-        "vars": "all",
-        "varsIgnorePattern": "^_",
-        "args": "after-used",
-        "argsIgnorePattern": "^_"
-      }
-    ],
-    "no-restricted-imports": [
-      "error",
-      {
-        "name": "tailwind-merge",
-        "importNames": ["twMerge"],
-        "message": "Please import 'cn' from '@/utils' instead."
-      },
-      {
-        "name": "lodash",
-        "importNames": ["_"],
-        "message": "Please import direct module like this import [module] from 'lodash/[module]' instead."
-      }
-    ],
-    "@typescript-eslint/consistent-type-imports": [
-      "warn",
-      { "prefer": "type-imports" }
-    ],
-    "prefer-const": "error",
-    "space-before-function-paren": [
-      "error",
-      {
-        "anonymous": "always",
-        "named": "never",
-        "asyncArrow": "always"
-      }
-    ],
-    "comma-dangle": ["error", "never"],
-    "react/no-unescaped-entities": "off",
-    "@next/next/no-img-element": "off",
-    "react-hooks/rules-of-hooks": "off",
-    "@next/next/no-sync-scripts": "off",
-    "object-curly-newline": "off",
-    "react-hooks/exhaustive-deps": "off",
-    "max-depth": ["error", 4],
-    // "import/first": ["error", "absolute-first"],
-    "@typescript-eslint/no-non-null-asserted-optional-chain": "warn",
-    "@typescript-eslint/no-non-null-assertion": "warn",
-    "@typescript-eslint/no-explicit-any": "off",
-    "tailwindcss/no-custom-classname": "off"
-  }
-}
->>>>>>> Stashed changes

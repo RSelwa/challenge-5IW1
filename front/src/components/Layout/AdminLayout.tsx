@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 import React, { Fragment } from "react"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { Link } from "react-router-dom"
@@ -30,12 +29,3 @@ const AdminLayout = () => {
 }
 
 export default AdminLayout
-=======
-import React from "react"
-
-const AdminLayout = () => {
-  return <div>AdminLayout</div>
-}
-
-export default AdminLayout
->>>>>>> Stashed changes
