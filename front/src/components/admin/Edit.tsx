@@ -1,16 +1,19 @@
 import React, { Fragment, useState } from "react"
 import * as Form from "@radix-ui/react-form"
-import { FormMessageProps } from "@radix-ui/react-form"
+import type { FormMessageProps } from "@radix-ui/react-form"
 import { Button } from "@radix-ui/themes"
 import type { FieldValues, Path, UseFormRegister } from "react-hook-form"
 import { useForm } from "react-hook-form"
+import toast from "react-hot-toast"
+import { cn } from "@/utils"
 
 type Props<T> = {
   data: T
   onSubmit: (data: T) => Promise<void>
+  dataKeyException: string[]
 }
 
-const Edit = <T,>({ data, onSubmit }: Props<T>) => {
+const Edit = <T,>({ data, onSubmit, dataKeyException }: Props<T>) => {
   const [isEdit, setIsEdit] = useState(false)
 
   const { register, getValues, reset } = useForm({
@@ -26,16 +29,30 @@ const Edit = <T,>({ data, onSubmit }: Props<T>) => {
     <Form.Root
       onSubmit={(e) => {
         e.preventDefault()
-        onSubmit(getValues() as T)
+        toast.promise(onSubmit(getValues() as T), {
+          error: "error",
+          loading: "Loading...",
+          success: "success"
+        })
         setIsEdit(false)
       }}
     >
-      <FormItem
-        isEdit={isEdit}
-        name="email"
-        label="Email"
-        register={register}
-      />
+      {Object.entries(data as any)
+        .filter(([key]) => !dataKeyException.includes(key))
+        .map(([key, value], index) => {
+          console.log(key, value)
+
+          return (
+            <FormItem
+              type={typeof value}
+              key={index}
+              isEdit={isEdit}
+              name={key}
+              label={key}
+              register={register}
+            />
+          )
+        })}
       <div>
         {isEdit ? (
           <Fragment>
@@ -44,10 +61,12 @@ const Edit = <T,>({ data, onSubmit }: Props<T>) => {
               className="bg-red-500"
               onClick={cancelChanges}
             >
-              Cancel{" "}
+              Cancel
             </Button>
             <Form.Submit asChild>
-              <Button className="bg-green-500">Save</Button>
+              <Button type="submit" className="bg-green-500">
+                Save
+              </Button>
             </Form.Submit>
           </Fragment>
         ) : (
@@ -71,21 +90,46 @@ const FormItem = <T,>({
   isEdit,
   register,
   name,
-  formMessages
+  formMessages,
+  type
 }: {
   label: string
   isEdit: boolean
   register: UseFormRegister<FieldValues>
   name: string
   formMessages?: FormMessageProps[]
+  type?:
+    | "string"
+    | "number"
+    | "bigint"
+    | "boolean"
+    | "symbol"
+    | "undefined"
+    | "object"
+    | "function"
 }) => {
+  const matchingType = (): "text" | "number" | "email" => {
+    switch (type) {
+      case "string":
+        return name === "email" ? "email" : "text"
+      case "number":
+        return "number"
+
+      default:
+        return "text"
+    }
+  }
+
   return (
     <Form.Field name="test">
       <Form.Label>{label} </Form.Label>
       <Form.Control
         disabled={!isEdit}
-        type="email"
+        type={matchingType()}
         required
+        className={cn(
+          isEdit ? "" : "cursor-default border-x-0 border-b-2 border-t-0"
+        )}
         {...register(name as Path<T>)}
       />
       {formMessages?.map((formMessage, index) => (
@@ -97,12 +141,16 @@ const FormItem = <T,>({
           {formMessage.name}
         </Form.Message>
       ))}
-      {/* <Form.Message className="FormMessage" match="valueMissing">
-        Please enter your email
-      </Form.Message>
-      <Form.Message className="FormMessage" match="typeMismatch">
-        Please provide a valid email
-      </Form.Message> */}
+      {name === "email" && (
+        <Fragment>
+          <Form.Message className="FormMessage" match="valueMissing">
+            Please enter your email
+          </Form.Message>
+          <Form.Message className="FormMessage" match="typeMismatch">
+            Please provide a valid email
+          </Form.Message>
+        </Fragment>
+      )}
     </Form.Field>
   )
 }
