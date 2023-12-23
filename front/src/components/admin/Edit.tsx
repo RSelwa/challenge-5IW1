@@ -39,20 +39,16 @@ const Edit = <T,>({ data, onSubmit, dataKeyException }: Props<T>) => {
     >
       {Object.entries(data as any)
         .filter(([key]) => !dataKeyException.includes(key))
-        .map(([key, value], index) => {
-          console.log(key, value)
-
-          return (
-            <FormItem
-              type={typeof value}
-              key={index}
-              isEdit={isEdit}
-              name={key}
-              label={key}
-              register={register}
-            />
-          )
-        })}
+        .map(([key, value], index) => (
+          <FormItem
+            type={typeof value}
+            key={index}
+            isEdit={isEdit}
+            name={key}
+            label={key}
+            register={register}
+          />
+        ))}
       <div>
         {isEdit ? (
           <Fragment>

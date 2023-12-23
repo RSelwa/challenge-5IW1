@@ -29,3 +29,21 @@ export const fetchEmployeeSpecificSchedule = async (
   const organization: EmployeeSpecificSchedulesWithId = await response.json()
   return organization
 }
+export const editEmployeeSpecificSchedule = async (
+  employeeSpecificSchedule: EmployeeSpecificSchedulesWithId
+) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}${EMPLOYEESPECIFICSCHEDULE_API_ROUTES}/${
+        employeeSpecificSchedule.id
+      }`,
+      requestOptions({
+        method: "PATCH",
+        body: JSON.stringify(employeeSpecificSchedule)
+      })
+    )
+    if (!response.ok) throw new Error("Something went wrong")
+  } catch (error) {
+    console.error(error)
+  }
+}
