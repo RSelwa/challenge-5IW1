@@ -11,12 +11,24 @@ import {
   slotsHeader,
   usersHeader
 } from "@/constants/tableHeaders"
-import { fetchEmployee, fetchEmployees } from "@/lib/employees"
-import { fetchEmployeeSpecificSchedules } from "@/lib/employeeSpecificSchedules"
-import { fetchEstablishments } from "@/lib/establishments"
-import { fetchOrganizations } from "@/lib/organizations"
-import { fetchServices } from "@/lib/services"
-import { fetchSlot, fetchSlots } from "@/lib/slots"
+import { editEmployee, fetchEmployee, fetchEmployees } from "@/lib/employees"
+import {
+  editEmployeeSpecificSchedule,
+  fetchEmployeeSpecificSchedule,
+  fetchEmployeeSpecificSchedules
+} from "@/lib/employeeSpecificSchedules"
+import {
+  editEstablishment,
+  fetchEstablishment,
+  fetchEstablishments
+} from "@/lib/establishments"
+import {
+  editOrganization,
+  fetchOrganization,
+  fetchOrganizations
+} from "@/lib/organizations"
+import { editService, fetchService, fetchServices } from "@/lib/services"
+import { editSlot, fetchSlot, fetchSlots } from "@/lib/slots"
 import { editUser, fetchUser, fetchUsers } from "@/lib/users"
 import ItemId from "@/components/admin/ItemId"
 import AdminView from "@/components/AdminView"
@@ -30,10 +42,6 @@ import SlotsRows from "@/components/Rows/admin/SlotsRows"
 import UsersRowsAdmin from "@/components/Rows/admin/UsersRows"
 import Error from "@/components/ui/Error"
 import App from "@/App"
-import EmployeeSpecificSchedulesIdAdmin from "@/pages/admin/employeeSpecificSchedules/id"
-import EstablishmentsIdAdmin from "@/pages/admin/establishments/id"
-import OrganizationsIdAdmin from "@/pages/admin/organizations/id"
-import ServicesIdAdmin from "@/pages/admin/services/id"
 import AdminHome from "@/pages/AdminHome"
 import Login from "@/pages/auth/Login"
 import SigninOrganization from "@/pages/auth/SigninOrganisation"
@@ -90,16 +98,7 @@ export const adminRoutes: RouteObject[] = [
       />
     )
   },
-  {
-    path: "/admin/users/:id",
-    element: getLayout(
-      <ItemId
-        fetchItem={fetchUser}
-        dataKeyException={USER_KEY_EXCEPTION}
-        editFunctions={editUser}
-      />
-    )
-  },
+
   {
     path: "/admin/slots",
     element: getLayout(
@@ -110,16 +109,7 @@ export const adminRoutes: RouteObject[] = [
       />
     )
   },
-  {
-    path: "/admin/slots/:id",
-    element: getLayout(
-      <ItemId
-        fetchItem={fetchSlot}
-        dataKeyException={DEFAULT_KEY_EXCEPTION}
-        editFunctions={async () => console.log("edit slot")}
-      />
-    )
-  },
+
   {
     path: "/admin/services",
     element: getLayout(
@@ -130,10 +120,7 @@ export const adminRoutes: RouteObject[] = [
       />
     )
   },
-  {
-    path: "/admin/services/:id",
-    element: getLayout(<ServicesIdAdmin />)
-  },
+
   {
     path: "/admin/organizations",
     element: getLayout(
@@ -144,10 +131,7 @@ export const adminRoutes: RouteObject[] = [
       />
     )
   },
-  {
-    path: "/admin/organizations/:id",
-    element: getLayout(<OrganizationsIdAdmin />)
-  },
+
   {
     path: "/admin/establishments",
     element: getLayout(
@@ -158,10 +142,7 @@ export const adminRoutes: RouteObject[] = [
       />
     )
   },
-  {
-    path: "/admin/establishments/:id",
-    element: getLayout(<EstablishmentsIdAdmin />)
-  },
+
   {
     path: "/admin/employees",
     element: getLayout(
@@ -172,16 +153,7 @@ export const adminRoutes: RouteObject[] = [
       />
     )
   },
-  {
-    path: "/admin/employees/:id",
-    element: getLayout(
-      <ItemId
-        fetchItem={fetchEmployee}
-        dataKeyException={DEFAULT_KEY_EXCEPTION}
-        editFunctions={async () => console.log("edit employee")}
-      />
-    )
-  },
+
   {
     path: "/admin/employeeSpecificSchedules",
     element: getLayout(
@@ -193,8 +165,74 @@ export const adminRoutes: RouteObject[] = [
     )
   },
   {
+    path: "/admin/users/:id",
+    element: getLayout(
+      <ItemId
+        fetchItem={fetchUser}
+        dataKeyException={USER_KEY_EXCEPTION}
+        editFunctions={editUser}
+      />
+    )
+  },
+  {
+    path: "/admin/slots/:id",
+    element: getLayout(
+      <ItemId
+        fetchItem={fetchSlot}
+        dataKeyException={DEFAULT_KEY_EXCEPTION}
+        editFunctions={editSlot}
+      />
+    )
+  },
+  {
+    path: "/admin/services/:id",
+    element: getLayout(
+      <ItemId
+        fetchItem={fetchService}
+        dataKeyException={DEFAULT_KEY_EXCEPTION}
+        editFunctions={editService}
+      />
+    )
+  },
+  {
+    path: "/admin/organizations/:id",
+    element: getLayout(
+      <ItemId
+        fetchItem={fetchOrganization}
+        dataKeyException={DEFAULT_KEY_EXCEPTION}
+        editFunctions={editOrganization}
+      />
+    )
+  },
+  {
+    path: "/admin/establishments/:id",
+    element: getLayout(
+      <ItemId
+        fetchItem={fetchEstablishment}
+        dataKeyException={DEFAULT_KEY_EXCEPTION}
+        editFunctions={editEstablishment}
+      />
+    )
+  },
+  {
+    path: "/admin/employees/:id",
+    element: getLayout(
+      <ItemId
+        fetchItem={fetchEmployee}
+        dataKeyException={DEFAULT_KEY_EXCEPTION}
+        editFunctions={editEmployee}
+      />
+    )
+  },
+  {
     path: "/admin/employeeSpecificSchedules/:id",
-    element: getLayout(<EmployeeSpecificSchedulesIdAdmin />)
+    element: getLayout(
+      <ItemId
+        fetchItem={fetchEmployeeSpecificSchedule}
+        dataKeyException={DEFAULT_KEY_EXCEPTION}
+        editFunctions={editEmployeeSpecificSchedule}
+      />
+    )
   }
 ]
 

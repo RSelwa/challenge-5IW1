@@ -22,3 +22,14 @@ export const fetchService = async (id: string): Promise<ServicesWithId> => {
   const service: ServicesWithId = await response.json()
   return service
 }
+export const editService = async (service: ServicesWithId) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}${SERVICE_API_ROUTES}/${service.id}`,
+      requestOptions({ method: "PATCH", body: JSON.stringify(service) })
+    )
+    if (!response.ok) throw new Error("Something went wrong")
+  } catch (error) {
+    console.error(error)
+  }
+}
