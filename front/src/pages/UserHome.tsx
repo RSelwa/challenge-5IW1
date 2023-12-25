@@ -1,12 +1,11 @@
 import type { Dispatch, SetStateAction } from "react"
 import React, { useState } from "react"
-import { Wrapper } from "@googlemaps/react-wrapper"
 import type { SearchResponse } from "@/lib/search"
 import { fetchSearch } from "@/lib/search"
 import { fetchData } from "@/utils/db"
 import MapComponent from "@/components/maps/MapComponent"
 import SearchResult from "@/components/Rows/search/SearchResult"
-import SearchButton from "@/components/ui/SearchBar"
+import SearchBar from "@/components/ui/SearchBar"
 import UserTitle from "@/components/ui/UserTitle"
 import type { SearchQuery } from "@/types"
 
@@ -30,7 +29,7 @@ const Home = () => {
       <div className="rounded-b-[3rem] bg-blue-500 pb-2">
         <UserTitle />
         <div className="mx-auto my-8 w-min">
-          <SearchButton
+          <SearchBar
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
             onClick={submit}
@@ -47,9 +46,7 @@ const Home = () => {
             <SearchResult searchResult={search} key={index} />
           ))}
         </div>
-        <Wrapper apiKey={import.meta.env.VITE_KEY_GOOGLE_MAPS || ""}>
-          <MapComponent />
-        </Wrapper>
+        <MapComponent />
       </div>
     </div>
   )

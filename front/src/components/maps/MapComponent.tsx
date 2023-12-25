@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react"
-import GoogleMapReact from "google-map-react"
+import React, { useContext, useEffect, useState } from "react"
 import type { MapsLocationData } from "@/types/maps"
 import { defaultLocation } from "@/constants/maps"
+import { GoogleMap } from '@react-google-maps/api';
+import { GoogleMapAPIContext } from "@/App";
 
 const MapComponent = () => {
+  const { isLoaded } = useContext(GoogleMapAPIContext)
   const [userLocation, setUserLocation] =
     useState<MapsLocationData>(defaultLocation)
 
@@ -14,19 +16,26 @@ const MapComponent = () => {
     })
   }
 
+  const containerStyle = {
+    width: '400px',
+    height: '400px'
+  };
+  
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(getCurrentPositionSuccess)
   }, [])
 
   return (
-    // Important! Always set the container height explicitly
-    <div className="sticky top-3 h-full max-h-[600px] w-full self-start  ">
-      <GoogleMapReact
-        bootstrapURLKeys={{ key: import.meta.env.VITE_KEY_GOOGLE_MAPS }}
-        defaultCenter={defaultLocation}
-        defaultZoom={14}
-        center={userLocation}
-      />
+    <div className="sticky top-3 h-full max-h-[600px] w-full self-start">
+      {isLoaded ? (
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={userLocation}
+          zoom={15}
+        >
+        </GoogleMap>
+      ) : <></>
+    }
     </div>
   )
 }
