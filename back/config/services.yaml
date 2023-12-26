@@ -43,4 +43,5 @@ services:
         bind:
             $processor: '@api_platform.doctrine.orm.state.persist_processor'
 
-    
+    App\Controller\EmailController:
+        tags: ['controller.service_arguments']

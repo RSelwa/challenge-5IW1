@@ -9,11 +9,10 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use ApiPlatform\Core\Annotation\ApiResource; 
 
 
 
-#[ApiResource]
+#[AsController]
 class EmailController
 {
     private $mailer;

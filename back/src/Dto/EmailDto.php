@@ -8,17 +8,18 @@ use ApiPlatform\Metadata\Post;
 use App\Controller\EmailController; 
 
 #[ApiResource(
+    denormalizationContext: ['groups' => ['email']],
+    normalizationContext: ['groups' => ['email']],
     operations:[
         new Post(
             controller: EmailController::class,
             output: false,
-            denormalization_context: ['groups' => ['email']],
         )
         ],
-    normalizationContext: ['groups' => ['email']],
+    
 )]
 
-class Email
+class EmailDto
 
 {
     #[Groups(['email'])]
