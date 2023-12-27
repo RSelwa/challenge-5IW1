@@ -1,17 +1,16 @@
 import type { Dispatch, SetStateAction } from "react"
 import React, { useState } from "react"
-import type { SearchResponse } from "@/lib/search"
 import { fetchSearch } from "@/lib/search"
 import { fetchData } from "@/utils/db"
-import MapComponent from "@/components/maps/MapComponent"
+import Map from "@/components/maps/Map"
 import SearchResult from "@/components/Rows/search/SearchResult"
 import SearchBar from "@/components/ui/SearchBar"
 import UserTitle from "@/components/ui/UserTitle"
 import type { SearchQuery } from "@/types"
+import type { EmployeesWithId } from "@/types/withId"
 
 const Home = () => {
-  const [resultsSearch, setResultsSearch] = useState<SearchResponse[]>([])
-
+  const [resultsSearch, setResultsSearch] = useState<EmployeesWithId[]>([])
   const [searchQuery, setSearchQuery] = useState<SearchQuery>({
     service: "",
     localisation: ""
@@ -20,7 +19,7 @@ const Home = () => {
   const submit = (searchQuery: SearchQuery) => {
     console.log(searchQuery)
     fetchData(fetchSearch(), [setResultsSearch] as Dispatch<
-      SetStateAction<SearchResponse[]>
+      SetStateAction<EmployeesWithId[]>
     >[])
   }
 
@@ -46,7 +45,7 @@ const Home = () => {
             <SearchResult searchResult={search} key={index} />
           ))}
         </div>
-        <MapComponent />
+        <Map employeeList={resultsSearch}/>
       </div>
     </div>
   )

@@ -2,11 +2,17 @@ import { createSlice } from "@reduxjs/toolkit"
 import type { PayloadAction } from "@reduxjs/toolkit"
 import type { reduxStatus, reduxUserFront } from "@/types/redux/user"
 import type { RootState } from "@/redux/store"
+import type { MapsPlaceData } from "@/types/maps"
+import { defaultLocation } from "@/constants/maps"
 
 // Define the initial state using that type
 const initialState: reduxUserFront = {
   email: "",
-  status: ["VISTOR"]
+  status: ["VISTOR"],
+  searchPlace: {
+    address: '',
+    geometry: defaultLocation
+  }
 }
 
 export const userSlice = createSlice({
@@ -29,13 +35,16 @@ export const userSlice = createSlice({
     ) => {
       state.email = action.payload.email
       state.status = action.payload.status
+    },
+    changeSearchPlace: (state, action: PayloadAction<MapsPlaceData>) => {
+      state.searchPlace = action.payload
     }
   }
 })
 
 const { actions, reducer } = userSlice
 // export actions and reducer
-export const { resetUser, changeEmail, userLogged } = actions
+export const { resetUser, changeEmail, userLogged, changeSearchPlace } = actions
 export default reducer
 
 // Other code such as selectors can use the imported `RootState` type

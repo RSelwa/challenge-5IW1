@@ -4,16 +4,16 @@ import VisitorHome from "@/pages/VisitorHome"
 import { createContext } from "react"
 import { useGoogleMapsAPI } from "./config/googleMapsAPI"
 
-export const GoogleMapAPIContext = createContext({ isLoaded: false })
+export const GoogleMapsAPIContext = createContext({ isLoaded: false })
 
 function App() {
   const status = useAppSelector((state) => state.user.status)
   const { isLoaded } = useGoogleMapsAPI()
 
   return (
-    <GoogleMapAPIContext.Provider value={{ isLoaded }}>
+    <GoogleMapsAPIContext.Provider value={{ isLoaded }}>
       <>{status?.includes("VISTOR") ? <VisitorHome /> : <Home />}</>
-    </GoogleMapAPIContext.Provider>
+    </GoogleMapsAPIContext.Provider>
   )
 }
 

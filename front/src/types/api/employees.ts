@@ -2,11 +2,14 @@ import type {
   EmployeeSpecificSchedulesWithId,
   SlotsWithId
 } from "@/types/withId"
+import type { Establishments } from "./establishment"
+import type { Services } from "./services"
 
 export type Employees = {
   firstname: string
   lastname: string
-  establishment: string
+  establishment: Establishments
   slots: SlotsWithId[]
   employeeSpecificSchedules: EmployeeSpecificSchedulesWithId[]
+  service: Services
 }

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20231220220739 extends AbstractMigration
+final class Version20231227021735 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,15 +20,15 @@ final class Version20231220220739 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE establishment ADD latitude VARCHAR(255) DEFAULT NULL');
-        $this->addSql('ALTER TABLE establishment ADD longitude VARCHAR(255) DEFAULT NULL');
+        $this->addSql('DROP INDEX uniq_5d9f75a1ed5ca9e6');
+        $this->addSql('CREATE INDEX IDX_5D9F75A1ED5CA9E6 ON employee (service_id)');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('ALTER TABLE establishment DROP latitude');
-        $this->addSql('ALTER TABLE establishment DROP longitude');
+        $this->addSql('DROP INDEX IDX_5D9F75A1ED5CA9E6');
+        $this->addSql('CREATE UNIQUE INDEX uniq_5d9f75a1ed5ca9e6 ON employee (service_id)');
     }
 }
