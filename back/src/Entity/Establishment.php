@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: EstablishmentRepository::class)]
 #[ApiResource(
     normalizationContext: [ 'groups' => ['establishment:read', 'service:read, employee:read']],
-    denormalizationContext: [ 'groups' => ['post:establishment']]
+    denormalizationContext: [ 'groups' => ['establishment:write']]
 )]
 
 class Establishment
@@ -26,39 +26,41 @@ class Establishment
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'post:establishment', 'employee:read'])]
+    #[Groups(['organization:read', 'establishment:read', 'establishment:write', 'employee:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'post:establishment', 'employee:read'])]
+    #[Groups(['organization:read', 'establishment:read', 'establishment:write', 'employee:read'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'post:establishment', 'employee:read'])]
+    #[Groups(['organization:read', 'establishment:read', 'establishment:write', 'employee:read'])]
     private ?string $zipCode = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'post:establishment', 'employee:read'])]
+    #[Groups(['organization:read', 'establishment:read', 'establishment:write', 'employee:read'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'post:establishment', 'employee:read'])]
+    #[Groups(['organization:read', 'establishment:read', 'establishment:write', 'employee:read'])]
     private ?string $country = null;
 
     #[ORM\ManyToOne(inversedBy: 'establishments')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['post:establishment', 'employee:read'])]
+    #[Groups(['establishment:write', 'employee:read'])]
     private ?Organization $organization = null;
 
     #[ORM\OneToMany(mappedBy: 'establishment', targetEntity: Employee::class)]
     #[Groups(['organization:read', 'establishment:read'])]
     private Collection $employees;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $latitude = null;
+    #[ORM\Column(nullable: true)]
+    #[Groups(['organization:read', 'establishment:read', 'establishment:write', 'employee:read'])]
+    private ?float $lat = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $longitude = null;
+    #[ORM\Column(nullable: true)]
+    #[Groups(['organization:read', 'establishment:read', 'establishment:write', 'employee:read'])]
+    private ?float $lng = null;
 
     public function __construct()
     {
@@ -179,26 +181,26 @@ class Establishment
         return $this;
     }
 
-    public function getLatitude(): ?string
+    public function getLat(): ?float
     {
-        return $this->latitude;
+        return $this->lat;
     }
 
-    public function setLatitude(?string $latitude): static
+    public function setLat(?float $lat): static
     {
-        $this->latitude = $latitude;
+        $this->lat = $lat;
 
         return $this;
     }
 
-    public function getLongitude(): ?string
+    public function getLng(): ?float
     {
-        return $this->longitude;
+        return $this->lng;
     }
 
-    public function setLongitude(?string $longitude): static
+    public function setLng(?float $lng): static
     {
-        $this->longitude = $longitude;
+        $this->lng = $lng;
 
         return $this;
     }
