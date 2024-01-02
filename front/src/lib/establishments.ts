@@ -26,3 +26,18 @@ export const fetchEstablishment = async (
   const organization: EstablishmentsWithId = await response.json()
   return organization
 }
+export const editEstablishment = async (
+  establishment: EstablishmentsWithId
+) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}${ESTABLISHMENT_API_ROUTES}/${
+        establishment.id
+      }`,
+      requestOptions({ method: "PATCH", body: JSON.stringify(establishment) })
+    )
+    if (!response.ok) throw new Error("Something went wrong")
+  } catch (error) {
+    console.error(error)
+  }
+}
