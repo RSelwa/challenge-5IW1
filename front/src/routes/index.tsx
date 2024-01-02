@@ -1,7 +1,18 @@
 import { Fragment } from "react"
 import { Toaster } from "react-hot-toast"
 import type { RouteObject } from "react-router-dom"
-import { DEFAULT_KEY_EXCEPTION, USER_KEY_EXCEPTION } from "@/constants/admin"
+import {
+  EMPLOYEE_KEY_EXCEPTION,
+  EMPLOYEE_KEY_LINK_EDIT,
+  EMPLOYEE_SPECIFIC_SCHEDULE_KEY_EXCEPTION,
+  ESTABLISHMENT_KEY_EXCEPTION,
+  ESTABLISHMENT_KEY_LINK_EDIT,
+  ORGANIZATION_KEY_EXCEPTION,
+  ORGANIZATION_KEY_LINK_EDIT,
+  SERVICE_KEY_EXCEPTION,
+  SLOT_KEY_EXCEPTION,
+  USER_KEY_EXCEPTION
+} from "@/constants/admin"
 import {
   employeesHeader,
   employeesSpecificSchedulesHeader,
@@ -179,7 +190,7 @@ export const adminRoutes: RouteObject[] = [
     element: getLayout(
       <ItemId
         fetchItem={fetchSlot}
-        dataKeyException={DEFAULT_KEY_EXCEPTION}
+        dataKeyException={SLOT_KEY_EXCEPTION}
         editFunctions={editSlot}
       />
     )
@@ -189,7 +200,7 @@ export const adminRoutes: RouteObject[] = [
     element: getLayout(
       <ItemId
         fetchItem={fetchService}
-        dataKeyException={DEFAULT_KEY_EXCEPTION}
+        dataKeyException={SERVICE_KEY_EXCEPTION}
         editFunctions={editService}
       />
     )
@@ -199,8 +210,9 @@ export const adminRoutes: RouteObject[] = [
     element: getLayout(
       <ItemId
         fetchItem={fetchOrganization}
-        dataKeyException={DEFAULT_KEY_EXCEPTION}
+        dataKeyException={ORGANIZATION_KEY_EXCEPTION}
         editFunctions={editOrganization}
+        dataKeyLink={ORGANIZATION_KEY_LINK_EDIT}
       />
     )
   },
@@ -209,8 +221,9 @@ export const adminRoutes: RouteObject[] = [
     element: getLayout(
       <ItemId
         fetchItem={fetchEstablishment}
-        dataKeyException={DEFAULT_KEY_EXCEPTION}
+        dataKeyException={ESTABLISHMENT_KEY_EXCEPTION}
         editFunctions={editEstablishment}
+        dataKeyLink={ESTABLISHMENT_KEY_LINK_EDIT}
       />
     )
   },
@@ -219,8 +232,9 @@ export const adminRoutes: RouteObject[] = [
     element: getLayout(
       <ItemId
         fetchItem={fetchEmployee}
-        dataKeyException={DEFAULT_KEY_EXCEPTION}
+        dataKeyException={EMPLOYEE_KEY_EXCEPTION}
         editFunctions={editEmployee}
+        dataKeyLink={EMPLOYEE_KEY_LINK_EDIT}
       />
     )
   },
@@ -229,7 +243,7 @@ export const adminRoutes: RouteObject[] = [
     element: getLayout(
       <ItemId
         fetchItem={fetchEmployeeSpecificSchedule}
-        dataKeyException={DEFAULT_KEY_EXCEPTION}
+        dataKeyException={EMPLOYEE_SPECIFIC_SCHEDULE_KEY_EXCEPTION}
         editFunctions={editEmployeeSpecificSchedule}
       />
     )

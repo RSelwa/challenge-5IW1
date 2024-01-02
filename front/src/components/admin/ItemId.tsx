@@ -9,13 +9,15 @@ import BackButton from "@/components/ui/BackButton"
 type Props<T> = {
   fetchItem: (id: string) => Promise<T>
   dataKeyException: string[]
+  dataKeyLink?: string[]
   editFunctions: (data: T) => Promise<void>
 }
 
 const ItemId = <T,>({
   fetchItem,
   dataKeyException,
-  editFunctions
+  editFunctions,
+  dataKeyLink
 }: Props<T>) => {
   const { id } = useParams()
   const [item, setItem] = useState<T>()
@@ -32,6 +34,7 @@ const ItemId = <T,>({
         onSubmit={editFunctions}
         data={item}
         dataKeyException={dataKeyException}
+        dataKeyLink={dataKeyLink}
       />
     </div>
   )
