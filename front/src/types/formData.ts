@@ -16,3 +16,8 @@ export type SigninOrgaFormData = {
   email: string
   plainPassword: string
 }
+
+export type UserInfosFormData = {
+  firstname: string
+  lastname: string
+}

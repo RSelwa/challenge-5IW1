@@ -39,6 +39,9 @@ import AdminHome from "@/pages/AdminHome"
 import Login from "@/pages/auth/Login"
 import SigninOrganization from "@/pages/auth/SigninOrganisation"
 import Planning from "@/pages/planning"
+import MyAccount from "@/pages/MyAccount"
+
+
 
 const getLayout = (element: JSX.Element): JSX.Element => (
   <Layout>
@@ -55,8 +58,12 @@ const defaultRoutes: RouteObject[] = [
     element: getLayout(<App />)
   },
   {
-    path: "planning",
+    path: "/planning",
     element: getLayout(<Planning />)
+  },
+  {
+    path: "/profil",
+    element: getLayout(<MyAccount />)
   }
 ]
 const authRoutes: RouteObject[] = [
