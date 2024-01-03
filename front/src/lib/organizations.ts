@@ -40,3 +40,17 @@ export const postOrganization = async (organization: OrganizationPost) => {
   if (!response.ok) throw new Error("Something went wrong")
   // const orga = await response.json()
 }
+
+export const editOrganization = async (organization: OrganizationsWithId) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}${ORGANIZATION_API_ROUTES}/${
+        organization.id
+      }`,
+      requestOptions({ method: "PATCH", body: JSON.stringify(organization) })
+    )
+    if (!response.ok) throw new Error("Something went wrong")
+  } catch (error) {
+    console.error(error)
+  }
+}
