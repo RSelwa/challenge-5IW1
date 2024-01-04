@@ -7,13 +7,14 @@ import type { FieldValues, Path, UseFormRegister } from "react-hook-form"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
+import type { DataKeyLink } from "@/types/admin"
 import { cn } from "@/utils"
 
 type Props<T> = {
   data: T
   onSubmit: (data: T) => Promise<void>
   dataKeyException: string[]
-  dataKeyLink?: string[]
+  dataKeyLink?: DataKeyLink
 }
 
 const Edit = <T,>({
@@ -108,7 +109,7 @@ const FormItem = <T,>({
   name: string
   formMessages?: FormMessageProps[]
   value: any
-  dataKeyLink?: string[]
+  dataKeyLink?: DataKeyLink
 
   type?:
     | "string"
@@ -131,29 +132,32 @@ const FormItem = <T,>({
         return "text"
     }
   }
-  // console.log(dataKeyLink?.includes(name))
-  console.log(value)
-  console.log(value.isArray())
+
+  const linkToOther = dataKeyLink?.find((dataKey) => dataKey.name === name)
+  console.log(linkToOther, value)
 
   return (
     <Form.Field name="test">
       <Form.Label>{label} </Form.Label>
-      {dataKeyLink?.includes(name) ? (
-        Array.isArray(value) ? (
+      {linkToOther ? (
+        linkToOther.type === "array" ? (
           value.map((valueItem: any, i: number) => (
             <LinkToOtherItem
               key={i}
-              label={valueItem.id}
+              label={valueItem[linkToOther.displayName]}
+              smallUrl={`/admin/${name}`}
               url={`/admin/${name}/${valueItem.id}`}
             />
           ))
         ) : (
           <LinkToOtherItem
-            label={value.id}
+            label={value[linkToOther.displayName]}
+            smallUrl={`/admin/${name}`}
             url={`/admin/${name}/${value.id}`}
           />
         )
       ) : (
+        // <div>test</div>
         <Form.Control
           disabled={!isEdit}
           type={matchingType()}
@@ -187,7 +191,15 @@ const FormItem = <T,>({
   )
 }
 
-const LinkToOtherItem = ({ label, url }: { label: string; url: string }) => {
+const LinkToOtherItem = ({
+  label,
+  url,
+  smallUrl
+}: {
+  label: string
+  url: string
+  smallUrl: string
+}) => {
   const navigate = useNavigate()
 
   return (
@@ -195,7 +207,7 @@ const LinkToOtherItem = ({ label, url }: { label: string; url: string }) => {
       <p> {label}</p>
       <Button
         onClick={() => {
-          navigate(url)
+          navigate(smallUrl)
           setTimeout(() => {
             navigate(url)
           }, 50)

@@ -2,6 +2,7 @@ import type { Dispatch, SetStateAction } from "react"
 import React, { useEffect, useState } from "react"
 import { LoaderIcon } from "react-hot-toast"
 import { useParams } from "react-router-dom"
+import type { DataKeyLink } from "@/types/admin"
 import { fetchData } from "@/utils/db"
 import Edit from "@/components/admin/Edit"
 import BackButton from "@/components/ui/BackButton"
@@ -9,7 +10,7 @@ import BackButton from "@/components/ui/BackButton"
 type Props<T> = {
   fetchItem: (id: string) => Promise<T>
   dataKeyException: string[]
-  dataKeyLink?: string[]
+  dataKeyLink?: DataKeyLink
   editFunctions: (data: T) => Promise<void>
 }
 
