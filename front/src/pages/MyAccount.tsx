@@ -1,27 +1,16 @@
 import React from "react"
-import { Button } from "@radix-ui/themes"
-import { Link } from "react-router-dom"
+import UserInfosForm from "@/pages/UserInfosForm"
 
 
 const MyAccount = () => {
   return (
-    <div>
-      <h1 className="mt-3 text-center text-3xl font-black italic">
-         My Account
-      </h1>
-      {/* <div className="mx-auto mt-12 flex w-10/12 flex-wrap justify-center gap-4 ">
-        {myAccountRoutes
-          .filter(
-            (route) => !route.path?.includes(":id") && route.path !== "/admin"
-          )
-          .map((route, index) => (
-            <Link key={index} to={route.path || ""}>
-              <Button className="bg-amber-500 hover:bg-amber-700">
-                {route.path?.replace("/myAccount/", "")}{" "}
-              </Button>
-            </Link>
-          ))}
-      </div> */}
+    <div className="h-[calc(100vh-64px)] bg-blue-100 p-8">
+      <div className="mx-auto w-10/12 rounded bg-white p-2 ">
+        <h1 className="mb-6 mt-2 text-center text-xl font-black text-neutral-900">
+          S'enregistrer en tant qu'entreprises
+        </h1>
+        <UserInfosForm />
+      </div>
     </div>
   )
 }

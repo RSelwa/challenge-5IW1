@@ -1,3 +1,5 @@
+import { SlotsWithId } from "./withId";
+
 export type LoginFormData = { email: string; password: string }
 export type SigninUserFormData = {
   email: string
@@ -18,6 +20,9 @@ export type SigninOrgaFormData = {
 }
 
 export type UserInfosFormData = {
+  id : string
   firstname: string
   lastname: string
+  email: string 
+  slots: SlotsWithId[]
 }
