@@ -6,3 +6,9 @@ export type Users = {
   email: string
   slots: SlotsWithId[]
 }
+
+// export type EditUser = {
+//   firstname: string
+//   lastname: string
+//   email: string
+// }
