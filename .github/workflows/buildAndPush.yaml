@@ -26,4 +26,4 @@ jobs:
         with:
           context: ./front
           push: true
-          tags: user/app:latest
+          tags: rselwa/challenge-s1:latest
