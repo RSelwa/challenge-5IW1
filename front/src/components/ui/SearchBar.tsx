@@ -5,8 +5,8 @@ import {
   MagnifyingGlassIcon,
   SewingPinIcon
 } from "@radix-ui/react-icons"
-import { usePlacesWidget } from "react-google-autocomplete"
 import type { SearchQuery } from "@/types"
+import PlaceAutocomplete from "../maps/PlaceAutocomplete"
 
 type Props = {
   searchQuery: SearchQuery
@@ -14,20 +14,7 @@ type Props = {
   onClick: (searchQuery: SearchQuery) => void
 }
 
-const SearchButton = ({ searchQuery, setSearchQuery, onClick }: Props) => {
-  const { ref } = usePlacesWidget({
-    apiKey: import.meta.env.VITE_KEY_GOOGLE_MAPS,
-    onPlaceSelected: (place) => {
-      const newLocalisation =
-        place.address_components && place.address_components.length > 0
-          ? place.address_components[0].long_name
-          : ""
-      setSearchQuery((prevState) => ({
-        ...prevState,
-        localisation: newLocalisation
-      }))
-    }
-  })
+const SearchBar = ({ searchQuery, setSearchQuery, onClick }: Props) => {
   return (
     <div className="flex w-fit items-center rounded-full bg-white  ring-4 ring-white  ">
       <div className="flex h-full items-center gap-1 rounded-l-full  border-r-2 border-gray-200 pl-4 text-base ">
@@ -51,19 +38,20 @@ const SearchButton = ({ searchQuery, setSearchQuery, onClick }: Props) => {
         <label className="cursor-text" htmlFor="searchInput">
           <SewingPinIcon color="gray" strokeWidth="10" />
         </label>
-        <input
-          className="py-1 outline-none placeholder:text-gray-400"
-          placeholder="Où ?"
-          type="search"
-          id="searchInput"
-          onChange={(e) =>
-            setSearchQuery((prevState) => ({
-              ...prevState,
-              localisation: e.target.value
-            }))
-          }
-          ref={ref}
-        />
+        <PlaceAutocomplete>
+          <input
+            className="py-1 outline-none placeholder:text-gray-400"
+            placeholder="Où ?"
+            type="search"
+            id="searchInput"
+            onChange={(e) =>
+              setSearchQuery((prevState) => ({
+                ...prevState,
+                localisation: e.target.value
+              }))
+            }
+          />
+        </PlaceAutocomplete>
       </div>
 
       <button
@@ -81,4 +69,4 @@ const SearchButton = ({ searchQuery, setSearchQuery, onClick }: Props) => {
   )
 }
 
-export default SearchButton
+export default SearchBar
