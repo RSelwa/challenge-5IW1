@@ -32,8 +32,8 @@ const Table = <T,>({ header, Rows, dataT }: Props<T>) => {
         </tr>
       </thead>
       <tbody className="bg-white">
-        {dataT.map((row: T) => (
-          <Rows data={row} />
+        {dataT.map((row: T, index: number) => (
+          <Rows key={index} data={row} />
         ))}
       </tbody>
     </table>
