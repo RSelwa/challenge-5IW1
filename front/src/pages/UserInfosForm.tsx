@@ -30,6 +30,13 @@ const UserInfosForm = () => {
         type="text"
         {...register("lastname")}
       />
+       <input
+        disabled={!isEditing}
+        required
+        placeholder="Email"
+        type="email"
+        {...register("email")}
+      />
       <div className="flex gap-3">
         {isEditing ? (
           <Fragment>
@@ -47,12 +54,12 @@ const UserInfosForm = () => {
               className="col-span-2 w-full bg-green-500 text-neutral-800"
               type="submit"
             >
-              Update
+              Save
             </Button>
           </Fragment>
         ) : (
           <Button
-            onClick={() => setIsEditing((prevState) => !prevState)}
+            onClick={() => setIsEditing(true)}
             className="col-span-2 w-full bg-amber-500 text-neutral-800"
             type="button"
           >

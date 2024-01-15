@@ -1,6 +1,6 @@
 import type { Dispatch, SetStateAction } from "react"
 import React, { useState } from "react"
-import { Wrapper } from "@googlemaps/react-wrapper"
+// import { Wrapper } from "@googlemaps/react-wrapper"
 import type { SearchResponse } from "@/lib/search"
 import { fetchSearch } from "@/lib/search"
 import { fetchData } from "@/utils/db"
@@ -47,9 +47,9 @@ const Home = () => {
             <SearchResult searchResult={search} key={index} />
           ))}
         </div>
-        <Wrapper apiKey={import.meta.env.VITE_KEY_GOOGLE_MAPS || ""}>
+        {/* <Wrapper apiKey={import.meta.env.VITE_KEY_GOOGLE_MAPS || ""}>
           <MapComponent />
-        </Wrapper>
+        </Wrapper> */}
       </div>
     </div>
   )
