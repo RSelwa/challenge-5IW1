@@ -27,7 +27,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new GetCollection(),
         new Post(processor: UserPasswordHasher::class),
         new Put(processor: UserPasswordHasher::class),
-        new Patch(processor: UserPasswordHasher::class),
+        new Patch(
+            normalizationContext: ['groups' => 'user-read-update'],
+            denormalizationContext: ['groups' => 'user-update'],
+            validationContext: ['groups' => 'user-update']
+        ),
     ],
 )]
 
@@ -41,15 +45,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'user-read-update', 'user-update'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'user-read-update', 'user-update'])]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'user-read-update', 'user-update'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]

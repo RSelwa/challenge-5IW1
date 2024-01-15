@@ -19,10 +19,8 @@ export type SigninOrgaFormData = {
   plainPassword: string
 }
 
-export type UserInfosFormData = {
-  id : string
+export type UserInfosProfileFormData = {
   firstname: string
   lastname: string
   email: string 
-  slots: SlotsWithId[]
 }
