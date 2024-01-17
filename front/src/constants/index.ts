@@ -6,13 +6,13 @@ export const dropdownMenuSideOffset = 16
 export const slotsData: Slots[] = [
   {
     employeeId: "EMP001",
-    startTime: 1705503121000, // Wed Jan 17 2024  14:52:01
+    startTime: 1705500240000, // 	Wed Jan 17 2024 14:04:00
     duration: 1, // 1 heure en millisecondes
     status: "booked"
   },
   {
     employeeId: "EMP001",
-    startTime: 1705505321000, // Wed Jan 17 2024 15:28:41
+    startTime: 1705493040000, // Wed Jan 17 2024 12:04:00
     duration: 1, // 1 heure en millisecondes
     status: "booked"
   },

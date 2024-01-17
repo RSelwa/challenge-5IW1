@@ -1,4 +1,4 @@
-import { HoraireType } from "@/types/api/slots"
+import type { HoraireType } from "@/types/api/slots"
 import { dayInSeconds, daysInWeek, weekInSeconds } from "@/constants/date"
 
 export const convertMinutesToMilliseconds = (minute: number) => {
@@ -105,10 +105,9 @@ export const isInPlageHoraire = (
   horaireDay: HoraireType
 ): boolean => {
   const hour = date.getHours()
-  console.log(hour, horaireDay)
 
   return (
     (hour > horaireDay.startTimeMatinée && hour < horaireDay.endTimeMatinée) ||
-    (hour > horaireDay.startTimeAprem && hour > horaireDay.endTimeAprem)
+    (hour > horaireDay.startTimeAprem && hour < horaireDay.endTimeAprem)
   )
 }
