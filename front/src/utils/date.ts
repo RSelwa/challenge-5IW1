@@ -1,3 +1,4 @@
+import { HoraireType } from "@/types/api/slots"
 import { dayInSeconds, daysInWeek, weekInSeconds } from "@/constants/date"
 
 export const convertMinutesToMilliseconds = (minute: number) => {
@@ -64,4 +65,50 @@ export const dayOfWeek = (date: Date, short?: boolean) => {
   return short
     ? daysInWeek[date.getDay()].substring(0, 3)
     : daysInWeek[date.getDay()]
+}
+const checkTime = (i: number) => {
+  let s = i.toString()
+  if (i < 10) {
+    s = "0" + i
+  }
+  return s
+}
+export const getHoursMinutes = (date: Date): string => {
+  const h = date.getHours()
+  const m = date.getMinutes()
+  // add a zero in front of numbers<10
+  const min = checkTime(m)
+  const hour = checkTime(h)
+  return `${hour}:${min}`
+}
+
+// Tell if second day is in first day
+export const isInSameDay = (
+  premiereDate: Date,
+  deuxiemeDate: Date
+): boolean => {
+  // Définir la première date à 0h
+  const debutJournee = new Date(premiereDate)
+  debutJournee.setHours(0, 0, 0, 0)
+
+  // Définir la première date du jour suivant à 29h59
+  const finJourSuivant = new Date(premiereDate)
+  finJourSuivant.setHours(29, 59)
+  finJourSuivant.setDate(finJourSuivant.getDate())
+
+  // Vérifier si la deuxième date est comprise dans la plage
+  return deuxiemeDate >= debutJournee && deuxiemeDate <= finJourSuivant
+}
+
+export const isInPlageHoraire = (
+  date: Date,
+  horaireDay: HoraireType
+): boolean => {
+  const hour = date.getHours()
+  console.log(hour, horaireDay)
+
+  return (
+    (hour > horaireDay.startTimeMatinée && hour < horaireDay.endTimeMatinée) ||
+    (hour > horaireDay.startTimeAprem && hour > horaireDay.endTimeAprem)
+  )
 }
