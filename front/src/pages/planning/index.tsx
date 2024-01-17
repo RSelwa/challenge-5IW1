@@ -24,6 +24,7 @@ const Planning = ({
   duration: number
 }) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date())
+  const [needLoadReservations, setNeedLoadReservations] = useState(false)
   const [weekDays, setWeekDays] = useState<PlanningWeekDay[]>([])
 
   const scaleButton = 24
@@ -51,9 +52,7 @@ const Planning = ({
           reservations: []
         }
       ])
-
-    fetchSemaineType(employeeId)
-    fetchReservations(employeeId)
+    setNeedLoadReservations((prevState) => !prevState)
   }
   const cantChangePreviousWeek = (): boolean => {
     const currentTime = new Date().getTime()
@@ -99,6 +98,7 @@ const Planning = ({
       )
       // Create empty array of Slots[]
       const weekDaysReservations: Slots[][] = [[], [], [], [], [], [], []]
+
       // Attribute each reservations to the right days
       reservationsDuringWeek.forEach((reservation) => {
         weekDays.forEach((dayOfWeek, indexOfDay) => {
@@ -109,10 +109,11 @@ const Planning = ({
       setWeekDays((prevState) =>
         prevState.map((day, indexOfDay) => ({
           date: day.date,
-          reservations: weekDaysReservations[indexOfDay]
+          reservations: weekDaysReservations[indexOfDay].sort(
+            (a, b) => a.startTime - b.startTime
+          )
         }))
       )
-      // console.log(weekDaysReservations.map((r) => r))
     } catch (error) {
       console.log(employeeId)
       console.error(error)
@@ -130,17 +131,36 @@ const Planning = ({
     reservations: Slots[]
     duration: number
   }): Date[] => {
-    reservations.forEach((r) =>
-      console.log(isInPlageHoraire(new Date(r.startTime), defaultHoraireType))
-    )
+    // reservations.forEach((r) =>
+    //   console.log(
+    //     r,
+    //     isInPlageHoraire(new Date(r.startTime), defaultHoraireType)
+    //   )
+    // )
 
     // console.log(defaultHoraireType, semaineType, reservations, duration)
-    return [...(reservations.map((r) => new Date(r.startTime)) || day)]
+    console.log([
+      ...reservations.map((r) =>
+        isInPlageHoraire(new Date(r.startTime), defaultHoraireType)
+      )
+    ])
+
+    return [
+      ...(reservations
+        .filter((r) =>
+          isInPlageHoraire(new Date(r.startTime), defaultHoraireType)
+        )
+        .map((r) => new Date(r.startTime)) || day)
+    ]
   }
 
   useEffect(() => {
     loadDatesWeek()
   }, [currentDate])
+  useEffect(() => {
+    fetchSemaineType(employeeId)
+    fetchReservations(employeeId)
+  }, [needLoadReservations])
 
   return (
     <Fragment>
@@ -172,7 +192,6 @@ const Planning = ({
                 {getAvailableReservation({
                   day: day.date,
                   reservations: day.reservations,
-
                   duration: duration
                 }).map((dateOfReservation, i) => (
                   <div
