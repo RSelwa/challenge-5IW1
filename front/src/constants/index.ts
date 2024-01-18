@@ -18,7 +18,7 @@ export const slotsData: Slots[] = [
   },
   {
     employeeId: "EMP001",
-    startTime: 1705571521000, // Thu Jan 18 2024 09:52:01
+    startTime: 1705571521000, // Thu Jan 18 2024 10:52:01
     duration: 2, // 2 heures en millisecondes
     status: "available"
   }

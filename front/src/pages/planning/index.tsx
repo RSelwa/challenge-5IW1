@@ -1,19 +1,28 @@
 import { Fragment, useEffect, useState } from "react"
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons"
 import { Button } from "@radix-ui/themes"
-import type { PlanningWeekDay, SemaineType, Slots } from "@/types/api/slots"
+import type {
+  HoraireType,
+  PlanningWeekDay,
+  SemaineType,
+  Slots
+} from "@/types/api/slots"
 import { dayInSeconds, weekInSeconds } from "@/constants/date"
 import {
+  countRepetitions,
   dateToString,
   dayOfWeek,
   differenceDaysBetweenTwoDates,
+  excludeReservedSlots,
   getDateFromWeek,
   getHoursMinutes,
   getInitialDay,
+  getSlotsByHoraireDay,
+  getSlotsDatesFromRange,
   isInPlageHoraire,
   isInSameDay
 } from "@/utils/date"
-import { defaultHoraireType, slotsData } from "@/constants"
+import { defaultHoraireType, semaineTypeData, slotsData } from "@/constants"
 import { cn } from "@/utils"
 
 const Planning = ({
@@ -122,35 +131,47 @@ const Planning = ({
 
   const getAvailableReservation = ({
     day,
-    semaineType,
+    semaineTypeUser,
     reservations,
     duration
   }: {
     day: Date
-    semaineType?: SemaineType[]
+    semaineTypeUser?: SemaineType[]
     reservations: Slots[]
     duration: number
-  }): Date[] => {
-    // reservations.forEach((r) =>
-    //   console.log(
-    //     r,
-    //     isInPlageHoraire(new Date(r.startTime), defaultHoraireType)
-    //   )
-    // )
+  }): { d: Date; isResa: boolean }[] => {
+    const dayOfTheWeek = day.getDay()
+    const horaireOfDay: HoraireType =
+      semaineTypeUser?.find((dayType) => dayType.dayOfWeek === dayOfTheWeek) ||
+      defaultHoraireType
 
-    // console.log(defaultHoraireType, semaineType, reservations, duration)
-    console.log([
-      ...reservations.map((r) =>
-        isInPlageHoraire(new Date(r.startTime), defaultHoraireType)
-      )
-    ])
+    const reservationsDuringTheDay = reservations.filter((reservation) =>
+      isInPlageHoraire(new Date(reservation.startTime), defaultHoraireType)
+    )
+
+    const availableReservations: Date[] = getSlotsByHoraireDay(
+      day,
+      horaireOfDay,
+      duration
+    )
 
     return [
-      ...(reservations
-        .filter((r) =>
-          isInPlageHoraire(new Date(r.startTime), defaultHoraireType)
-        )
-        .map((r) => new Date(r.startTime)) || day)
+      ...excludeReservedSlots(
+        availableReservations,
+        reservationsDuringTheDay,
+        duration
+      ).map((r) => ({ d: r, isResa: false })),
+      ...reservationsDuringTheDay.map((r) => ({
+        d: new Date(r.startTime),
+        isResa: true
+      }))
+    ]
+    return [
+      ...availableReservations.map((r) => ({ d: r, isResa: false })),
+      ...reservationsDuringTheDay.map((r) => ({
+        d: new Date(r.startTime),
+        isResa: true
+      }))
     ]
   }
 
@@ -192,13 +213,19 @@ const Planning = ({
                 {getAvailableReservation({
                   day: day.date,
                   reservations: day.reservations,
+                  semaineTypeUser: semaineTypeData,
                   duration: duration
                 }).map((dateOfReservation, i) => (
                   <div
                     key={i}
-                    className="flex items-center justify-center bg-white"
+                    className={cn(
+                      "flex items-center justify-center bg-white",
+                      dateOfReservation.isResa
+                        ? "text-blue-500"
+                        : "text-red-500"
+                    )}
                   >
-                    {getHoursMinutes(dateOfReservation)}
+                    {getHoursMinutes(dateOfReservation.d)}
                   </div>
                 ))}
               </div>
