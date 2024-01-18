@@ -1,4 +1,4 @@
-import type { HoraireType } from "@/types/api/slots"
+import type { HoraireType, Slots } from "@/types/api/slots"
 import { dayInSeconds, daysInWeek, weekInSeconds } from "@/constants/date"
 
 export const convertMinutesToMilliseconds = (minute: number) => {
@@ -110,4 +110,112 @@ export const isInPlageHoraire = (
     (hour > horaireDay.startTimeMatinée && hour < horaireDay.endTimeMatinée) ||
     (hour > horaireDay.startTimeAprem && hour < horaireDay.endTimeAprem)
   )
+}
+
+export const countRepetitions = (
+  firstNumber: number,
+  startInterval: number,
+  endInterval: number
+): number => {
+  if (firstNumber <= 0 || startInterval >= endInterval) {
+    // Cas invalides
+    return 0
+  }
+
+  const intervalLength = endInterval - startInterval
+  const repetitions = Math.floor(intervalLength / firstNumber)
+
+  return repetitions
+}
+
+export const getSlotsDatesFromRange = (
+  departHour: number,
+  numberOfSlots: number,
+  day: Date
+): Date[] => {
+  const slots: Date[] = []
+
+  if (departHour < 0 || departHour > 23 || numberOfSlots <= 0) {
+    // Vérification des paramètres invalides
+    return slots
+  }
+
+  const startOfDay = new Date(day)
+  startOfDay.setHours(0, 0, 0, 0)
+
+  for (let i = 0; i < numberOfSlots; i++) {
+    const slotDate = new Date(startOfDay)
+    slotDate.setHours(departHour + i)
+    slots.push(slotDate)
+  }
+
+  return slots
+}
+
+export const getSlotsByHoraireDay = (
+  day: Date,
+  horaireOfDay: HoraireType,
+  duration: number
+): Date[] => {
+  const availableMatin = countRepetitions(
+    duration,
+    horaireOfDay.startTimeMatinée,
+    horaireOfDay.endTimeMatinée
+  )
+  const availableAprem = countRepetitions(
+    duration,
+    horaireOfDay.startTimeAprem,
+    horaireOfDay.endTimeAprem
+  )
+
+  const slotsMatin = getSlotsDatesFromRange(
+    horaireOfDay.startTimeMatinée,
+    availableMatin,
+    day
+  )
+  const slotsAprem = getSlotsDatesFromRange(
+    horaireOfDay.startTimeAprem,
+    availableAprem,
+    day
+  )
+
+  return [...slotsMatin, ...slotsAprem]
+}
+
+export const excludeReservedSlots = (
+  availableSlots: Date[],
+  reservations: Slots[],
+  durationOfSlot: number
+): Date[] => {
+  return availableSlots.filter((slot) => {
+    const endOfCurrentSlot = slot.getTime() + durationOfSlot * 3600000 // duration hour in seconds
+
+    const isSlotsOccpedByReservation = reservations.some((reservation) => {
+      console.log(reservation.duration)
+
+      const endOfReservation =
+        reservation.startTime + reservation.duration * 3600000 // duration hour in seconds
+
+      const reservationStartDuringSlot =
+        slot.getTime() <= reservation.startTime &&
+        reservation.startTime <= endOfCurrentSlot
+
+      const reservationCoverSlot =
+        reservation.startTime < slot.getTime() &&
+        endOfReservation > endOfCurrentSlot
+
+      const reservationEndDuringSlot =
+        slot.getTime() <= endOfReservation &&
+        endOfReservation <= endOfCurrentSlot
+
+      return (
+        reservationStartDuringSlot ||
+        reservationEndDuringSlot ||
+        reservationCoverSlot
+      )
+    })
+    // console.log(isSlotsOccpedByReservation, slot)
+
+    return !isSlotsOccpedByReservation
+  })
 }
