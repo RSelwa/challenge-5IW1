@@ -1,28 +1,19 @@
-import { Fragment, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons"
 import { Button } from "@radix-ui/themes"
-import type {
-  HoraireType,
-  PlanningWeekDay,
-  SemaineType,
-  Slots
-} from "@/types/api/slots"
+import type { PlanningWeekDay, Slots } from "@/types/api/slots"
 import { dayInSeconds, weekInSeconds } from "@/constants/date"
 import {
-  countRepetitions,
   dateToString,
   dayOfWeek,
   differenceDaysBetweenTwoDates,
-  excludeReservedSlots,
+  getAvailableReservation,
   getDateFromWeek,
   getHoursMinutes,
   getInitialDay,
-  getSlotsByHoraireDay,
-  getSlotsDatesFromRange,
-  isInPlageHoraire,
   isInSameDay
 } from "@/utils/date"
-import { defaultHoraireType, semaineTypeData, slotsData } from "@/constants"
+import { semaineTypeData, slotsData } from "@/constants"
 import { cn } from "@/utils"
 
 const Planning = ({
@@ -34,6 +25,7 @@ const Planning = ({
 }) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date())
   const [needLoadReservations, setNeedLoadReservations] = useState(false)
+  const [isPlanningExpanded, setIsPlanningExpanded] = useState(false)
   const [weekDays, setWeekDays] = useState<PlanningWeekDay[]>([])
 
   const scaleButton = 24
@@ -129,118 +121,75 @@ const Planning = ({
     }
   }
 
-  const getAvailableReservation = ({
-    day,
-    semaineTypeUser,
-    reservations,
-    duration
-  }: {
-    day: Date
-    semaineTypeUser?: SemaineType[]
-    reservations: Slots[]
-    duration: number
-  }): { d: Date; isResa: boolean }[] => {
-    const dayOfTheWeek = day.getDay()
-    const horaireOfDay: HoraireType =
-      semaineTypeUser?.find((dayType) => dayType.dayOfWeek === dayOfTheWeek) ||
-      defaultHoraireType
-
-    const reservationsDuringTheDay = reservations.filter((reservation) =>
-      isInPlageHoraire(new Date(reservation.startTime), defaultHoraireType)
-    )
-
-    const availableReservations: Date[] = getSlotsByHoraireDay(
-      day,
-      horaireOfDay,
-      duration
-    )
-
-    return [
-      ...excludeReservedSlots(
-        availableReservations,
-        reservationsDuringTheDay,
-        duration
-      ).map((r) => ({ d: r, isResa: false })),
-      ...reservationsDuringTheDay.map((r) => ({
-        d: new Date(r.startTime),
-        isResa: true
-      }))
-    ]
-    return [
-      ...availableReservations.map((r) => ({ d: r, isResa: false })),
-      ...reservationsDuringTheDay.map((r) => ({
-        d: new Date(r.startTime),
-        isResa: true
-      }))
-    ]
-  }
-
   useEffect(() => {
     loadDatesWeek()
   }, [currentDate])
+
   useEffect(() => {
     fetchSemaineType(employeeId)
     fetchReservations(employeeId)
   }, [needLoadReservations])
 
   return (
-    <Fragment>
-      <div>{currentDate.toUTCString()}</div>
-      <div className="flex w-fit gap-4 rounded bg-cyan-50 p-2">
-        <Button
-          variant="ghost"
-          onClick={() => changeWeek(false)}
-          disabled={cantChangePreviousWeek()}
-          className={cn(
-            cantChangePreviousWeek() ? "text-gray-500" : "text-cyan-500"
-          )}
-        >
-          <ChevronLeftIcon height={scaleButton} width={scaleButton} />
-        </Button>
+    <div className="flex w-fit gap-4 rounded bg-white p-2">
+      <Button
+        variant="ghost"
+        onClick={() => changeWeek(false)}
+        disabled={cantChangePreviousWeek()}
+        className={cn(
+          cantChangePreviousWeek() ? "text-gray-500" : "text-cyan-500"
+        )}
+      >
+        <ChevronLeftIcon height={scaleButton} width={scaleButton} />
+      </Button>
+      <div>
         <div className="flex gap-2">
           {weekDays.map((day, i) => (
-            <div
-              key={i}
-              className="flex flex-col gap-2 rounded bg-cyan-100 p-4"
-            >
+            <div key={i} className="flex flex-col gap-2 rounded ">
               <div className="flex flex-col items-center">
                 <span className="text-lg font-bold">
                   {dayOfWeek(day.date, true)}
                 </span>
                 <span>{dateToString(day.date)}</span>
               </div>
-              <div>
+              <div className="flex flex-col gap-2 ">
                 {getAvailableReservation({
                   day: day.date,
                   reservations: day.reservations,
                   semaineTypeUser: semaineTypeData,
                   duration: duration
-                }).map((dateOfReservation, i) => (
-                  <div
-                    key={i}
-                    className={cn(
-                      "flex items-center justify-center bg-white",
-                      dateOfReservation.isResa
-                        ? "text-blue-500"
-                        : "text-red-500"
-                    )}
-                  >
-                    {getHoursMinutes(dateOfReservation.d)}
-                  </div>
-                ))}
+                }).map((dateOfReservation, i) =>
+                  isPlanningExpanded || i < 4 ? (
+                    <div
+                      key={i}
+                      className="flex cursor-pointer items-center justify-center rounded bg-cyan-50 px-2 py-1 font-bold hover:bg-cyan-100"
+                    >
+                      {getHoursMinutes(dateOfReservation)}
+                    </div>
+                  ) : null
+                )}
               </div>
             </div>
           ))}
         </div>
+
         <Button
           variant="ghost"
-          onClick={() => changeWeek(true)}
-          className={cn("text-cyan-500")}
+          className="mt-3 w-full font-bold text-cyan-500"
+          onClick={() => setIsPlanningExpanded((prevState) => !prevState)}
         >
-          <ChevronRightIcon height={scaleButton} width={scaleButton} />
+          Voir {isPlanningExpanded ? "moins" : "plus"} d'horaires
         </Button>
       </div>
-    </Fragment>
+
+      <Button
+        variant="ghost"
+        onClick={() => changeWeek(true)}
+        className={cn("text-cyan-500")}
+      >
+        <ChevronRightIcon height={scaleButton} width={scaleButton} />
+      </Button>
+    </div>
   )
 }
 

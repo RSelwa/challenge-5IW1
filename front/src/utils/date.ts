@@ -1,5 +1,6 @@
-import type { HoraireType, Slots } from "@/types/api/slots"
+import type { HoraireType, SemaineType, Slots } from "@/types/api/slots"
 import { dayInSeconds, daysInWeek, weekInSeconds } from "@/constants/date"
+import { defaultHoraireType } from "@/constants"
 
 export const convertMinutesToMilliseconds = (minute: number) => {
   return minute * 60 * 1000
@@ -218,4 +219,36 @@ export const excludeReservedSlots = (
 
     return !isSlotsOccpedByReservation
   })
+}
+
+export const getAvailableReservation = ({
+  day,
+  semaineTypeUser,
+  reservations,
+  duration
+}: {
+  day: Date
+  semaineTypeUser?: SemaineType[]
+  reservations: Slots[]
+  duration: number
+}): Date[] => {
+  const dayOfTheWeek = day.getDay()
+  const horaireOfDay: HoraireType =
+    semaineTypeUser?.find((dayType) => dayType.dayOfWeek === dayOfTheWeek) ||
+    defaultHoraireType
+
+  const reservationsDuringTheDay = reservations.filter((reservation) =>
+    isInPlageHoraire(new Date(reservation.startTime), defaultHoraireType)
+  )
+
+  const availableReservations: Date[] = getSlotsByHoraireDay(
+    day,
+    horaireOfDay,
+    duration
+  )
+  return excludeReservedSlots(
+    availableReservations,
+    reservationsDuringTheDay,
+    duration
+  )
 }
