@@ -1,13 +1,11 @@
-name: 🚀 Build and push
+name: 🚀 Build and push Front
 
 on:
-  push:
-    # paths:
-    #   - "front/**"
+  workflow_call:
 
 jobs:
-  docker:
-    name: 🚀 Build and push front
+  docker-push:
+    name: 🐳 Build and push front
     runs-on: ubuntu-latest
     steps:
       - name: ✨ Checkout
@@ -25,6 +23,10 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./front
-          platforms: linux/arm/v6
           push: true
-          tags: rselwa/challenge-s1:latest
+          tags: rselwa/challenge-s1:front
+
+  pull-and-deploy-front:
+    name: 🐋 Pull and deploy
+    runs-on: ubuntu-latest
+    # steps:
