@@ -1,4 +1,4 @@
-name: 🚀 Build and push Front
+name: 🧪 Test CI/CD
 
 on:
   push:
