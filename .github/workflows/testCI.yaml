@@ -8,3 +8,4 @@ on:
 jobs:
   test-github-actions:
     uses: ./.github/workflows/buildAndPush.yaml
+    secrets: inherit # <= this one
