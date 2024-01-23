@@ -1,0 +1,10 @@
+name: 🚀 Build and push Front
+
+on:
+  push:
+    paths:
+      - ".github/workflows/**"
+
+jobs:
+  test-github-actions:
+    uses: ./.github/workflows/buildAndPush.yaml
