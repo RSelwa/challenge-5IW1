@@ -35,11 +35,19 @@ class EmployeeSpecificSchedule
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:write'])]
-    private ?string $startTime = null;
+    private ?string $startTimeMorning = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:write'])]
-    private ?string $endTime = null;
+    private ?string $endTimeMorning = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:write'])]
+    private ?string $startTimeAfternoon = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:write'])]
+    private ?string $endTimeAfternoon = null;
 
     public function getId(): ?string
     {
@@ -88,26 +96,50 @@ class EmployeeSpecificSchedule
         return $this;
     }
 
-    public function getStartTime(): ?string
+    public function getStartTimeMorning(): ?string
     {
-        return $this->startTime;
+        return $this->startTimeMorning;
     }
 
-    public function setStartTime(?string $startTime): static
+    public function setStartTimeMorning(?string $startTimeMorning): static
     {
-        $this->startTime = $startTime;
+        $this->startTimeMorning = $startTimeMorning;
 
         return $this;
     }
 
-    public function getEndTime(): ?string
+    public function getEndTimeMorning(): ?string
     {
-        return $this->endTime;
+        return $this->endTimeMorning;
     }
 
-    public function setEndTime(?string $endTime): static
+    public function setEndTimeMorning(?string $endTimeMorning): static
     {
-        $this->endTime = $endTime;
+        $this->endTimeMorning = $endTimeMorning;
+
+        return $this;
+    }
+
+    public function getStartTimeAfternoon(): ?string
+    {
+        return $this->startTimeAfternoon;
+    }
+
+    public function setStartTimeAfternoon(?string $startTimeAfternoon): static
+    {
+        $this->startTimeAfternoon = $startTimeAfternoon;
+
+        return $this;
+    }
+
+    public function getEndTimeAfternoon(): ?string
+    {
+        return $this->endTimeAfternoon;
+    }
+
+    public function setEndTimeAfternoon(?string $endTimeAfternoon): static
+    {
+        $this->endTimeAfternoon = $endTimeAfternoon;
 
         return $this;
     }
