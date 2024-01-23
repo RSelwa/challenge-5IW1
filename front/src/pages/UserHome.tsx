@@ -1,13 +1,14 @@
 import type { Dispatch, SetStateAction } from "react"
 import React, { useState } from "react"
+import type { EmployeesWithId } from "@/types/withId"
 import { fetchSearch } from "@/lib/search"
 import { fetchData } from "@/utils/db"
 import Map from "@/components/maps/Map"
 import SearchResult from "@/components/Rows/search/SearchResult"
 import SearchBar from "@/components/ui/SearchBar"
 import UserTitle from "@/components/ui/UserTitle"
+import Planning from "@/pages/planning"
 import type { SearchQuery } from "@/types"
-import type { EmployeesWithId } from "@/types/withId"
 
 const Home = () => {
   const [resultsSearch, setResultsSearch] = useState<EmployeesWithId[]>([])
@@ -35,6 +36,7 @@ const Home = () => {
           />
         </div>
       </div>
+      <Planning />
       <div
         className="relative mx-auto grid w-11/12 gap-4  py-4"
         style={{ gridTemplateColumns: "2fr 1fr" }}
@@ -45,7 +47,7 @@ const Home = () => {
             <SearchResult searchResult={search} key={index} />
           ))}
         </div>
-        <Map employeeList={resultsSearch}/>
+        <Map employeeList={resultsSearch} />
       </div>
     </div>
   )
