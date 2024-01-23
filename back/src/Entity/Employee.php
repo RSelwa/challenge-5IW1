@@ -78,10 +78,15 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['establishment:read', 'employee:read', 'employee:write'])]
     private ?Service $service = null;
 
+    #[ORM\OneToMany(mappedBy: 'Employee', targetEntity: EmployeeWeekSchedule::class)]
+    #[Groups(['establishment:read', 'employee:read'])]
+    private Collection $employeeWeekSchedules;
+
     public function __construct()
     {
         $this->slots = new ArrayCollection();
         $this->employeeSpecificSchedules = new ArrayCollection();
+        $this->employeeWeekSchedules = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -273,6 +278,36 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     public function setService(?Service $service): static
     {
         $this->service = $service;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EmployeeWeekSchedule>
+     */
+    public function getEmployeeWeekSchedules(): Collection
+    {
+        return $this->employeeWeekSchedules;
+    }
+
+    public function addEmployeeWeekSchedule(EmployeeWeekSchedule $employeeWeekSchedule): static
+    {
+        if (!$this->employeeWeekSchedules->contains($employeeWeekSchedule)) {
+            $this->employeeWeekSchedules->add($employeeWeekSchedule);
+            $employeeWeekSchedule->setEmployee($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEmployeeWeekSchedule(EmployeeWeekSchedule $employeeWeekSchedule): static
+    {
+        if ($this->employeeWeekSchedules->removeElement($employeeWeekSchedule)) {
+            // set the owning side to null (unless already changed)
+            if ($employeeWeekSchedule->getEmployee() === $this) {
+                $employeeWeekSchedule->setEmployee(null);
+            }
+        }
 
         return $this;
     }
