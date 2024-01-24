@@ -33,5 +33,5 @@ jobs:
     runs-on: ubuntu-latest
     needs: docker-push-server-php
     steps:
-      - name: ✨ Checkout
+      - name: ✨ Checkout p
         uses: actions/checkout@v3
