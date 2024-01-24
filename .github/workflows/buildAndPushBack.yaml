@@ -24,7 +24,7 @@ jobs:
         with:
           context: ./back
           build-args: |
-            "APP_ENV=${{ secrets.APP_ENV }}"
+            "APP_ENV=prod"
           push: true
           tags: rselwa/challenge-s1:server-php
 
