@@ -56,13 +56,14 @@ import App from "@/App"
 import AdminHome from "@/pages/AdminHome"
 import Login from "@/pages/auth/Login"
 import SigninOrganization from "@/pages/auth/SigninOrganisation"
-import Planning from "@/pages/planning"
 import MyAccount from "@/pages/MyAccount"
+import Planning from "@/pages/planning"
 
-
-
-const getLayout = (element: JSX.Element): JSX.Element => (
-  <Layout>
+const getLayout = (
+  element: JSX.Element,
+  adminSecurity = false
+): JSX.Element => (
+  <Layout adminSecurity={adminSecurity}>
     <Fragment>
       {element}
       <Toaster position="bottom-right" />
@@ -77,7 +78,7 @@ const defaultRoutes: RouteObject[] = [
   },
   {
     path: "/planning",
-    element: getLayout(<Planning />)
+    element: getLayout(<Planning employeeId={""} duration={1} />)
   },
   {
     path: "/profil",
@@ -97,7 +98,7 @@ const authRoutes: RouteObject[] = [
 export const adminRoutes: RouteObject[] = [
   {
     path: "/admin",
-    element: getLayout(<AdminHome />)
+    element: getLayout(<AdminHome />, true)
   },
   {
     path: "/admin/users",
@@ -106,7 +107,8 @@ export const adminRoutes: RouteObject[] = [
         Rows={UsersRowsAdmin}
         promiseFetch={fetchUsers}
         header={usersHeader}
-      />
+      />,
+      true
     )
   },
 
@@ -117,7 +119,8 @@ export const adminRoutes: RouteObject[] = [
         Rows={SlotsRows}
         promiseFetch={fetchSlots}
         header={slotsHeader}
-      />
+      />,
+      true
     )
   },
 
@@ -128,7 +131,8 @@ export const adminRoutes: RouteObject[] = [
         Rows={ServicesRows}
         promiseFetch={fetchServices}
         header={servicesHeader}
-      />
+      />,
+      true
     )
   },
 
@@ -139,7 +143,8 @@ export const adminRoutes: RouteObject[] = [
         Rows={OrganizationsRows}
         promiseFetch={fetchOrganizations}
         header={organizationsHeader}
-      />
+      />,
+      true
     )
   },
 
@@ -150,7 +155,8 @@ export const adminRoutes: RouteObject[] = [
         Rows={EstablishmentsRows}
         promiseFetch={fetchEstablishments}
         header={establishmentsHeader}
-      />
+      />,
+      true
     )
   },
 
@@ -161,7 +167,8 @@ export const adminRoutes: RouteObject[] = [
         Rows={EmployeesRows}
         promiseFetch={fetchEmployees}
         header={employeesHeader}
-      />
+      />,
+      true
     )
   },
 
@@ -172,7 +179,8 @@ export const adminRoutes: RouteObject[] = [
         Rows={EmployeeSpecificScheduleRows}
         promiseFetch={fetchEmployeeSpecificSchedules}
         header={employeesSpecificSchedulesHeader}
-      />
+      />,
+      true
     )
   },
   {
@@ -182,7 +190,8 @@ export const adminRoutes: RouteObject[] = [
         fetchItem={fetchUser}
         dataKeyException={USER_KEY_EXCEPTION}
         editFunctions={editUser}
-      />
+      />,
+      true
     )
   },
   {
@@ -192,7 +201,8 @@ export const adminRoutes: RouteObject[] = [
         fetchItem={fetchSlot}
         dataKeyException={SLOT_KEY_EXCEPTION}
         editFunctions={editSlot}
-      />
+      />,
+      true
     )
   },
   {
@@ -202,7 +212,8 @@ export const adminRoutes: RouteObject[] = [
         fetchItem={fetchService}
         dataKeyException={SERVICE_KEY_EXCEPTION}
         editFunctions={editService}
-      />
+      />,
+      true
     )
   },
   {
@@ -213,7 +224,8 @@ export const adminRoutes: RouteObject[] = [
         dataKeyException={ORGANIZATION_KEY_EXCEPTION}
         editFunctions={editOrganization}
         dataKeyLink={ORGANIZATION_KEY_LINK_EDIT}
-      />
+      />,
+      true
     )
   },
   {
@@ -224,7 +236,8 @@ export const adminRoutes: RouteObject[] = [
         dataKeyException={ESTABLISHMENT_KEY_EXCEPTION}
         editFunctions={editEstablishment}
         dataKeyLink={ESTABLISHMENT_KEY_LINK_EDIT}
-      />
+      />,
+      true
     )
   },
   {
@@ -235,7 +248,8 @@ export const adminRoutes: RouteObject[] = [
         dataKeyException={EMPLOYEE_KEY_EXCEPTION}
         editFunctions={editEmployee}
         dataKeyLink={EMPLOYEE_KEY_LINK_EDIT}
-      />
+      />,
+      true
     )
   },
   {
@@ -245,7 +259,8 @@ export const adminRoutes: RouteObject[] = [
         fetchItem={fetchEmployeeSpecificSchedule}
         dataKeyException={EMPLOYEE_SPECIFIC_SCHEDULE_KEY_EXCEPTION}
         editFunctions={editEmployeeSpecificSchedule}
-      />
+      />,
+      true
     )
   }
 ]
