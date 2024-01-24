@@ -52,7 +52,7 @@ COPY ./symfony.lock /srv/app/
 RUN composer install --no-dev --no-scripts
 
 COPY . /srv/app/
-RUN COMPOSER_ALLOW_SUPERUSER=1 
+RUN echo COMPOSER_ALLOW_SUPERUSER=1 
 RUN composer run auto-scripts
 # RUN APP_ENV=prod composer run auto-scripts
 
