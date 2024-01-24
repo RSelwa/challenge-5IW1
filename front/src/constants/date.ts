@@ -1,19 +1,25 @@
 export const monthNames = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December"
+  "Janvier",
+  "Février",
+  "Mars",
+  "Avril",
+  "Mai",
+  "Juin",
+  "Juillet",
+  "Aout",
+  "Septembre",
+  "Octobre",
+  "Novembre",
+  "Décembre"
 ]
 
-export const daysInWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+export const daysInWeek = [  "Dimanche",
+"Lundi",
+"Mardi",
+"Mercredi",
+"Jeudi",
+"Vendredi",
+"Samedi"];
 export const hourInSeconds = 3600
 export const dayInSeconds = 86400
 export const weekInSeconds = 604800

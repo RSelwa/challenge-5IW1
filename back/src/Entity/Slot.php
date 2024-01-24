@@ -34,15 +34,11 @@ class Slot
 
     #[ORM\Column(length: 255)]
     #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:read'])]
-    private ?Date $date = null;
-
-    #[ORM\Column(length: 255)]
-    #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:read'])]
     private ?string $startTime = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:read'])]
-    private ?string $endTime = null;
+    private ?string $duration = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['slot:read', 'slot:read'])]
@@ -96,18 +92,6 @@ class Slot
         return $this;
     }
 
-    public function getDate(): ?Date
-    {
-        return $this->date;
-    }
-
-    public function setDate(Date $date): static
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
     public function getStartTime(): ?string
     {
         return $this->startTime;
@@ -120,14 +104,14 @@ class Slot
         return $this;
     }
 
-    public function getEndTime(): ?string
+    public function getDuration(): ?string
     {
-        return $this->endTime;
+        return $this->duration;
     }
 
-    public function setEndTime(string $endTime): static
+    public function setDuration(string $duration): static
     {
-        $this->endTime = $endTime;
+        $this->duration = $duration;
 
         return $this;
     }
