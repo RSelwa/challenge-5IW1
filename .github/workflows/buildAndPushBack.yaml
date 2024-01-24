@@ -23,6 +23,8 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./back
+          build-args: |
+            "PROD=${{ secrets.PROD }}"
           push: true
           tags: rselwa/challenge-s1:server-php
 
