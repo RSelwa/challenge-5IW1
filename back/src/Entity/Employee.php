@@ -61,10 +61,6 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['establishment:read', 'employee:read'])]
     private Collection $employeeSpecificSchedules;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    #[Groups(['establishment:read', 'employee:read'])]
-    private ?Service $service = null;
-
     #[ORM\Column(length: 255)]
     #[Groups(['establishment:read', 'employee:read', 'employee:write'])]
     private ?string $email = null;
@@ -76,6 +72,11 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[Groups(['employee:write'])]
     private ?string $plainPassword = null;
+
+    #[ORM\ManyToOne(inversedBy: 'employees')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['establishment:read', 'employee:read', 'employee:write'])]
+    private ?Service $service = null;
 
     public function __construct()
     {
@@ -191,18 +192,6 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getService(): ?Service
-    {
-        return $this->service;
-    }
-
-    public function setService(?Service $service): static
-    {
-        $this->service = $service;
-
-        return $this;
-    }
-
     public function getEmail(): ?string
     {
         return $this->email;
@@ -265,7 +254,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string) $this->id;
     }
 
     /**
@@ -274,5 +263,17 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         $this->plainPassword = null;
+    }
+
+    public function getService(): ?Service
+    {
+        return $this->service;
+    }
+
+    public function setService(?Service $service): static
+    {
+        $this->service = $service;
+
+        return $this;
     }
 }

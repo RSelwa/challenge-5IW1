@@ -24,7 +24,7 @@ const Layout = ({ children }: { children: JSX.Element }) => {
             DOCTOGES
           </h1>
         </Link>
-        {userStatus.includes("VISTOR") ? (
+        {userStatus?.includes("VISTOR") ? (
           <VisitorLayout />
         ) : (
           <DropdownMenu.Root>
@@ -32,7 +32,7 @@ const Layout = ({ children }: { children: JSX.Element }) => {
               <Avatar
                 size={32}
                 name="Maya Angelou"
-                variant={userStatus.includes("ROLE_ADMIN") ? "marble" : "beam"}
+                variant={userStatus?.includes("ROLE_ADMIN") ? "marble" : "beam"}
                 colors={["#92A1C6", "#146A7C", "#fff", "#C271B4", "#74FFC9"]}
               />
               <ChevronDownIcon
@@ -46,8 +46,8 @@ const Layout = ({ children }: { children: JSX.Element }) => {
                 sideOffset={dropdownMenuSideOffset}
                 className="DropdownMenuContent text-red-500"
               >
-                {userStatus.includes("ROLE_USER") && <ClientLayout />}
-                {userStatus.includes("ROLE_ADMIN") && <AdminLayout />}
+                {userStatus?.includes("ROLE_USER") && <ClientLayout />}
+                {userStatus?.includes("ROLE_ADMIN") && <AdminLayout />}
               </DropdownMenu.Content>
             </DropdownMenu.Portal>
           </DropdownMenu.Root>

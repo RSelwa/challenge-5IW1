@@ -14,8 +14,7 @@ export const requestOptions = ({
   body?: BodyInit
 }): RequestInit => {
   const newHeader = new Headers()
-  // newHeader.append("Content-Type", "application/json")
-  newHeader.append("Content-Type", "application/merge-patch+json")
+  newHeader.append("Content-Type", "application/json")
 
   return {
     method: method,

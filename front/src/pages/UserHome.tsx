@@ -1,18 +1,17 @@
 import type { Dispatch, SetStateAction } from "react"
 import React, { useState } from "react"
-import { Wrapper } from "@googlemaps/react-wrapper"
-import type { SearchResponse } from "@/lib/search"
+import type { EmployeesWithId } from "@/types/withId"
 import { fetchSearch } from "@/lib/search"
 import { fetchData } from "@/utils/db"
-import MapComponent from "@/components/maps/MapComponent"
+import Map from "@/components/maps/Map"
 import SearchResult from "@/components/Rows/search/SearchResult"
-import SearchButton from "@/components/ui/SearchBar"
+import SearchBar from "@/components/ui/SearchBar"
 import UserTitle from "@/components/ui/UserTitle"
+import Planning from "@/pages/planning"
 import type { SearchQuery } from "@/types"
 
 const Home = () => {
-  const [resultsSearch, setResultsSearch] = useState<SearchResponse[]>([])
-
+  const [resultsSearch, setResultsSearch] = useState<EmployeesWithId[]>([])
   const [searchQuery, setSearchQuery] = useState<SearchQuery>({
     service: "",
     localisation: ""
@@ -21,7 +20,7 @@ const Home = () => {
   const submit = (searchQuery: SearchQuery) => {
     console.log(searchQuery)
     fetchData(fetchSearch(), [setResultsSearch] as Dispatch<
-      SetStateAction<SearchResponse[]>
+      SetStateAction<EmployeesWithId[]>
     >[])
   }
 
@@ -30,13 +29,14 @@ const Home = () => {
       <div className="rounded-b-[3rem] bg-blue-500 pb-2">
         <UserTitle />
         <div className="mx-auto my-8 w-min">
-          <SearchButton
+          <SearchBar
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
             onClick={submit}
           />
         </div>
       </div>
+      <Planning />
       <div
         className="relative mx-auto grid w-11/12 gap-4  py-4"
         style={{ gridTemplateColumns: "2fr 1fr" }}
@@ -47,9 +47,7 @@ const Home = () => {
             <SearchResult searchResult={search} key={index} />
           ))}
         </div>
-        <Wrapper apiKey={import.meta.env.VITE_KEY_GOOGLE_MAPS || ""}>
-          <MapComponent />
-        </Wrapper>
+        <Map employeeList={resultsSearch} />
       </div>
     </div>
   )
