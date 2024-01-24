@@ -6,10 +6,12 @@ import type { Organizations } from "@/types/api/organization"
 import type { Services } from "@/types/api/services"
 import type { Slots } from "@/types/api/slots"
 import type { Users } from "@/types/api/users"
+import type { Notation } from "@/types/api/notation"
 
 export type AdminWithId = DocumentWithId<Admin>
 export type UsersWithId = DocumentWithId<Users>
 export type SlotsWithId = DocumentWithId<Slots>
+export type NotationtionsWithId = DocumentWithId<Notation>
 export type ServicesWithId = DocumentWithId<Services>
 export type OrganizationsWithId = DocumentWithId<Organizations>
 export type EstablishmentsWithId = DocumentWithId<Establishments>

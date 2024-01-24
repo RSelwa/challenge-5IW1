@@ -1,5 +1,6 @@
 import React from "react"
 import UserInfosForm from "@/pages/UserInfosForm"
+import Notation from "./Notations"
 
 
 const MyAccount = () => {
@@ -11,6 +12,7 @@ const MyAccount = () => {
         </h1>
         <UserInfosForm />
       </div>
+      <Notation/>
     </div>
   )
 }
