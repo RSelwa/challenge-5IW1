@@ -1,5 +1,5 @@
 import { NOTATION_API_ROUTES } from "@/constants/db"
-import { NotationPost, NoteSomone } from "@/types/api/notation"
+import { Notation } from "@/types/api/notation"
 import { NotationtionsWithId } from "@/types/withId"
 import { formDataHeader, requestOptions } from "@/utils/db"
 
@@ -15,23 +15,9 @@ export const fetchNotations = async (): Promise<NotationtionsWithId[]> => {
       return organizations
     }
 
-    
-export const postNotation = async (notation: NotationPost) => {
-    const { headers, formData } = formDataHeader(notation)
-  
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}${NOTATION_API_ROUTES}`,
-      requestOptions({
-        method: "POST",
-        headers,
-        body: formData
-      })
-    )
-    if (!response.ok) throw new Error("Something went wrong")
-  }
 
   
-export const noteSomone = async (notation: NoteSomone) => {
+export const noteSomone = async (notation: PostNotation) => {
   const { headers, formData } = formDataHeader(notation)
 
   const response = await fetch(
