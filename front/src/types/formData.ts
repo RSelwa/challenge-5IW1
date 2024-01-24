@@ -1,3 +1,5 @@
+import { SlotsWithId } from "./withId";
+
 export type LoginFormData = { email: string; password: string }
 export type SigninUserFormData = {
   email: string
@@ -15,4 +17,10 @@ export type SigninOrgaFormData = {
   siret: string
   email: string
   plainPassword: string
+}
+
+export type UserInfosProfileFormData = {
+  firstname: string
+  lastname: string
+  email: string 
 }

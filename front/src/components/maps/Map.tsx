@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react"
 import type { PlaceGeometryData } from "@/types/maps"
 import { defaultLocation } from "@/constants/maps"
-import { GoogleMap, Marker } from '@react-google-maps/api';
+ import { GoogleMap, Marker } from '@react-google-maps/api';
 import { GoogleMapsAPIContext } from "@/App";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
