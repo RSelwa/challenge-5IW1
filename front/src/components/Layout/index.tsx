@@ -1,9 +1,8 @@
-import { Fragment } from "react"
+import { useEffect } from "react"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { ChevronDownIcon } from "@radix-ui/react-icons"
 import Avatar from "boring-avatars"
-import { Toaster } from "react-hot-toast"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import type { reduxUserFront } from "@/types/redux/user"
 import { useAppSelector } from "@/redux/hook"
 import AdminLayout from "@/components/Layout/AdminLayout"
@@ -11,10 +10,20 @@ import ClientLayout from "@/components/Layout/ClientLayout"
 import VisitorLayout from "@/components/Layout/VisitorLayout"
 import { dropdownMenuSideOffset } from "@/constants"
 
-const Layout = ({ children }: { children: JSX.Element }) => {
+const Layout = ({
+  children,
+  adminSecurity
+}: {
+  children: JSX.Element
+  adminSecurity: boolean
+}) => {
+  const navigate = useNavigate()
   const userStatus = useAppSelector(
     (state) => (state.user as reduxUserFront).status
   )
+  useEffect(() => {
+    if (!userStatus?.includes("ROLE_ADMIN") && adminSecurity) navigate("/")
+  }, [])
 
   return (
     <>
@@ -59,12 +68,3 @@ const Layout = ({ children }: { children: JSX.Element }) => {
 }
 
 export default Layout
-
-export const GetLayout = (element: JSX.Element): JSX.Element => (
-  <Layout>
-    <Fragment>
-      {element}
-      <Toaster position="bottom-right" />
-    </Fragment>
-  </Layout>
-)
