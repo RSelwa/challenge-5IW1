@@ -12,7 +12,7 @@ import React, { useState } from "react";
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import { Notation } from "@/types/api/notation";
-import { noteSomone } from "@/lib/notations"
+import { Notation } from "@/lib/notations"
 
 
 const Notation = () => {

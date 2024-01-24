@@ -1,6 +1,6 @@
 import React from "react"
 import UserInfosForm from "@/pages/UserInfosForm"
-import Notation from "./Notations"
+import Notation from "../components/Notations"
 
 
 const MyAccount = () => {

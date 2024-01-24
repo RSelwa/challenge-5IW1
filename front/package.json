@@ -35,8 +35,11 @@
     "sort-by": "^1.2.0"
   },
   "devDependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.1.1",
     "@jest/globals": "^29.7.0",
+    "@mui/material": "^5.15.6",
     "@reduxjs/toolkit": "^1.9.7",
     "@types/google.maps": "^3.54.10",
     "@types/node": "^14.18.17",

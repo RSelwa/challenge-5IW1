@@ -2,7 +2,7 @@ import { GoogleMapsAPIContext } from "@/App"
 import { useAppDispatch, useAppSelector } from "@/redux/hook"
 import { changeSearchPlace } from "@/redux/user/userSlice"
 import { normalizeMapsPlaceData } from "@/utils/maps"
-import { Autocomplete } from "@react-google-maps/api"
+ import { Autocomplete } from "@react-google-maps/api"
 import { type ReactElement, useContext, useState, useEffect } from "react"
 
 interface Props {
