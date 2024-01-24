@@ -13,3 +13,8 @@ const triggerEventLocalStorageUpdated = (key: string, value: any) => {
   })
   window.dispatchEvent(event)
 }
+
+export const getLocalStorage = (key: string) => {
+  const value = localStorage.getItem(key)
+  return value ? JSON.parse(value) : null
+}
