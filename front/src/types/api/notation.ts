@@ -1,8 +1,6 @@
-
-
-export type Notation = {
-    idTarget: number
-    idFrom: number
-    note: number
-    comments: string
+export type NotationType = {
+  idTarget: string
+  idFrom: string
+  note: number
+  comments: string
 }
