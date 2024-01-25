@@ -4,6 +4,11 @@ const ID_EXCEPTION = ["id"]
 export const USER_KEY_EXCEPTION = [...ID_EXCEPTION, "slots"]
 export const EMPLOYEE_KEY_EXCEPTION = [...ID_EXCEPTION]
 export const EMPLOYEE_SPECIFIC_SCHEDULE_KEY_EXCEPTION = [...ID_EXCEPTION]
+export const NOTATION_KEY_EXCEPTION = [
+  ...ID_EXCEPTION,
+  "idNotationTarget",
+  "idNotationFrom"
+]
 export const ORGANIZATION_KEY_EXCEPTION = [...ID_EXCEPTION, "kbis"]
 export const SERVICE_KEY_EXCEPTION = [...ID_EXCEPTION]
 export const ESTABLISHMENT_KEY_EXCEPTION = [...ID_EXCEPTION]

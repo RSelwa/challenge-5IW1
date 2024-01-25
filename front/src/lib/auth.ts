@@ -4,9 +4,11 @@ import { requestOptions } from "@/utils/db"
 import { removeLocalStorage, setLocalStorage } from "@/utils/localStorage"
 
 export const loginUser = async (data: LoginFormData) => {
+  const header = new Headers()
+  header.append("Content-Type", "application/json")
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}/auth`,
-    requestOptions({ method: "POST", data: data })
+    requestOptions({ method: "POST", data: data, headers: header })
   )
   if (!response.ok) throw new Error("Something went wrong")
 

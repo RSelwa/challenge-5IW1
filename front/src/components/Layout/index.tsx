@@ -22,6 +22,7 @@ const Layout = ({
     (state) => (state.user as reduxUserFront).status
   )
   useEffect(() => {
+    if (import.meta.env.VITE_IGNORE_ADMIN_SECU === "true") return
     if (!userStatus?.includes("ROLE_ADMIN") && adminSecurity) navigate("/")
   }, [])
 

@@ -60,36 +60,36 @@ export const slots: SlotsWithId[] = [
 
 export const mockNotation: NotationtionsWithId[] = [
   {
-    idTarget: "user123",
-    idFrom: "user456",
+    idNotationTarget: "user123",
+    idNotationFrom: "user456",
     note: 4,
     comments: "Très bon travail!",
     id: "notation1"
   },
   {
-    idTarget: "user789",
-    idFrom: "user101",
+    idNotationTarget: "user789",
+    idNotationFrom: "user101",
     note: 3,
     comments: "Peut s'améliorer",
     id: "notation2"
   },
   {
-    idTarget: "user111",
-    idFrom: "user222",
+    idNotationTarget: "user111",
+    idNotationFrom: "user222",
     note: 5,
     comments: "Excellent!",
     id: "notation3"
   },
   {
-    idTarget: "user333",
-    idFrom: "user444",
+    idNotationTarget: "user333",
+    idNotationFrom: "user444",
     note: 2,
     comments: "Besoin d'efforts supplémentaires",
     id: "notation4"
   },
   {
-    idTarget: "user555",
-    idFrom: "user666",
+    idNotationTarget: "user555",
+    idNotationFrom: "user666",
     note: 4,
     comments: "Bonne prestation dans l'ensemble",
     id: "notation5"

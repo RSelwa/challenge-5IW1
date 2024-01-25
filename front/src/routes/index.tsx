@@ -7,6 +7,7 @@ import {
   EMPLOYEE_SPECIFIC_SCHEDULE_KEY_EXCEPTION,
   ESTABLISHMENT_KEY_EXCEPTION,
   ESTABLISHMENT_KEY_LINK_EDIT,
+  NOTATION_KEY_EXCEPTION,
   ORGANIZATION_KEY_EXCEPTION,
   ORGANIZATION_KEY_LINK_EDIT,
   SERVICE_KEY_EXCEPTION,
@@ -17,6 +18,7 @@ import {
   employeesHeader,
   employeesSpecificSchedulesHeader,
   establishmentsHeader,
+  notationsHeader,
   organizationsHeader,
   servicesHeader,
   slotsHeader,
@@ -33,6 +35,7 @@ import {
   fetchEstablishment,
   fetchEstablishments
 } from "@/lib/establishments"
+import { fetchNotation, fetchNotations, patchNotation } from "@/lib/notations"
 import {
   editOrganization,
   fetchOrganization,
@@ -47,6 +50,7 @@ import Layout from "@/components/Layout"
 import EmployeeSpecificScheduleRows from "@/components/Rows/admin/EmployeeSpecificScheduleRows"
 import EmployeesRows from "@/components/Rows/admin/EmployeesRows"
 import EstablishmentsRows from "@/components/Rows/admin/EstablishmentsRows"
+import NotationsRows from "@/components/Rows/admin/NotationsRows"
 import OrganizationsRows from "@/components/Rows/admin/OrganizationsRows"
 import ServicesRows from "@/components/Rows/admin/ServicesRows"
 import SlotsRows from "@/components/Rows/admin/SlotsRows"
@@ -184,6 +188,17 @@ export const adminRoutes: RouteObject[] = [
     )
   },
   {
+    path: "/admin/notations",
+    element: getLayout(
+      <AdminView
+        Rows={NotationsRows}
+        promiseFetch={fetchNotations}
+        header={notationsHeader}
+      />,
+      true
+    )
+  },
+  {
     path: "/admin/users/:id",
     element: getLayout(
       <ItemId
@@ -259,6 +274,17 @@ export const adminRoutes: RouteObject[] = [
         fetchItem={fetchEmployeeSpecificSchedule}
         dataKeyException={EMPLOYEE_SPECIFIC_SCHEDULE_KEY_EXCEPTION}
         editFunctions={editEmployeeSpecificSchedule}
+      />,
+      true
+    )
+  },
+  {
+    path: "/admin/notations/:id",
+    element: getLayout(
+      <ItemId
+        fetchItem={fetchNotation}
+        dataKeyException={NOTATION_KEY_EXCEPTION}
+        editFunctions={patchNotation}
       />,
       true
     )

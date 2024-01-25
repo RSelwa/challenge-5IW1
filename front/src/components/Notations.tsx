@@ -10,13 +10,13 @@ import { parseJwt } from "@/utils/redux"
 import { mockNotation } from "@/mock/notationMock"
 
 type Props = {
-  idTarget: string
+  idNotationTarget: string
 }
-const Notation = ({ idTarget }: Props) => {
+const Notation = ({ idNotationTarget }: Props) => {
   const [notation, setNotation] = useState<NotationtionsWithId>({
     comments: "",
-    idFrom: "",
-    idTarget: "",
+    idNotationFrom: "",
+    idNotationTarget: "",
     note: 0,
     id: ""
   })
@@ -24,7 +24,7 @@ const Notation = ({ idTarget }: Props) => {
 
   const fetchPotentialNotation = async () => {
     try {
-      console.log(idTarget)
+      console.log(idNotationTarget)
       const token = parseJwt(localStorage.getItem("token") || "")
 
       // const notations = await fetchNotations()
@@ -34,13 +34,15 @@ const Notation = ({ idTarget }: Props) => {
 
       const isExistingNote = notations.some(
         (notation) =>
-          notation.idFrom === token.id && notation.idTarget === idTarget
+          notation.idNotationFrom === token.id &&
+          notation.idNotationTarget === idNotationTarget
       )
       setIsExistingNotation(isExistingNote)
       if (isExistingNote) {
         const notation = notations.find(
           (notation) =>
-            notation.idFrom === token.id && notation.idTarget === idTarget
+            notation.idNotationFrom === token.id &&
+            notation.idNotationTarget === idNotationTarget
         )
         if (notation) {
           setNotation(notation)
@@ -58,8 +60,8 @@ const Notation = ({ idTarget }: Props) => {
       setNotation((prevState) => ({ ...prevState, note }))
 
       const newNotation: NotationType = {
-        idFrom: token.id,
-        idTarget: idTarget,
+        idNotationFrom: token.id,
+        idNotationTarget: idNotationTarget,
         comments: "",
         note: note
       }

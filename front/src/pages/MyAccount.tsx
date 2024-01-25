@@ -11,7 +11,7 @@ const MyAccount = () => {
         </h1>
         <UserInfosForm />
       </div>
-      <Notation idTarget={"user333"} />
+      <Notation idNotationTarget={"user333"} />
     </div>
   )
 }
