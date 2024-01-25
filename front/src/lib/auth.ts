@@ -23,6 +23,17 @@ export const signInUser = async (data: SigninUserFormData) => {
   await loginUser({ email: data.email, password: data.plainPassword })
 }
 
+export const loginOrganization = async (data: LoginFormData) => {
+  try {
+    //! A Faire
+    await new Promise((r) => setTimeout(r, 2000))
+
+    console.log(data)
+  } catch (error) {
+    console.error(error)
+    throw new Error("Something went wrong")
+  }
+}
 export const logout = () => {
   removeLocalStorage("token")
 }
