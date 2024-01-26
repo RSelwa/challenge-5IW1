@@ -68,10 +68,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:write'])]
     private ?string $plainPassword = null;
 
+    #[ORM\OneToMany(mappedBy: 'idNotationFrom', targetEntity: Notations::class, orphanRemoval: true)]
+    private Collection $notations;
+
 
     public function __construct()
     {
         $this->slots = new ArrayCollection();
+        $this->notations = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -211,5 +215,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Notations>
+     */
+    public function getNotations(): Collection
+    {
+        return $this->notations;
+    }
+
+    public function addNotation(Notations $notation): static
+    {
+        if (!$this->notations->contains($notation)) {
+            $this->notations->add($notation);
+            $notation->setIdNotationFrom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotation(Notations $notation): static
+    {
+        if ($this->notations->removeElement($notation)) {
+            // set the owning side to null (unless already changed)
+            if ($notation->getIdNotationFrom() === $this) {
+                $notation->setIdNotationFrom(null);
+            }
+        }
+
+        return $this;
     }
 }
