@@ -56,6 +56,13 @@
       "App\\Tests\\": "tests/"
     }
   },
+  "config": {
+    "allow-plugins": {
+      "symfony/thanks": true,
+      "symfony/runtime": true,
+      "symfony/flex": true
+    }
+  },
   "replace": {
     "symfony/polyfill-ctype": "*",
     "symfony/polyfill-iconv": "*",
