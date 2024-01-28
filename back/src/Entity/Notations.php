@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\NotationsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: NotationsRepository::class)]
+#[ApiResource]
 class Notations
 {
     #[ORM\Id]
@@ -19,13 +21,13 @@ class Notations
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $comment = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(inversedBy: 'notations')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?user $idNotationTarget = null;
+    private ?Employee $idNotationTarget = null;
 
     #[ORM\ManyToOne(inversedBy: 'notations')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?user $idNotationFrom = null;
+    private ?User $idNotationFrom = null;
 
     public function getId(): ?int
     {
@@ -56,24 +58,24 @@ class Notations
         return $this;
     }
 
-    public function getIdNotationTarget(): ?user
+    public function getIdNotationTarget(): ?Employee
     {
         return $this->idNotationTarget;
     }
 
-    public function setIdNotationTarget(?user $idNotationTarget): static
+    public function setIdNotationTarget(?Employee $idNotationTarget): static
     {
         $this->idNotationTarget = $idNotationTarget;
 
         return $this;
     }
 
-    public function getIdNotationFrom(): ?user
+    public function getIdNotationFrom(): ?User
     {
         return $this->idNotationFrom;
     }
 
-    public function setIdNotationFrom(?user $idNotationFrom): static
+    public function setIdNotationFrom(?User $idNotationFrom): static
     {
         $this->idNotationFrom = $idNotationFrom;
 
