@@ -16,3 +16,9 @@ api_platform:
         jsonld: ['application/json+ld']
         html: ['text/html']
         multipart: ['multipart/form-data']
+
+
+    resource_class_directories:
+        - '%kernel.project_dir%/src/Dto'
+        - '%kernel.project_dir%/src/Controller'
+   
