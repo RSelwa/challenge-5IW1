@@ -31,7 +31,7 @@ class EmailController
         $body = $data['body'];
 
         $email = (new Email())
-            ->from('your_email@example.com')
+            ->from('no-reply@doctoges.com <esgi.challenge.s2@gmail.com>')
             ->to($to)
             ->subject($subject)
             ->text($body);
