@@ -28,12 +28,21 @@ class Service
     #[Groups(['service:read', 'employee:read'])]
     private ?string $name = null;
 
+    #[ORM\ManyToOne(inversedBy: 'services')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['service:write', 'employee:read', ])]
+    private ?Service $employee = null;
+
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['service:read', 'employee:read'])]
     private ?string $type = null;
 
     #[ORM\OneToMany(mappedBy: 'service', targetEntity: Employee::class)]
     private Collection $employees;
+
+    #[ORM\ManyToOne(inversedBy: 'services')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Employee $employeeId = null;
 
     public function __construct()
     {
@@ -102,6 +111,18 @@ class Service
                 $employee->setService(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEmployeeId(): ?Employee
+    {
+        return $this->employeeId;
+    }
+
+    public function setEmployeeId(?Employee $employeeId): static
+    {
+        $this->employeeId = $employeeId;
 
         return $this;
     }

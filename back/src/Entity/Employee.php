@@ -42,6 +42,10 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:write'])]
+    private ?string $category = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:write'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
@@ -73,20 +77,24 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['employee:write'])]
     private ?string $plainPassword = null;
 
-    #[ORM\ManyToOne(inversedBy: 'employees')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['establishment:read', 'employee:read', 'employee:write'])]
-    private ?Service $service = null;
+    // #[ORM\ManyToOne(inversedBy: 'employees')]
+    // #[ORM\JoinColumn(nullable: false)]
+    // #[Groups(['establishment:read', 'employee:read', 'employee:write'])]
+    // private ?Service $service = null;
 
     #[ORM\OneToMany(mappedBy: 'Employee', targetEntity: EmployeeWeekSchedule::class)]
     #[Groups(['establishment:read', 'employee:read'])]
     private Collection $employeeWeekSchedules;
+
+    #[ORM\OneToMany(mappedBy: 'employeeId', targetEntity: Service::class)]
+    private Collection $services;
 
     public function __construct()
     {
         $this->slots = new ArrayCollection();
         $this->employeeSpecificSchedules = new ArrayCollection();
         $this->employeeWeekSchedules = new ArrayCollection();
+        $this->services = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -101,6 +109,17 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(string $category): static
+    {
+        $this->category = $category;
+
+        return $this;
+    }
     public function getFirstname(): ?string
     {
         return $this->firstname;
@@ -270,17 +289,17 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
         $this->plainPassword = null;
     }
 
-    public function getService(): ?Service
-    {
-        return $this->service;
-    }
+    // public function getService(): ?Service
+    // {
+    //     return $this->service;
+    // }
 
-    public function setService(?Service $service): static
-    {
-        $this->service = $service;
+    // public function setService(?Service $service): static
+    // {
+    //     $this->service = $service;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     /**
      * @return Collection<int, EmployeeWeekSchedule>
@@ -306,6 +325,36 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($employeeWeekSchedule->getEmployee() === $this) {
                 $employeeWeekSchedule->setEmployee(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Service>
+     */
+    public function getServices(): Collection
+    {
+        return $this->services;
+    }
+
+    public function addService(Service $service): static
+    {
+        if (!$this->services->contains($service)) {
+            $this->services->add($service);
+            $service->setEmployeeId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeService(Service $service): static
+    {
+        if ($this->services->removeElement($service)) {
+            // set the owning side to null (unless already changed)
+            if ($service->getEmployeeId() === $this) {
+                $service->setEmployeeId(null);
             }
         }
 
