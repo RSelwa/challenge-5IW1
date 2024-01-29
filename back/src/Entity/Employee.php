@@ -77,16 +77,11 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['employee:write'])]
     private ?string $plainPassword = null;
 
-    // #[ORM\ManyToOne(inversedBy: 'employees')]
-    // #[ORM\JoinColumn(nullable: false)]
-    // #[Groups(['establishment:read', 'employee:read', 'employee:write'])]
-    // private ?Service $service = null;
-
     #[ORM\OneToMany(mappedBy: 'Employee', targetEntity: EmployeeWeekSchedule::class)]
     #[Groups(['establishment:read', 'employee:read'])]
     private Collection $employeeWeekSchedules;
 
-    #[ORM\OneToMany(mappedBy: 'employeeId', targetEntity: Service::class)]
+    #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Service::class)]
     private Collection $services;
 
     public function __construct()
@@ -343,7 +338,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->services->contains($service)) {
             $this->services->add($service);
-            $service->setEmployeeId($this);
+            $service->setEmployee($this);
         }
 
         return $this;
@@ -353,8 +348,8 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->services->removeElement($service)) {
             // set the owning side to null (unless already changed)
-            if ($service->getEmployeeId() === $this) {
-                $service->setEmployeeId(null);
+            if ($service->getEmployee() === $this) {
+                $service->setEmployee(null);
             }
         }
 
