@@ -9,6 +9,7 @@ type Props = {
 const EmployeeRowSearch = ({ employee }: Props) => {
   return (
     <ProfileSearch
+      employeeId={employee.id}
       address={employee.establishment.address}
       name={(employee.firstname, employee.lastname)}
       urlImage=""

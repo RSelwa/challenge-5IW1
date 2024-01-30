@@ -8,6 +8,7 @@ type Props = {
   // service: string
   address: string
   zipCode: string
+  employeeId: string
 }
 
 const ProfileSearch = (props: Props) => {
@@ -33,7 +34,9 @@ const ProfileSearch = (props: Props) => {
         </div>
       </div>
       <div className="ml-24 mt-4">
-        <Link to={``}>Prendre rendez-vous</Link>
+        <Link to={`/reservation-service/${props.employeeId}`}>
+          Prendre rendez-vous
+        </Link>
       </div>
     </div>
   )
