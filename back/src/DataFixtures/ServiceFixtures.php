@@ -19,12 +19,14 @@ class ServiceFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $serviceNames = array("Préstation 1", "Préstation 2", "Préstation 3");
+        $serviceDurations = array(1, 2, 1);
+        $servicePrices = array(50, 70, 70);
 
-        foreach ($serviceNames as $serviceName) {
+        foreach ($serviceNames as  $index => $serviceName) {
             $service = new Service();
             $service->setName($serviceName);
-            $service->setDuration(30);
-            $service->setPrice(50);
+            $service->setDuration($serviceDurations[$index]);
+            $service->setPrice($servicePrices[$index]);
             $service->setEmployee($this->getReference(EmployeeFixtures::EMPLOYEE_REFERENCE));
             $manager->persist($service);
         }
