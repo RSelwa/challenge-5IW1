@@ -7,19 +7,24 @@ import Map from "@/components/maps/Map"
 import SearchResult from "@/components/Rows/search/SearchResult"
 import SearchBar from "@/components/ui/SearchBar"
 import UserTitle from "@/components/ui/UserTitle"
-import Planning from "@/pages/planning"
 import type { SearchQuery } from "@/types"
 
 const Home = () => {
   const [resultsSearch, setResultsSearch] = useState<EmployeesWithId[]>([])
   const [searchQuery, setSearchQuery] = useState<SearchQuery>({
     service: "",
-    localisation: ""
+    radiusInKm: 99999,
+    localisation: {
+      address: "",
+      geometry: {
+        lat: 0,
+        lng: 0
+      }
+    }
   })
 
   const submit = (searchQuery: SearchQuery) => {
-    console.log(searchQuery)
-    fetchData(fetchSearch(), [setResultsSearch] as Dispatch<
+    fetchData(fetchSearch(searchQuery), [setResultsSearch] as Dispatch<
       SetStateAction<EmployeesWithId[]>
     >[])
   }
@@ -32,11 +37,11 @@ const Home = () => {
           <SearchBar
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
-            onClick={submit}
+            onSubmitForm={submit}
           />
         </div>
       </div>
-      <Planning />
+      {/* <Planning /> */}
       <div
         className="relative mx-auto grid w-11/12 gap-4  py-4"
         style={{ gridTemplateColumns: "2fr 1fr" }}

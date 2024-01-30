@@ -11,12 +11,18 @@ import PlaceAutocomplete from "../maps/PlaceAutocomplete"
 type Props = {
   searchQuery: SearchQuery
   setSearchQuery: Dispatch<SetStateAction<SearchQuery>>
-  onClick: (searchQuery: SearchQuery) => void
+  onSubmitForm: (searchQuery: SearchQuery) => void
 }
 
-const SearchBar = ({ searchQuery, setSearchQuery, onClick }: Props) => {
+const SearchBar = ({ searchQuery, setSearchQuery, onSubmitForm }: Props) => {
   return (
-    <div className="flex w-fit items-center rounded-full bg-white  ring-4 ring-white  ">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        onSubmitForm(searchQuery)
+      }}
+      className="flex w-fit items-center rounded-full bg-white  ring-4 ring-white  "
+    >
       <div className="flex h-full items-center gap-1 rounded-l-full  border-r-2 border-gray-200 pl-4 text-base ">
         <label className="cursor-text" htmlFor="searchInput">
           <MagnifyingGlassIcon color="gray" strokeWidth="10" />
@@ -34,38 +40,51 @@ const SearchBar = ({ searchQuery, setSearchQuery, onClick }: Props) => {
           }
         />
       </div>
-      <div className="flex h-full items-center gap-1 pl-4">
+      <div className="flex h-full items-center gap-1 border-r-2 border-gray-200 pl-4">
         <label className="cursor-text" htmlFor="searchInput">
           <SewingPinIcon color="gray" strokeWidth="10" />
         </label>
-        <PlaceAutocomplete>
+        <PlaceAutocomplete
+          changeLocalisation={(newLocalisation) =>
+            setSearchQuery((prevState) => ({
+              ...prevState,
+              localisation: newLocalisation
+            }))
+          }
+        >
           <input
             className="py-1 outline-none placeholder:text-gray-400"
             placeholder="Où ?"
             type="search"
             id="searchInput"
-            onChange={(e) =>
-              setSearchQuery((prevState) => ({
-                ...prevState,
-                localisation: e.target.value
-              }))
-            }
           />
         </PlaceAutocomplete>
       </div>
-
+      <select
+        defaultValue={5}
+        onChange={(e) =>
+          setSearchQuery((prevState) => ({
+            ...prevState,
+            radiusInKm: parseInt(e.target.value)
+          }))
+        }
+      >
+        <option value={1}>1 Km</option>
+        <option value={5}>5 Km</option>
+        <option value={10}>10 Km</option>
+        <option value={999999}>No limit</option>
+      </select>
       <button
         className="group flex items-center gap-3 rounded-r-full bg-blue-950 px-4  py-1 text-end text-white hover:bg-blue-700"
-        type="button"
-        onClick={() => onClick(searchQuery)}
+        type="submit"
       >
-        Rechercher{" "}
+        Rechercher
         <ChevronRightIcon
           strokeOpacity={0}
           className="transition-transform duration-[1s] group-hover:translate-x-px"
         />
       </button>
-    </div>
+    </form>
   )
 }
 
