@@ -39,6 +39,7 @@ class Service
     private ?int $price = null;
 
     #[ORM\OneToMany(mappedBy: 'service', targetEntity: Slot::class)]
+    #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:read'])]
     private Collection $slots;
 
     public function __construct()

@@ -160,28 +160,6 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->slots;
     }
 
-    public function addSlot(Slot $slot): static
-    {
-        if (!$this->slots->contains($slot)) {
-            $this->slots->add($slot);
-            $slot->setEmployee($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSlot(Slot $slot): static
-    {
-        if ($this->slots->removeElement($slot)) {
-            // set the owning side to null (unless already changed)
-            if ($slot->getEmployee() === $this) {
-                $slot->setEmployee(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, EmployeeSpecificSchedule>
      */

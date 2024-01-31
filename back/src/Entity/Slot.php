@@ -7,7 +7,6 @@ use App\Repository\SlotRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints\Date;
 
 #[ORM\Entity(repositoryClass: SlotRepository::class)]
 #[ApiResource(
@@ -42,6 +41,7 @@ class Slot
 
     #[ORM\ManyToOne(inversedBy: 'slots')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:read'])]
     private ?Service $service = null;
 
     public function getId(): ?string
