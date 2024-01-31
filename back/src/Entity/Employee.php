@@ -82,6 +82,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $employeeWeekSchedules;
 
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Service::class)]
+    #[Groups(['establishment:read', 'employee:read'])]
     private Collection $services;
 
     public function __construct()
@@ -284,17 +285,6 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
         $this->plainPassword = null;
     }
 
-    // public function getService(): ?Service
-    // {
-    //     return $this->service;
-    // }
-
-    // public function setService(?Service $service): static
-    // {
-    //     $this->service = $service;
-
-    //     return $this;
-    // }
 
     /**
      * @return Collection<int, EmployeeWeekSchedule>
