@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons"
 import { Button } from "@radix-ui/themes"
 import type { PlanningWeekDay, Slots } from "@/types/api/slots"
+import type { ServicesWithId } from "@/types/withId"
 import { dayInSeconds, weekInSeconds } from "@/constants/date"
 import {
   dateToString,
@@ -9,20 +10,14 @@ import {
   differenceDaysBetweenTwoDates,
   getAvailableReservation,
   getDateFromWeek,
-  getHoursMinutes,
   getInitialDay,
   isInSameDay
 } from "@/utils/date"
 import { semaineTypeData, slotsData } from "@/constants"
+import AvailableSlot from "@/pages/planning/available-slot"
 import { cn } from "@/utils"
 
-const Planning = ({
-  employeeId = "EMP001",
-  duration = 1
-}: {
-  employeeId: string
-  duration: number
-}) => {
+const Planning = ({ service }: { service: ServicesWithId }) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date())
   const [needLoadReservations, setNeedLoadReservations] = useState(false)
   const [isPlanningExpanded, setIsPlanningExpanded] = useState(false)
@@ -126,8 +121,8 @@ const Planning = ({
   }, [currentDate])
 
   useEffect(() => {
-    fetchSemaineType(employeeId)
-    fetchReservations(employeeId)
+    fetchSemaineType(service.employee_id)
+    fetchReservations(service.employee_id)
   }, [needLoadReservations])
 
   return (
@@ -157,16 +152,21 @@ const Planning = ({
                   day: day.date,
                   reservations: day.reservations,
                   semaineTypeUser: semaineTypeData,
-                  duration: duration
+                  duration: service.duration
                 }).map((dateOfReservation, i) =>
                   isPlanningExpanded || i < 4 ? (
-                    <div
+                    <AvailableSlot
                       key={i}
-                      className="flex cursor-pointer items-center justify-center rounded bg-cyan-50 px-2 py-1 font-bold hover:bg-cyan-100"
-                    >
-                      {getHoursMinutes(dateOfReservation)}
-                    </div>
-                  ) : null
+                      service={service}
+                      dateOfReservation={dateOfReservation}
+                    />
+                  ) : // <div
+                  //   key={i}
+                  //   className="flex cursor-pointer items-center justify-center rounded bg-cyan-50 px-2 py-1 font-bold hover:bg-cyan-100"
+                  // >
+                  //   {getHoursMinutes(dateOfReservation)}
+                  // </div>
+                  null
                 )}
               </div>
             </div>

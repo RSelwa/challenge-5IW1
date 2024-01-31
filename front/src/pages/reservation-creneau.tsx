@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
-import { ServicesWithId } from "@/types/withId"
+import type { ServicesWithId } from "@/types/withId"
 import { fetchService } from "@/lib/services"
 import ReservationsPannel from "@/components/ui/reservations-pannel"
 import Planning from "@/pages/planning"
@@ -30,12 +30,13 @@ const ReservationCreneau = () => {
   }, [])
 
   return (
-    <ReservationsPannel label=" Choisissez votre creneau" isLoading={isLoading}>
+    <ReservationsPannel
+      label={`Choisissez votre creneau pour - ${service?.name}`}
+      isLoading={isLoading}
+    >
       {service && (
         <section>
-          {service.name}
-
-          <Planning employeeId={employeeId} duration={service.duration} />
+          <Planning service={service} />
         </section>
       )}
     </ReservationsPannel>

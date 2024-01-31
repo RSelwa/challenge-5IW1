@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import type { ServicesWithId } from "@/types/withId"
-import { fetchServicesByEmployeeId } from "@/lib/services"
+import { fetchEmployee } from "@/lib/employees"
 import ReservationsPannel from "@/components/ui/reservations-pannel"
-import { servicesMock } from "@/mock/services"
 
 const ReservationService = () => {
   const { idEmployee } = useParams()
@@ -14,9 +13,7 @@ const ReservationService = () => {
   const fetchServicesOfEmployee = async () => {
     setIsLoading(true)
     try {
-      console.log(idEmployee)
-      // const services = await fetchServicesByEmployeeId(idEmployee)
-      const services = servicesMock
+      const { services } = await fetchEmployee(idEmployee)
       setServices(services)
     } catch (error) {
       console.error(error)
@@ -39,7 +36,7 @@ const ReservationService = () => {
             data-state={
               i === 0 ? "first" : i === services.length - 1 ? "last" : "middle"
             }
-            className="hover:bg-hover border p-4 text-gray-800 transition-all data-[state=first]:rounded-t-lg data-[state=last]:rounded-b-lg data-[state=first]:border-b-0 data-[state=middle]:border-b-0 data-[state=first]:border-gray-200 data-[state=last]:border-gray-200 data-[state=middle]:border-gray-200"
+            className="border p-4 text-gray-800 transition-all hover:bg-hover data-[state=first]:rounded-t-lg data-[state=last]:rounded-b-lg data-[state=first]:border-b-0 data-[state=middle]:border-b-0 data-[state=first]:border-gray-200 data-[state=last]:border-gray-200 data-[state=middle]:border-gray-200"
             to={`/reservation-creneau/${service.id}?employeeId=${idEmployee}`}
           >
             {service.name}
