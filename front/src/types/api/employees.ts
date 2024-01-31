@@ -1,5 +1,6 @@
 import type {
   EmployeeSpecificSchedulesWithId,
+  ServicesWithId,
   SlotsWithId
 } from "@/types/withId"
 import type { Establishments } from "./establishment"
@@ -11,5 +12,5 @@ export type Employees = {
   slots: SlotsWithId[]
   employeeSpecificSchedules: EmployeeSpecificSchedulesWithId[]
   category: string
-  // service: Services
+  services: ServicesWithId[]
 }
