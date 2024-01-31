@@ -56,10 +56,6 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['employee:read', 'employee:write'])]
     private ?Establishment $establishment = null;
-
-    #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Slot::class)]
-    #[Groups(['establishment:read', 'employee:read'])]
-    private Collection $slots;
     
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: EmployeeSpecificSchedule::class)]
     #[Groups(['establishment:read', 'employee:read'])]
@@ -72,12 +68,12 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    private ?array $roles = ['ROLE_ORGANIZATION'];
+    private ?array $roles = ['ROLE_EMPLOYEE'];
 
     #[Groups(['employee:write'])]
     private ?string $plainPassword = null;
 
-    #[ORM\OneToMany(mappedBy: 'Employee', targetEntity: EmployeeWeekSchedule::class)]
+    #[ORM\OneToMany(mappedBy: 'employee', targetEntity: EmployeeWeekSchedule::class)]
     #[Groups(['establishment:read', 'employee:read'])]
     private Collection $employeeWeekSchedules;
 
@@ -87,7 +83,6 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->slots = new ArrayCollection();
         $this->employeeSpecificSchedules = new ArrayCollection();
         $this->employeeWeekSchedules = new ArrayCollection();
         $this->services = new ArrayCollection();
@@ -150,14 +145,6 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
         $this->establishment = $establishment;
 
         return $this;
-    }
-
-    /**
-     * @return Collection<int, Slot>
-     */
-    public function getSlots(): Collection
-    {
-        return $this->slots;
     }
 
     /**

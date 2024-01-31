@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240131221755 extends AbstractMigration
+final class Version20240131233846 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -36,9 +36,9 @@ final class Version20240131221755 extends AbstractMigration
         $this->addSql('CREATE TABLE organization (id UUID NOT NULL, name VARCHAR(255) NOT NULL, manager_firstname VARCHAR(255) NOT NULL, manager_lastname VARCHAR(255) NOT NULL, kbis VARCHAR(255) NOT NULL, siret VARCHAR(255) DEFAULT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, status VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE service (id UUID NOT NULL, employee_id UUID DEFAULT NULL, name VARCHAR(255) NOT NULL, duration INT NOT NULL, price INT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_E19D9AD28C03F15C ON service (employee_id)');
-        $this->addSql('CREATE TABLE slot (id UUID NOT NULL, user_id UUID DEFAULT NULL, employee_id UUID DEFAULT NULL, start_time VARCHAR(255) NOT NULL, duration VARCHAR(255) NOT NULL, status VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE slot (id UUID NOT NULL, user_id UUID DEFAULT NULL, service_id UUID NOT NULL, start_time VARCHAR(255) NOT NULL, duration VARCHAR(255) NOT NULL, status VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_AC0E2067A76ED395 ON slot (user_id)');
-        $this->addSql('CREATE INDEX IDX_AC0E20678C03F15C ON slot (employee_id)');
+        $this->addSql('CREATE INDEX IDX_AC0E2067ED5CA9E6 ON slot (service_id)');
         $this->addSql('ALTER TABLE employee ADD CONSTRAINT FK_5D9F75A18565851 FOREIGN KEY (establishment_id) REFERENCES establishment (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE employee_specific_schedule ADD CONSTRAINT FK_6B74964D8C03F15C FOREIGN KEY (employee_id) REFERENCES employee (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE employee_week_schedule ADD CONSTRAINT FK_9485D6358C03F15C FOREIGN KEY (employee_id) REFERENCES employee (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
@@ -47,7 +47,7 @@ final class Version20240131221755 extends AbstractMigration
         $this->addSql('ALTER TABLE notations ADD CONSTRAINT FK_9B69C07CF1DE2CB1 FOREIGN KEY (id_notation_from_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE service ADD CONSTRAINT FK_E19D9AD28C03F15C FOREIGN KEY (employee_id) REFERENCES employee (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE slot ADD CONSTRAINT FK_AC0E2067A76ED395 FOREIGN KEY (user_id) REFERENCES "user" (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE slot ADD CONSTRAINT FK_AC0E20678C03F15C FOREIGN KEY (employee_id) REFERENCES employee (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE slot ADD CONSTRAINT FK_AC0E2067ED5CA9E6 FOREIGN KEY (service_id) REFERENCES service (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
     public function down(Schema $schema): void
@@ -62,7 +62,7 @@ final class Version20240131221755 extends AbstractMigration
         $this->addSql('ALTER TABLE notations DROP CONSTRAINT FK_9B69C07CF1DE2CB1');
         $this->addSql('ALTER TABLE service DROP CONSTRAINT FK_E19D9AD28C03F15C');
         $this->addSql('ALTER TABLE slot DROP CONSTRAINT FK_AC0E2067A76ED395');
-        $this->addSql('ALTER TABLE slot DROP CONSTRAINT FK_AC0E20678C03F15C');
+        $this->addSql('ALTER TABLE slot DROP CONSTRAINT FK_AC0E2067ED5CA9E6');
         $this->addSql('DROP TABLE "user"');
         $this->addSql('DROP TABLE admin');
         $this->addSql('DROP TABLE employee');

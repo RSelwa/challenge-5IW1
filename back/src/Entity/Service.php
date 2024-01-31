@@ -33,13 +33,14 @@ class Service
     private ?int $duration = null;
 
     #[ORM\ManyToOne(inversedBy: 'services')]
+    #[Groups(['establishment:read', 'employee:read', 'slot:read'])]
     private ?Employee $employee = null;
 
     #[ORM\Column]
     private ?int $price = null;
 
     #[ORM\OneToMany(mappedBy: 'service', targetEntity: Slot::class)]
-    #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:read'])]
+    #[Groups(['establishment:read', 'employee:read', 'slot:read'])]
     private Collection $slots;
 
     public function __construct()
