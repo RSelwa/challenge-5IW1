@@ -24,7 +24,6 @@ const Notation = ({ idTarget }: Props) => {
 
   const fetchPotentialNotation = async () => {
     try {
-      console.log(idTarget)
       const token = parseJwt(localStorage.getItem("token") || "")
 
       // const notations = await fetchNotations()

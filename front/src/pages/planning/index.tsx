@@ -160,13 +160,7 @@ const Planning = ({ service }: { service: ServicesWithId }) => {
                       service={service}
                       dateOfReservation={dateOfReservation}
                     />
-                  ) : // <div
-                  //   key={i}
-                  //   className="flex cursor-pointer items-center justify-center rounded bg-cyan-50 px-2 py-1 font-bold hover:bg-cyan-100"
-                  // >
-                  //   {getHoursMinutes(dateOfReservation)}
-                  // </div>
-                  null
+                  ) : null
                 )}
               </div>
             </div>

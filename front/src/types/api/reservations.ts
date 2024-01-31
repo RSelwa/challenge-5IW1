@@ -1,5 +1,5 @@
 export type Reservation = {
-  date: number
-  service_id: string
-  user_id: string
+  date: string //dateString
+  serviceId: string
+  userId: string
 }

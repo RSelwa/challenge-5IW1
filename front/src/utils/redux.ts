@@ -14,7 +14,7 @@ export const tokenToRedux = (
 
   const token: TokenApi = parseJwt(tokenApi) as TokenApi
   const reduxUser: { email: string; status: reduxStatus[] } = {
-    email: token.username,
+    email: token.id,
     status: token.roles
   }
   dispatch(userLogged(reduxUser))

@@ -31,7 +31,7 @@ const ReservationCreneau = () => {
 
   return (
     <ReservationsPannel
-      label={`Choisissez votre creneau pour - ${service?.name}`}
+      label={`Choisissez votre creneau  ${service ? "pour - " + service?.name : ""}`}
       isLoading={isLoading}
     >
       {service && (

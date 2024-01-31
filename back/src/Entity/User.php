@@ -71,11 +71,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'idNotationFrom', targetEntity: Notations::class, orphanRemoval: true)]
     private Collection $notations;
 
+    #[ORM\OneToMany(mappedBy: 'user_id', targetEntity: Reservation::class)]
+    private Collection $reservations;
+
 
     public function __construct()
     {
         $this->slots = new ArrayCollection();
         $this->notations = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -241,6 +245,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($notation->getIdNotationFrom() === $this) {
                 $notation->setIdNotationFrom(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getUserId() === $this) {
+                $reservation->setUserId(null);
             }
         }
 
