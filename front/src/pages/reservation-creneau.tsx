@@ -10,9 +10,7 @@ const ReservationCreneau = () => {
   const employeeId = new URLSearchParams(window.location.search).get(
     "employeeId"
   )
-
   if (!idReservation || !employeeId) return null
-  console.log(idReservation)
 
   const [isLoading, setIsLoading] = useState(false)
   const [service, setService] = useState<ServicesWithId>()
@@ -22,7 +20,6 @@ const ReservationCreneau = () => {
       setService(undefined)
       const service = await fetchService(idReservation)
       setService(service)
-      console.log(service)
     } catch (error) {
       console.error(error)
     }

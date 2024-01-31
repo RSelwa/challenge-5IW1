@@ -34,7 +34,10 @@ const ProfileSearch = (props: Props) => {
         </div>
       </div>
       <div className="ml-24 mt-4">
-        <Link to={`/reservation-service/${props.employeeId}`}>
+        <Link
+          className="flex w-fit items-center justify-center rounded bg-blue-700 px-8 py-2 text-white"
+          to={`/reservation-service/${props.employeeId}`}
+        >
           Prendre rendez-vous
         </Link>
       </div>

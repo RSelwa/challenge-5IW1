@@ -36,6 +36,10 @@ const ReservationService = () => {
         {services.map((service, i) => (
           <Link
             key={i}
+            data-state={
+              i === 0 ? "first" : i === services.length - 1 ? "last" : "middle"
+            }
+            className="hover:bg-hover border p-4 text-gray-800 transition-all data-[state=first]:rounded-t-lg data-[state=last]:rounded-b-lg data-[state=first]:border-b-0 data-[state=middle]:border-b-0 data-[state=first]:border-gray-200 data-[state=last]:border-gray-200 data-[state=middle]:border-gray-200"
             to={`/reservation-creneau/${service.id}?employeeId=${idEmployee}`}
           >
             {service.name}
