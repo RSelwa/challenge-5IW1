@@ -38,12 +38,12 @@ class Service
     #[ORM\Column]
     private ?int $price = null;
 
-    #[ORM\OneToMany(mappedBy: 'services', targetEntity: Reservation::class)]
-    private Collection $reservations;
+    #[ORM\OneToMany(mappedBy: 'service', targetEntity: Slot::class)]
+    private Collection $slots;
 
     public function __construct()
     {
-        $this->reservations = new ArrayCollection();
+        $this->slots = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -107,29 +107,29 @@ class Service
     }
 
     /**
-     * @return Collection<int, Reservation>
+     * @return Collection<int, Slot>
      */
-    public function getReservations(): Collection
+    public function getSlots(): Collection
     {
-        return $this->reservations;
+        return $this->slots;
     }
 
-    public function addReservation(Reservation $reservation): static
+    public function addSlot(Slot $slot): static
     {
-        if (!$this->reservations->contains($reservation)) {
-            $this->reservations->add($reservation);
-            $reservation->setServiceId($this);
+        if (!$this->slots->contains($slot)) {
+            $this->slots->add($slot);
+            $slot->setService($this);
         }
 
         return $this;
     }
 
-    public function removeReservation(Reservation $reservation): static
+    public function removeSlot(Slot $slot): static
     {
-        if ($this->reservations->removeElement($reservation)) {
+        if ($this->slots->removeElement($slot)) {
             // set the owning side to null (unless already changed)
-            if ($reservation->getServiceId() === $this) {
-                $reservation->setServiceId(null);
+            if ($slot->getService() === $this) {
+                $slot->setService(null);
             }
         }
 
