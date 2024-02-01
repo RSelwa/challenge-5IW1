@@ -1,8 +1,9 @@
-import React from "react"
+import React, { useState } from "react"
 import * as Popover from "@radix-ui/react-popover"
-import type { Reservation } from "@/types/api/reservations"
+import { LoaderIcon } from "react-hot-toast"
+import type { Slots } from "@/types/api/slots"
 import type { ServicesWithId } from "@/types/withId"
-import { postReservation } from "@/lib/reservation"
+import { postSlot } from "@/lib/slots"
 import { getHoursMinutes } from "@/utils/date"
 import { parseJwt } from "@/utils/redux"
 
@@ -17,24 +18,25 @@ const AvailableSlot = ({ dateOfReservation, service }: Props) => {
     "fr-FR"
   ) //jj/mm/yyyy
   const hourOfReservation = getHoursMinutes(dateOfReservation) //hh:mm
+  const [isLoading, setIsLoading] = useState(false)
+  const createReservation = async () => {
+    try {
+      setIsLoading(true)
 
-  const createReservation = async () =>
-    // dateOfReservation: Date,
-    // service: ServicesWithId
-    {
-      try {
-        const newReservation: Reservation = {
-          date: dateOfReservation.toISOString(),
-          serviceId: service.id,
-          userId: token.id
-        }
-        console.log(newReservation)
-
-        await postReservation(newReservation)
-      } catch (error) {
-        console.error(error)
+      const newSlot = {
+        duration: service.duration,
+        status: "reserved",
+        startTime: dateOfReservation.toISOString(),
+        service: "/api/services/" + service.id,
+        user: "/api/users/" + token.id
       }
+
+      await postSlot(newSlot as unknown as Slots)
+    } catch (error) {
+      console.error(error)
     }
+    setIsLoading(false)
+  }
 
   return (
     <Popover.Root>
@@ -52,10 +54,11 @@ const AvailableSlot = ({ dateOfReservation, service }: Props) => {
               Non
             </Popover.Close>
             <button
-              className="rounded bg-green-500 px-4 py-2 text-white transition-all hover:bg-green-700"
-              onClick={() => createReservation()}
+              disabled={isLoading}
+              className="flex items-center justify-center gap-2 rounded bg-green-500 px-4 py-2 text-white transition-all hover:bg-green-700 disabled:bg-green-300"
+              onClick={createReservation}
             >
-              Save
+              Save {isLoading && <LoaderIcon />}
             </button>
           </div>
         </Popover.Content>

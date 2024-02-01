@@ -1,6 +1,7 @@
+import type { Slots } from "@/types/api/slots"
 import type { SlotsWithId } from "@/types/withId"
 import { SLOT_API_ROUTES } from "@/constants/db"
-import { requestOptions } from "@/utils/db"
+import { formDataHeader, requestOptions } from "@/utils/db"
 
 export const fetchSlots = async (): Promise<SlotsWithId[]> => {
   const response = await fetch(
@@ -32,4 +33,18 @@ export const editSlot = async (slot: SlotsWithId) => {
   } catch (error) {
     console.error(error)
   }
+}
+export const postSlot = async (slot: Slots) => {
+  const { headers, formData } = formDataHeader(slot)
+
+  const response = await fetch(
+    `${import.meta.env.VITE_API_URL}${SLOT_API_ROUTES}`,
+    requestOptions({
+      method: "POST",
+      headers,
+      body: formData
+    })
+  )
+  if (!response.ok) throw new Error("Something went wrong")
+  // const orga = await response.json()
 }

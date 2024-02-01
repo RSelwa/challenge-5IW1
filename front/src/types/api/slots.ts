@@ -1,10 +1,11 @@
 export type Slots = {
-  employeeId: string
-  startTime: number //timestamp
+  serviceId: string
+  userId: string
+  startTime: string //timestamp
   duration: number
-  status: string
+  status: SlotsStatus
 }
-
+export type SlotsStatus = "reserved" | "canceled"
 export type SemaineType = {
   employeeId: string
   dayOfWeek: number // number of day of the week
