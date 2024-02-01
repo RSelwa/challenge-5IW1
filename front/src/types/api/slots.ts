@@ -5,7 +5,7 @@ export type Slots = {
   duration: string
   status: SlotsStatus
 }
-export type SlotsStatus = "reserved" | "canceled"
+export type SlotsStatus = "reserved" | "canceled" | "passed"
 
 export type SemaineType = {
   employeeId: string

@@ -1,4 +1,5 @@
-import type { Slots } from "@/types/api/slots"
+import { Dispatch, SetStateAction } from "react"
+import type { Slots, SlotsStatus } from "@/types/api/slots"
 import type { SlotsWithId } from "@/types/withId"
 import { SLOT_API_ROUTES } from "@/constants/db"
 import { formDataHeader, requestOptions } from "@/utils/db"
@@ -47,4 +48,27 @@ export const postSlot = async (slot: Slots) => {
   )
   if (!response.ok) throw new Error("Something went wrong")
   // const orga = await response.json()
+}
+
+export const changeReservationStatus = async (
+  id: string,
+  status: SlotsStatus,
+  callBack: () => void,
+  setIsLoading: Dispatch<SetStateAction<boolean>>
+) => {
+  setIsLoading(true)
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}${SLOT_API_ROUTES}/${id}`,
+      requestOptions({
+        method: "PATCH",
+        body: JSON.stringify({ status: status })
+      })
+    )
+    if (!response.ok) throw new Error("Something went wrong")
+    callBack()
+  } catch (error) {
+    console.error(error)
+  }
+  setIsLoading(false)
 }
