@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from "react"
 import React, { Fragment, useEffect, useState } from "react"
 import * as Dialog from "@radix-ui/react-dialog"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import type { SlotsStatus } from "@/types/api/slots"
 import type { SlotsWithId } from "@/types/withId"
 import { changeReservationStatus } from "@/lib/slots"
@@ -34,11 +34,17 @@ const ReservationButton = ({
     reservation.service as any
   ).employee.replace("/api/employees/", "")
 
+  // const slotId = () => {
+  //   const serviceWithId = (reservation.service as any).slots.find(
+  //     (slot: any) => slot.id !== undefined
+  //   )
+  //   return serviceWithId ? serviceWithId.id : undefined
+  // }
   const serviceId = () => {
     const serviceWithId = (reservation.service as any).slots.find(
-      (slot: any) => slot.id !== undefined
+      (slot: any) => slot.service !== undefined
     )
-    return serviceWithId ? serviceWithId.id : undefined
+    return serviceWithId ? serviceWithId.service : undefined
   }
 
   return (
@@ -107,6 +113,14 @@ const ReservationButton = ({
               </Dialog.Content>
             </Dialog.Portal>
           </Dialog.Root>
+        )}
+        {reservation.status === "passed" && (
+          <Link
+            className="invisible rounded px-4 py-2 text-blue-400 hover:bg-gray-200 group-hover:visible"
+            to={`/reservation-creneau/${serviceId().replace("/api/services/", "")}?employeeId=${employeeId}`}
+          >
+            Reprendre un rendez-vous
+          </Link>
         )}
       </div>
     </div>
