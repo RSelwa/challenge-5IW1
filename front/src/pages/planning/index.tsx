@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons"
 import { Button } from "@radix-ui/themes"
+import { LoaderIcon } from "react-hot-toast"
 import type { PlanningWeekDay, Slots } from "@/types/api/slots"
 import type { ServicesWithId } from "@/types/withId"
 import { dayInSeconds, weekInSeconds } from "@/constants/date"
+import { fetchEmployee } from "@/lib/employees"
 import {
   dateToString,
   dayOfWeek,
@@ -13,7 +15,7 @@ import {
   getInitialDay,
   isInSameDay
 } from "@/utils/date"
-import { semaineTypeData, slotsData } from "@/constants"
+import { semaineTypeData } from "@/constants"
 import AvailableSlot from "@/pages/planning/available-slot"
 import { cn } from "@/utils"
 
@@ -21,6 +23,7 @@ const Planning = ({ service }: { service: ServicesWithId }) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date())
   const [needLoadReservations, setNeedLoadReservations] = useState(false)
   const [isPlanningExpanded, setIsPlanningExpanded] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [weekDays, setWeekDays] = useState<PlanningWeekDay[]>([])
 
   const scaleButton = 24
@@ -77,21 +80,24 @@ const Planning = ({ service }: { service: ServicesWithId }) => {
 
   const fetchReservations = async (employeeId: string) => {
     try {
-      // const response = await fetch(
-      //   `${import.meta.env.VITE_API_URL}/auth`,
-      //   requestOptions({ method: "POST", data: data })
-      // )
-      // if (!response.ok) throw new Error("Something went wrong")
+      const { services } = await fetchEmployee(employeeId)
 
-      // const reservations = await response.json()
-      // await new Promise((r) => setTimeout(r, 2000))
+      // reservation pour tous les services toujours actif
+      const slotsData = services
+        .map((service) => service.slots)
+        .flat()
+        .filter((slot) => slot.status === "reserved")
 
       // Filter reservations during this week
       const mondayOfWeek = weekDays?.[0]?.date.getTime() || new Date().getTime()
       const endOfWeek = mondayOfWeek + dayInSeconds * 1000 * 5 // Vendredi soir
+
       const reservationsDuringWeek = slotsData.filter(
-        (slot) => slot.startTime > mondayOfWeek && slot.startTime < endOfWeek
+        (slot) =>
+          new Date(slot.startTime).getTime() > mondayOfWeek &&
+          new Date(slot.startTime).getTime() < endOfWeek
       )
+
       // Create empty array of Slots[]
       const weekDaysReservations: Slots[][] = [[], [], [], [], [], [], []]
 
@@ -102,27 +108,35 @@ const Planning = ({ service }: { service: ServicesWithId }) => {
             weekDaysReservations[indexOfDay].push(reservation)
         })
       })
+      console.log(weekDaysReservations)
+
       setWeekDays((prevState) =>
         prevState.map((day, indexOfDay) => ({
           date: day.date,
           reservations: weekDaysReservations[indexOfDay].sort(
-            (a, b) => a.startTime - b.startTime
+            (a, b) => parseInt(a.startTime) - parseInt(b.startTime)
           )
         }))
       )
     } catch (error) {
-      console.log(employeeId)
       console.error(error)
     }
   }
-
+  const fetchDataForPlanning = async () => {
+    setIsLoading(true)
+    await Promise.all([
+      fetchSemaineType(service.employee.id),
+      fetchReservations(service.employee.id)
+    ])
+    setIsLoading(false)
+  }
   useEffect(() => {
     loadDatesWeek()
+    fetchDataForPlanning()
   }, [currentDate])
 
   useEffect(() => {
-    fetchSemaineType(service.employee_id)
-    fetchReservations(service.employee_id)
+    fetchDataForPlanning()
   }, [needLoadReservations])
 
   return (
@@ -137,44 +151,47 @@ const Planning = ({ service }: { service: ServicesWithId }) => {
       >
         <ChevronLeftIcon height={scaleButton} width={scaleButton} />
       </Button>
-      <div>
-        <div className="flex gap-2">
-          {weekDays.map((day, i) => (
-            <div key={i} className="flex flex-col gap-2 rounded ">
-              <div className="flex flex-col items-center">
-                <span className="text-lg font-bold">
-                  {dayOfWeek(day.date, true)}
-                </span>
-                <span>{dateToString(day.date)}</span>
+      {isLoading && <LoaderIcon />}
+      {!isLoading && (
+        <div>
+          <div className="flex gap-2">
+            {weekDays.map((day, i) => (
+              <div key={i} className="flex flex-col gap-2 rounded ">
+                <div className="flex flex-col items-center">
+                  <span className="text-lg font-bold">
+                    {dayOfWeek(day.date, true)}
+                  </span>
+                  <span>{dateToString(day.date)}</span>
+                </div>
+                <div className="flex flex-col gap-2 ">
+                  {getAvailableReservation({
+                    day: day.date,
+                    reservations: day.reservations,
+                    semaineTypeUser: semaineTypeData,
+                    duration: service.duration
+                  }).map((dateOfReservation, i) =>
+                    isPlanningExpanded || i < 4 ? (
+                      <AvailableSlot
+                        key={i}
+                        service={service}
+                        dateOfReservation={dateOfReservation}
+                      />
+                    ) : null
+                  )}
+                </div>
               </div>
-              <div className="flex flex-col gap-2 ">
-                {getAvailableReservation({
-                  day: day.date,
-                  reservations: day.reservations,
-                  semaineTypeUser: semaineTypeData,
-                  duration: service.duration
-                }).map((dateOfReservation, i) =>
-                  isPlanningExpanded || i < 4 ? (
-                    <AvailableSlot
-                      key={i}
-                      service={service}
-                      dateOfReservation={dateOfReservation}
-                    />
-                  ) : null
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        <Button
-          variant="ghost"
-          className="mt-3 w-full font-bold text-cyan-500"
-          onClick={() => setIsPlanningExpanded((prevState) => !prevState)}
-        >
-          Voir {isPlanningExpanded ? "moins" : "plus"} d'horaires
-        </Button>
-      </div>
+          <Button
+            variant="ghost"
+            className="mt-3 w-full font-bold text-cyan-500"
+            onClick={() => setIsPlanningExpanded((prevState) => !prevState)}
+          >
+            Voir {isPlanningExpanded ? "moins" : "plus"} d'horaires
+          </Button>
+        </div>
+      )}
 
       <Button
         variant="ghost"

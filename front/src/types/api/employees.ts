@@ -12,5 +12,5 @@ export type Employees = {
   slots: SlotsWithId[]
   employeeSpecificSchedules: EmployeeSpecificSchedulesWithId[]
   category: string
-  services: ServicesWithId[]
+  services: (ServicesWithId & { slots: SlotsWithId })[]
 }

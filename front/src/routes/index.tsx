@@ -57,9 +57,9 @@ import AdminHome from "@/pages/AdminHome"
 import Login from "@/pages/auth/Login"
 import SigninOrganization from "@/pages/auth/SigninOrganisation"
 import MyAccount from "@/pages/MyAccount"
-import Planning from "@/pages/planning"
 import ReservationCreneau from "@/pages/reservation-creneau"
 import ReservationService from "@/pages/reservation-service"
+import ReservationUser from "@/pages/reservations-user"
 
 const getLayout = (
   element: JSX.Element,
@@ -83,12 +83,12 @@ const defaultRoutes: RouteObject[] = [
     element: getLayout(<ReservationService />)
   },
   {
-    path: "/reservation-creneau/:idReservation",
-    element: getLayout(<ReservationCreneau />)
+    path: "/reservations/:idUser",
+    element: getLayout(<ReservationUser />)
   },
   {
-    path: "/planning",
-    element: getLayout(<Planning employeeId={""} duration={1} />)
+    path: "/reservation-creneau/:idReservation",
+    element: getLayout(<ReservationCreneau />)
   },
   {
     path: "/profil",

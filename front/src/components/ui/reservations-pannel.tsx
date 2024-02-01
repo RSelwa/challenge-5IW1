@@ -27,7 +27,7 @@ const ReservationsPannel = ({ isLoading, children, label }: Props) => {
           <LoaderIcon />
         </span>
       )}
-      {children}
+      {!isLoading && children}
     </main>
   )
 }

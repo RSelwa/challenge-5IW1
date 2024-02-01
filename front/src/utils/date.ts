@@ -192,17 +192,16 @@ export const excludeReservedSlots = (
     const endOfCurrentSlot = slot.getTime() + durationOfSlot * 3600000 // duration hour in seconds
 
     const isSlotsOccpedByReservation = reservations.some((reservation) => {
-      console.log(reservation.duration)
-
-      const endOfReservation =
-        reservation.startTime + reservation.duration * 3600000 // duration hour in seconds
+      const endOfReservation: number =
+        new Date(reservation.startTime).getTime() +
+        parseInt(reservation.duration) * 3600000 // duration hour in seconds
 
       const reservationStartDuringSlot =
-        slot.getTime() <= reservation.startTime &&
-        reservation.startTime <= endOfCurrentSlot
+        slot.getTime() <= new Date(reservation.startTime).getTime() &&
+        new Date(reservation.startTime).getTime() <= endOfCurrentSlot
 
       const reservationCoverSlot =
-        reservation.startTime < slot.getTime() &&
+        new Date(reservation.startTime).getTime() < slot.getTime() &&
         endOfReservation > endOfCurrentSlot
 
       const reservationEndDuringSlot =
@@ -250,5 +249,31 @@ export const getAvailableReservation = ({
     availableReservations,
     reservationsDuringTheDay,
     duration
+  )
+}
+
+export const toIsoString = (date: Date): string => {
+  const tzo = -date.getTimezoneOffset(),
+    dif = tzo >= 0 ? "+" : "-",
+    pad = function (num: number) {
+      return (num < 10 ? "0" : "") + num
+    }
+
+  return (
+    date.getFullYear() +
+    "-" +
+    pad(date.getMonth() + 1) +
+    "-" +
+    pad(date.getDate()) +
+    "T" +
+    pad(date.getHours()) +
+    ":" +
+    pad(date.getMinutes()) +
+    ":" +
+    pad(date.getSeconds()) +
+    dif +
+    pad(Math.floor(Math.abs(tzo) / 60)) +
+    ":" +
+    pad(Math.abs(tzo) % 60)
   )
 }

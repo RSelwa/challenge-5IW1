@@ -1,10 +1,11 @@
 import React, { useState } from "react"
 import * as Popover from "@radix-ui/react-popover"
 import { LoaderIcon } from "react-hot-toast"
+import { useNavigate } from "react-router-dom"
 import type { Slots } from "@/types/api/slots"
 import type { ServicesWithId } from "@/types/withId"
 import { postSlot } from "@/lib/slots"
-import { getHoursMinutes } from "@/utils/date"
+import { getHoursMinutes, toIsoString } from "@/utils/date"
 import { parseJwt } from "@/utils/redux"
 
 type Props = {
@@ -13,6 +14,7 @@ type Props = {
 }
 
 const AvailableSlot = ({ dateOfReservation, service }: Props) => {
+  const navigate = useNavigate()
   const token = parseJwt(localStorage.getItem("token") || "")
   const dayOfReservation = new Date(dateOfReservation).toLocaleDateString(
     "fr-FR"
@@ -26,12 +28,13 @@ const AvailableSlot = ({ dateOfReservation, service }: Props) => {
       const newSlot = {
         duration: service.duration,
         status: "reserved",
-        startTime: dateOfReservation.toISOString(),
+        startTime: toIsoString(dateOfReservation),
         service: "/api/services/" + service.id,
         user: "/api/users/" + token.id
       }
 
       await postSlot(newSlot as unknown as Slots)
+      navigate(`/reservations/${token.id}`)
     } catch (error) {
       console.error(error)
     }
