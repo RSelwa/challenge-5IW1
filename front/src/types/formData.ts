@@ -28,6 +28,7 @@ export type UserInfosProfileFormData = {
 export type SigninEmployeeFormData = {
   firstname: string
   lastname: string
+  category: string
   email: string
   plainPassword: string
 }

@@ -17,6 +17,7 @@ export type Employees = {
 export type EmployeePost = {
   firstname: string
   lastname: string
+  category: string
   email: string
   plainPassword: string
 }

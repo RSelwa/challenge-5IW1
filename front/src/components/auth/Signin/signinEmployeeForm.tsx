@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { ChangeEvent, useState } from "react"
 import { Button } from "@radix-ui/themes"
 import { useForm } from "react-hook-form"
 import type { SigninEmployeeFormData } from "@/types/formData"
@@ -10,7 +10,7 @@ const SigninEmployeeForm = () => {
   const { handleSubmit, register } = useForm<SigninEmployeeFormData>()
   const [selected, setSelected] = useState('');
 
-  const handleChange = (event: { target: { selectedOptions: { label: string }[]; value: string } }) =>{
+  const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     console.log('Label', event.target.selectedOptions[0].label);
     console.log(event.target.value);
 
