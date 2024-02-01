@@ -1,6 +1,8 @@
 import type { EmployeesWithId } from "@/types/withId"
+import type { EmployeePost } from "@/types/api/employees"
+
 import { EMPLOYEE_API_ROUTES } from "@/constants/db"
-import { requestOptions } from "@/utils/db"
+import { formDataHeader, requestOptions } from "@/utils/db"
 
 export const fetchEmployees = async (): Promise<EmployeesWithId[]> => {
   const response = await fetch(
@@ -36,4 +38,19 @@ export const editEmployee = async (employee: EmployeesWithId) => {
   } catch (error) {
     console.error(error)
   }
+}
+
+export const postEmployee = async (employee: EmployeePost) => {
+  const { headers, formData } = formDataHeader(employee)
+
+  const response = await fetch(
+    `${import.meta.env.VITE_API_URL}${EMPLOYEE_API_ROUTES}`,
+    requestOptions({
+      method: "POST",
+      headers,
+      body: formData
+    })
+  )
+  if (!response.ok) throw new Error("Something went wrong")
+  
 }
