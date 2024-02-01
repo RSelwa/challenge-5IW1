@@ -1,12 +1,21 @@
-import React from "react"
+import React, { useState } from "react"
 import { Button } from "@radix-ui/themes"
 import { useForm } from "react-hook-form"
 import type { SigninEmployeeFormData } from "@/types/formData"
 import { postEmployee } from "@/lib/employees"
 import { postData } from "@/utils/db"
+import { specialisationsDoctolib } from "@/constants/employee"
 
 const SigninEmployeeForm = () => {
   const { handleSubmit, register } = useForm<SigninEmployeeFormData>()
+  const [selected, setSelected] = useState('');
+
+  const handleChange = (event: { target: { selectedOptions: { label: string }[]; value: string } }) =>{
+    console.log('Label', event.target.selectedOptions[0].label);
+    console.log(event.target.value);
+
+    setSelected(event.target.value);
+  }
 
   const onSubmit = (data: SigninEmployeeFormData) =>
     postData(postEmployee(data))
@@ -25,13 +34,14 @@ const SigninEmployeeForm = () => {
         type="text"
         {...register("lastname")}
       />
-      <input
-        required
-        placeholder="Category"
-        type="category"
-        className="col-span-2"
-        {...register("category")}
-      />
+      <select value={selected} onChange={handleChange}>
+        <option disabled={true} value="">Select a category</option>
+        {specialisationsDoctolib.map((category, index) => (
+          <option key={index} value={category}>
+            {category}
+          </option>
+        ))}
+      </select>
       <input
         required
         placeholder="Email"
