@@ -1,4 +1,6 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
+import type { Dispatch, SetStateAction } from "react"
+import React, { Fragment, useEffect, useState } from "react"
+import * as Dialog from "@radix-ui/react-dialog"
 import { useParams } from "react-router-dom"
 import type { SlotsStatus } from "@/types/api/slots"
 import type { SlotsWithId } from "@/types/withId"
@@ -6,6 +8,7 @@ import { changeReservationStatus } from "@/lib/slots"
 import { fetchUser } from "@/lib/users"
 import { dateToString, getHoursMinutes } from "@/utils/date"
 import ReservationsPannel from "@/components/ui/reservations-pannel"
+import Planning from "@/pages/planning"
 
 const ReservationButton = ({
   reservations,
@@ -27,6 +30,17 @@ const ReservationButton = ({
   fetchMyReservations: () => void
   setIsLoading: Dispatch<SetStateAction<boolean>>
 }) => {
+  const employeeId: string | undefined = (
+    reservation.service as any
+  ).employee.replace("/api/employees/", "")
+
+  const serviceId = () => {
+    const serviceWithId = (reservation.service as any).slots.find(
+      (slot: any) => slot.id !== undefined
+    )
+    return serviceWithId ? serviceWithId.id : undefined
+  }
+
   return (
     <div
       key={i}
@@ -71,6 +85,29 @@ const ReservationButton = ({
             Cancel
           </button>
         )}
+        {reservation.status === "reserved" && (
+          <Dialog.Root>
+            <Dialog.Trigger asChild>
+              <button className="invisible rounded px-4 py-2 text-blue-400 hover:bg-gray-200 group-hover:visible">
+                décaller le rendez-vous
+              </button>
+            </Dialog.Trigger>
+            <Dialog.Portal>
+              <Dialog.Overlay className="data-[state=open]:animate-overlayShow fixed inset-0 bg-black/60" />
+              <Dialog.Content className="data-[state=open]:animate-contentShow fixed left-[50%] top-[50%] max-h-[85vh] max-w-[90vw] translate-x-[-50%]  translate-y-[-50%] rounded-[6px] bg-white  p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+                {employeeId && serviceId() && (
+                  <Planning
+                    duration={parseInt(reservation.duration)}
+                    employeeId={employeeId}
+                    serviceId={serviceId()}
+                    serviceName={""}
+                    idReservation={reservation.id}
+                  />
+                )}
+              </Dialog.Content>
+            </Dialog.Portal>
+          </Dialog.Root>
+        )}
       </div>
     </div>
   )
@@ -87,6 +124,7 @@ const ReservationUser = () => {
       setIsLoading(true)
       if (!idUser) return
       const { slots } = await fetchUser(idUser)
+
       setReservations(
         slots.sort(
           (a, b) =>
@@ -101,7 +139,11 @@ const ReservationUser = () => {
   useEffect(() => {
     fetchMyReservations()
   }, [])
-
+  const status = [
+    { label: "Réservations prévues", status: "reserved" },
+    { label: "Réservations annulées", status: "canceled" },
+    { label: "Réservations passées", status: "passed" }
+  ]
   return (
     <div>
       <ReservationsPannel
@@ -109,59 +151,29 @@ const ReservationUser = () => {
         isLoading={isLoading}
       >
         <div className="flex flex-col gap-5">
-          <h1>Réservations prévues</h1>
-          <div>
-            {reservations
-              .filter((reservation) => reservation.status === "reserved")
-              .map((reservation, i) => (
-                <ReservationButton
-                  reservations={reservations.filter(
-                    (reservation) => reservation.status === "reserved"
-                  )}
-                  reservation={reservation}
-                  i={i}
-                  changeReservationStatus={changeReservationStatus}
-                  fetchMyReservations={fetchMyReservations}
-                  setIsLoading={setIsLoading}
-                />
-              ))}
-          </div>
-          <hr />
-          <h1>Réservations annulées</h1>
-          <div>
-            {reservations
-              .filter((reservation) => reservation.status === "canceled")
-              .map((reservation, i) => (
-                <ReservationButton
-                  reservations={reservations.filter(
-                    (reservation) => reservation.status === "canceled"
-                  )}
-                  reservation={reservation}
-                  i={i}
-                  changeReservationStatus={changeReservationStatus}
-                  fetchMyReservations={fetchMyReservations}
-                  setIsLoading={setIsLoading}
-                />
-              ))}
-          </div>
-          <hr />
-          <h1>Réservations passées</h1>
-          <div>
-            {reservations
-              .filter((reservation) => reservation.status === "passed")
-              .map((reservation, i) => (
-                <ReservationButton
-                  setIsLoading={setIsLoading}
-                  reservations={reservations.filter(
-                    (reservation) => reservation.status === "passed"
-                  )}
-                  reservation={reservation}
-                  i={i}
-                  changeReservationStatus={changeReservationStatus}
-                  fetchMyReservations={fetchMyReservations}
-                />
-              ))}
-          </div>
+          {status.map((status, index) => (
+            <Fragment key={index}>
+              <h1>{status.label}</h1>
+              <div>
+                {reservations
+                  .filter((reservation) => reservation.status === status.status)
+                  .map((reservation, i) => (
+                    <ReservationButton
+                      key={i}
+                      reservations={reservations.filter(
+                        (reservation) => reservation.status === status.status
+                      )}
+                      reservation={reservation}
+                      i={i}
+                      changeReservationStatus={changeReservationStatus}
+                      fetchMyReservations={fetchMyReservations}
+                      setIsLoading={setIsLoading}
+                    />
+                  ))}
+              </div>
+              <hr />
+            </Fragment>
+          ))}
         </div>
       </ReservationsPannel>
     </div>

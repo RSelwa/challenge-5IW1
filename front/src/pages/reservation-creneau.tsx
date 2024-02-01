@@ -36,7 +36,12 @@ const ReservationCreneau = () => {
     >
       {service && (
         <section>
-          <Planning service={service} />
+          <Planning
+            duration={service.duration}
+            employeeId={service.employee.id}
+            serviceId={service.id}
+            serviceName={service.name}
+          />
         </section>
       )}
     </ReservationsPannel>

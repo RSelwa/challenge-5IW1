@@ -3,7 +3,6 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons"
 import { Button } from "@radix-ui/themes"
 import { LoaderIcon } from "react-hot-toast"
 import type { PlanningWeekDay, Slots } from "@/types/api/slots"
-import type { ServicesWithId } from "@/types/withId"
 import { dayInSeconds, weekInSeconds } from "@/constants/date"
 import { fetchEmployee } from "@/lib/employees"
 import {
@@ -19,7 +18,19 @@ import { semaineTypeData } from "@/constants"
 import AvailableSlot from "@/pages/planning/available-slot"
 import { cn } from "@/utils"
 
-const Planning = ({ service }: { service: ServicesWithId }) => {
+const Planning = ({
+  duration,
+  employeeId,
+  idReservation,
+  serviceId,
+  serviceName
+}: {
+  duration: number
+  employeeId: string
+  serviceId: string
+  serviceName: string
+  idReservation?: string
+}) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date())
   const [needLoadReservations, setNeedLoadReservations] = useState(false)
   const [isPlanningExpanded, setIsPlanningExpanded] = useState(false)
@@ -108,7 +119,6 @@ const Planning = ({ service }: { service: ServicesWithId }) => {
             weekDaysReservations[indexOfDay].push(reservation)
         })
       })
-      console.log(weekDaysReservations)
 
       setWeekDays((prevState) =>
         prevState.map((day, indexOfDay) => ({
@@ -125,8 +135,8 @@ const Planning = ({ service }: { service: ServicesWithId }) => {
   const fetchDataForPlanning = async () => {
     setIsLoading(true)
     await Promise.all([
-      fetchSemaineType(service.employee.id),
-      fetchReservations(service.employee.id)
+      fetchSemaineType(employeeId),
+      fetchReservations(employeeId)
     ])
     setIsLoading(false)
   }
@@ -168,13 +178,16 @@ const Planning = ({ service }: { service: ServicesWithId }) => {
                     day: day.date,
                     reservations: day.reservations,
                     semaineTypeUser: semaineTypeData,
-                    duration: service.duration
+                    duration: duration
                   }).map((dateOfReservation, i) =>
                     isPlanningExpanded || i < 4 ? (
                       <AvailableSlot
                         key={i}
-                        service={service}
+                        idReservation={idReservation}
                         dateOfReservation={dateOfReservation}
+                        duration={duration}
+                        serviceId={serviceId}
+                        serviceName={serviceName}
                       />
                     ) : null
                   )}
