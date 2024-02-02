@@ -15,7 +15,10 @@ export const fetchNotations = async (): Promise<NotationtionsWithId[]> => {
 }
 
 export const postNotation = async (notation: NotationType) => {
+  console.log(notation)
+
   const { headers, formData } = formDataHeader(notation)
+  console.log(formData)
 
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}${NOTATION_API_ROUTES}`,

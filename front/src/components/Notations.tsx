@@ -2,101 +2,120 @@ import type { SyntheticEvent } from "react"
 import React, { useEffect, useState } from "react"
 import Rating from "@mui/material/Rating"
 import Typography from "@mui/material/Typography"
-import toast from "react-hot-toast"
+import toast, { LoaderIcon } from "react-hot-toast"
 import type { NotationType } from "@/types/api/notation"
-import { NotationtionsWithId } from "@/types/withId"
-import { patchNotation, postNotation } from "@/lib/notations"
+import { fetchNotations, patchNotation, postNotation } from "@/lib/notations"
 import { parseJwt } from "@/utils/redux"
-import { mockNotation } from "@/mock/notationMock"
 
 type Props = {
   idTarget: string
 }
+type NotationForm = {
+  note: NotationType["note"]
+  comments: NotationType["comments"]
+}
 const Notation = ({ idTarget }: Props) => {
-  const [notation, setNotation] = useState<NotationtionsWithId>({
-    comments: "",
-    idFrom: "",
-    idTarget: "",
+  const { id } = parseJwt(localStorage.getItem("token") || "")
+  const [isLoading, setIsLoading] = useState(false)
+  const [notation, setNotation] = useState<NotationForm>({
     note: 0,
-    id: ""
+    comments: ""
   })
   const [isExistingNotation, setIsExistingNotation] = useState(false)
 
   const fetchPotentialNotation = async () => {
     try {
-      const token = parseJwt(localStorage.getItem("token") || "")
+      setIsLoading(true)
 
-      // const notations = await fetchNotations()
-      token.id = "user444"
-      await new Promise((r) => setTimeout(r, 1000))
-      const notations = mockNotation
+      const notations = await fetchNotations()
 
       const isExistingNote = notations.some(
-        (notation) =>
-          notation.idFrom === token.id && notation.idTarget === idTarget
+        (notation) => notation.idFrom === id && notation.idTarget === idTarget
       )
       setIsExistingNotation(isExistingNote)
+
       if (isExistingNote) {
         const notation = notations.find(
-          (notation) =>
-            notation.idFrom === token.id && notation.idTarget === idTarget
+          (notation) => notation.idFrom === id && notation.idTarget === idTarget
         )
-        if (notation) {
-          setNotation(notation)
-        }
+        if (notation)
+          setNotation({
+            comments: notation.comments,
+            note: notation.note
+          })
       }
     } catch (error) {
       console.error(error)
     }
+    setIsLoading(false)
   }
 
-  const onSubmit = async (event: SyntheticEvent<Element, Event>) => {
+  const onSubmit = async () => {
+    setIsLoading(true)
     try {
-      const token = parseJwt(localStorage.getItem("token") || "")
-      const note: number = parseInt((event.target as any).value)
-      setNotation((prevState) => ({ ...prevState, note }))
-
       const newNotation: NotationType = {
-        idFrom: token.id,
+        idFrom: id,
         idTarget: idTarget,
-        comments: "",
-        note: note
+        comments: notation.comments,
+        note: notation.note
       }
-      throw new Error("TEST")
+      // throw new Error("TEST")
 
       if (isExistingNotation) {
         console.log("patch", newNotation)
 
-        await patchNotation({ ...newNotation, id: notation.id })
+        // await patchNotation({ ...newNotation, id: notation.id })
       } else {
         console.log("post", newNotation)
 
         await postNotation(newNotation)
       }
+      fetchPotentialNotation()
     } catch (error) {
+      console.log(error)
+
       if (error instanceof Error) {
         toast.error(error.message)
       }
     }
+    setIsLoading(false)
   }
 
   useEffect(() => {
     fetchPotentialNotation()
   }, [])
 
+  if (isLoading) return <LoaderIcon />
   return (
-    <div>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        onSubmit()
+      }}
+    >
       <Typography component="legend">Notation</Typography>
-      <Rating name="notation" value={notation.note} onChange={onSubmit} />
+      <Rating
+        name="notation"
+        value={notation.note}
+        onChange={(e, value) =>
+          setNotation((prevState) => ({ ...prevState, note: value || 0 }))
+        }
+      />
       <br />
       <input
         type="text"
         placeholder="Laisser un commentaire"
-        value={""}
-        onChange={() => null}
+        value={notation.comments}
+        onChange={(e) =>
+          setNotation((prevState) => ({
+            ...prevState,
+            comments: e.target.value
+          }))
+        }
       />
       <br />
-    </div>
+      <button type="submit">Noter</button>
+    </form>
   )
 }
 export default Notation

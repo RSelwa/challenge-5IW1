@@ -14,7 +14,8 @@ export const requestOptions = ({
   body?: BodyInit
 }): RequestInit => {
   const newHeader = new Headers()
-  if (method === "PATCH")  newHeader.append("Content-Type", "application/merge-patch+json") 
+  if (method === "PATCH")
+    newHeader.append("Content-Type", "application/merge-patch+json")
   else newHeader.append("Content-Type", "application/json")
 
   return {
@@ -28,6 +29,8 @@ export const formDataHeader = (data: any) => {
   const formData = new FormData()
 
   for (const [key, value] of Object.entries(data)) {
+    console.log(key, value)
+
     if (value instanceof FileList) {
       formData.append(key, (value as FileList)[0])
     } else {

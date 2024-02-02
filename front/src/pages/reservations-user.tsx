@@ -1,12 +1,15 @@
 import type { Dispatch, SetStateAction } from "react"
 import React, { Fragment, useEffect, useState } from "react"
 import * as Dialog from "@radix-ui/react-dialog"
+import { Cross1Icon } from "@radix-ui/react-icons"
+import * as Popover from "@radix-ui/react-popover"
 import { Link, useParams } from "react-router-dom"
 import type { SlotsStatus } from "@/types/api/slots"
 import type { SlotsWithId } from "@/types/withId"
 import { changeReservationStatus } from "@/lib/slots"
 import { fetchUser } from "@/lib/users"
 import { dateToString, getHoursMinutes } from "@/utils/date"
+import Notation from "@/components/Notations"
 import ReservationsPannel from "@/components/ui/reservations-pannel"
 import Planning from "@/pages/planning"
 
@@ -114,6 +117,32 @@ const ReservationButton = ({
             </Dialog.Portal>
           </Dialog.Root>
         )}
+        {reservation.status === "passed" && employeeId && (
+          // <Link
+          //   className="invisible rounded px-4 py-2 text-blue-400 hover:bg-gray-200 group-hover:visible"
+          //   to={`/reservation-creneau/${serviceId().replace("/api/services/", "")}?employeeId=${employeeId}`}
+          // >
+          //   Notez le practicien
+          // </Link>
+
+          <Popover.Root>
+            <Popover.Trigger className="invisible rounded px-4 py-2 text-blue-400 hover:bg-gray-200 group-hover:visible">
+              Notez le practicien
+            </Popover.Trigger>
+            <Popover.Portal>
+              <Popover.Content className="data-[state=open]:data-[side=top]:animate-slideDownAndFade data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade w-[260px] rounded bg-white p-5 shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] will-change-[transform,opacity] focus:shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2),0_0_0_2px_theme(colors.violet7)]">
+                <Popover.Close
+                  className="text-violet11 hover:bg-violet4 focus:shadow-violet7 absolute right-[5px] top-[5px] inline-flex h-[25px] w-[25px] cursor-default items-center justify-center rounded-full outline-none focus:shadow-[0_0_0_2px]"
+                  aria-label="Close"
+                >
+                  <Cross1Icon />
+                </Popover.Close>
+                <Popover.Arrow className="fill-white" />
+                <Notation idTarget={employeeId} />
+              </Popover.Content>
+            </Popover.Portal>
+          </Popover.Root>
+        )}
         {reservation.status === "passed" && (
           <Link
             className="invisible rounded px-4 py-2 text-blue-400 hover:bg-gray-200 group-hover:visible"
@@ -153,6 +182,7 @@ const ReservationUser = () => {
   useEffect(() => {
     fetchMyReservations()
   }, [])
+
   const status = [
     { label: "Réservations prévues", status: "reserved" },
     { label: "Réservations annulées", status: "canceled" },
