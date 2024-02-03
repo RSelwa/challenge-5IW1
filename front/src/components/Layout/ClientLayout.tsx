@@ -9,13 +9,13 @@ const ClientLayout = () => {
 
   return (
     <Fragment>
-      <DropdownMenu.Item className="DropdownMenuItem">
+      <DropdownMenu.Item className="cursor-pointer rounded px-4 py-1 text-cyan-500 hover:bg-gray-200">
         <Link to={`/reservations/${id}`}>Mes réservations</Link>
       </DropdownMenu.Item>
-      <DropdownMenu.Item className="DropdownMenuItem">
+      <DropdownMenu.Item className="cursor-pointer rounded px-4 py-1 text-cyan-500 hover:bg-gray-200">
         <Link to="/profil">My Account</Link>
       </DropdownMenu.Item>
-      <DropdownMenu.Item className="DropdownMenuItem">
+      <DropdownMenu.Item className="cursor-pointer rounded px-4 py-1 text-cyan-500 hover:bg-gray-200">
         <LogoutButton />
       </DropdownMenu.Item>
     </Fragment>

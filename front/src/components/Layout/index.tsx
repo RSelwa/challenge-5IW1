@@ -53,7 +53,7 @@ const Layout = ({
             <DropdownMenu.Portal>
               <DropdownMenu.Content
                 sideOffset={dropdownMenuSideOffset}
-                className="DropdownMenuContent text-red-500"
+                className="absolute -right-5 top-0 z-10 w-52 space-y-3 rounded-md bg-white p-2 font-bold text-red-500 shadow-md"
               >
                 {userStatus?.includes("ROLE_USER") && <ClientLayout />}
                 {userStatus?.includes("ROLE_ADMIN") && <AdminLayout />}

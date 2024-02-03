@@ -1,37 +1,65 @@
-import React, { Fragment, useState } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import { Button } from "@radix-ui/themes"
 import { useForm } from "react-hook-form"
+import toast, { LoaderIcon } from "react-hot-toast"
 import type { UserInfosProfileFormData } from "@/types/formData"
-import { editProfileUser } from "@/lib/users"
+import { editProfileUser, fetchUser } from "@/lib/users"
 import { parseJwt } from "@/utils/redux"
-import toast from "react-hot-toast"
-
 
 const UserInfosForm = () => {
-  const { handleSubmit, register, reset } = useForm<UserInfosProfileFormData>()
+  const { handleSubmit, register, setValue } =
+    useForm<UserInfosProfileFormData>()
   const [isEditing, setIsEditing] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const { id } = parseJwt(localStorage.getItem("token") || "")
 
   const onSubmit = async (data: UserInfosProfileFormData) => {
-    // ! FAUT ATTENDRE QUE LE TOKEN SOIT DANS L'ID RAPPPHH
-    // const token = localStorage.getItem('token');
     try {
-      const userId = "018c3b5a-98d8-7070-a1bf-3f9a2eb03dc6" // ! A CHANGER
-      toast.promise(editProfileUser(userId, data), {loading : "On loading", success : "success", error : "error"})
-      
+      await toast.promise(editProfileUser(id, data), {
+        loading: "On loading",
+        success: "success",
+        error: "error"
+      })
+      setIsEditing(false)
+      fetchUserInformations()
     } catch (error) {
       console.error(error)
     }
-    setIsEditing(false)
   }
 
+  const fetchUserInformations = async () => {
+    setIsLoading(true)
+    try {
+      const user = await fetchUser(id)
+      setValue("firstname", user.firstname)
+      setValue("lastname", user.lastname)
+      setValue("email", user.email)
+    } catch (error) {
+      console.error(error)
+    }
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    fetchUserInformations()
+  }, [])
+
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center p-8">
+        <LoaderIcon />
+      </div>
+    )
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2   w-1/2 gap-4">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col items-center gap-3"
+    >
       <input
         disabled={!isEditing}
         required
         placeholder="First Name"
         type="text"
-        className="col-span"
         {...register("firstname")}
       />
       <input
@@ -41,37 +69,34 @@ const UserInfosForm = () => {
         type="text"
         {...register("lastname")}
       />
-       <input
+      <input
         disabled={!isEditing}
         required
         placeholder="Email"
         type="email"
         {...register("email")}
       />
-      <div className="flex gap-3">
+      <div className="flex gap-3 font-bold text-white">
         {isEditing ? (
           <Fragment>
             <Button
               onClick={() => {
-                reset()
+                fetchUserInformations()
                 setIsEditing(false)
               }}
-              className="col-span w-100 bg-orange-500 text-neutral-800"
+              className="bg-red-500 "
               type="button"
             >
               Cancel
             </Button>
-            <Button
-              className="col-span w-100 bg-green-500 text-neutral-800"
-              type="submit"
-            >
+            <Button className="bg-green-500 " type="submit">
               Save
             </Button>
           </Fragment>
         ) : (
           <Button
             onClick={() => setIsEditing(true)}
-            className="col-span w-100 bg-amber-500 text-neutral-800"
+            className=" bg-amber-500 "
             type="button"
           >
             Edit

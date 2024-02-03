@@ -63,10 +63,10 @@ const ReservationButton = ({
         {dateToString(new Date(reservation.startTime))} -{" "}
         {getHoursMinutes(new Date(reservation.startTime))}
       </p>
-      <div>
+      <div className="flex gap-2 text-sm">
         {reservation.status === "reserved" && (
           <button
-            className="invisible rounded px-4 py-2 text-green-400 hover:bg-gray-200 group-hover:visible"
+            className="invisible rounded bg-green-400 px-4 py-2 text-white hover:bg-green-700 group-hover:visible"
             onClick={() =>
               changeReservationStatus(
                 reservation.id,
@@ -81,7 +81,7 @@ const ReservationButton = ({
         )}
         {reservation.status === "reserved" && (
           <button
-            className="invisible rounded px-4 py-2 text-red-400 hover:bg-gray-200 group-hover:visible"
+            className="invisible rounded bg-red-500 px-4 py-2 text-white hover:bg-red-700 group-hover:visible"
             onClick={() =>
               changeReservationStatus(
                 reservation.id,
@@ -97,7 +97,7 @@ const ReservationButton = ({
         {reservation.status === "reserved" && (
           <Dialog.Root>
             <Dialog.Trigger asChild>
-              <button className="invisible rounded px-4 py-2 text-blue-400 hover:bg-gray-200 group-hover:visible">
+              <button className="invisible rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700 group-hover:visible">
                 décaller le rendez-vous
               </button>
             </Dialog.Trigger>
@@ -118,15 +118,8 @@ const ReservationButton = ({
           </Dialog.Root>
         )}
         {reservation.status === "passed" && employeeId && (
-          // <Link
-          //   className="invisible rounded px-4 py-2 text-blue-400 hover:bg-gray-200 group-hover:visible"
-          //   to={`/reservation-creneau/${serviceId().replace("/api/services/", "")}?employeeId=${employeeId}`}
-          // >
-          //   Notez le practicien
-          // </Link>
-
           <Popover.Root>
-            <Popover.Trigger className="invisible rounded px-4 py-2 text-blue-400 hover:bg-gray-200 group-hover:visible">
+            <Popover.Trigger className="invisible rounded bg-amber-600 px-4 py-2 text-white hover:bg-amber-700 group-hover:visible">
               Notez le practicien
             </Popover.Trigger>
             <Popover.Portal>
@@ -145,7 +138,7 @@ const ReservationButton = ({
         )}
         {reservation.status === "passed" && (
           <Link
-            className="invisible rounded px-4 py-2 text-blue-400 hover:bg-gray-200 group-hover:visible"
+            className="invisible rounded bg-cyan-500 px-4 py-2 text-white hover:bg-cyan-700 group-hover:visible"
             to={`/reservation-creneau/${serviceId().replace("/api/services/", "")}?employeeId=${employeeId}`}
           >
             Reprendre un rendez-vous
