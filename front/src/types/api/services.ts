@@ -1,4 +1,9 @@
+import type { EmployeesWithId, SlotsWithId } from "@/types/withId"
+
 export type Services = {
   name: string
-  type: string
+  duration: number
+  price: number
+  employee: EmployeesWithId
+  slots: SlotsWithId[]
 }

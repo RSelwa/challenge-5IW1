@@ -1,13 +1,14 @@
 import React from "react"
 import { SewingPinIcon } from "@radix-ui/react-icons"
-import { Button } from "@radix-ui/themes"
+import { Link } from "react-router-dom"
 
 type Props = {
   urlImage: string
   name: string
-  service: string
+  // service: string
   address: string
   zipCode: string
+  employeeId: string
 }
 
 const ProfileSearch = (props: Props) => {
@@ -21,7 +22,7 @@ const ProfileSearch = (props: Props) => {
         />
         <div className="flex flex-col gap-2">
           <p className="text-blue-500">{props.name}</p>
-          <p className="text-sm font-bold text-gray-900">{props.service}</p>
+          {/* <p className="text-sm font-bold text-gray-900">{props.service}</p> */}
           <div className="mt-3 flex gap-2 ">
             <SewingPinIcon color="gray" className="mt-1" />
             <p>
@@ -33,7 +34,12 @@ const ProfileSearch = (props: Props) => {
         </div>
       </div>
       <div className="ml-24 mt-4">
-        <Button className="">Prendre rendez-vous</Button>
+        <Link
+          className="flex w-fit items-center justify-center rounded bg-blue-700 px-8 py-2 text-white"
+          to={`/reservation-service/${props.employeeId}`}
+        >
+          Prendre rendez-vous
+        </Link>
       </div>
     </div>
   )

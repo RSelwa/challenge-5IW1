@@ -7,4 +7,4 @@ export const SERVICE_API_ROUTES = "/api/services"
 export const SLOT_API_ROUTES = "/api/slots"
 export const USER_API_ROUTES = "/api/users"
 export const NOTATION_API_ROUTES = "/api/notations"
-
+export const RESERVATION_API_ROUTES = "/api/reservations"

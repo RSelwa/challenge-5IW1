@@ -42,6 +42,10 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:write'])]
+    private ?string $category = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:write'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
@@ -52,10 +56,6 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['employee:read', 'employee:write'])]
     private ?Establishment $establishment = null;
-
-    #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Slot::class)]
-    #[Groups(['establishment:read', 'employee:read'])]
-    private Collection $slots;
     
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: EmployeeSpecificSchedule::class)]
     #[Groups(['establishment:read', 'employee:read'])]
@@ -68,25 +68,24 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    private ?array $roles = ['ROLE_ORGANIZATION'];
+    private ?array $roles = ['ROLE_EMPLOYEE'];
 
     #[Groups(['employee:write'])]
     private ?string $plainPassword = null;
 
-    #[ORM\ManyToOne(inversedBy: 'employees')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['establishment:read', 'employee:read', 'employee:write'])]
-    private ?Service $service = null;
-
-    #[ORM\OneToMany(mappedBy: 'Employee', targetEntity: EmployeeWeekSchedule::class)]
+    #[ORM\OneToMany(mappedBy: 'employee', targetEntity: EmployeeWeekSchedule::class)]
     #[Groups(['establishment:read', 'employee:read'])]
     private Collection $employeeWeekSchedules;
 
+    #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Service::class)]
+    #[Groups(['establishment:read', 'employee:read'])]
+    private Collection $services;
+
     public function __construct()
     {
-        $this->slots = new ArrayCollection();
         $this->employeeSpecificSchedules = new ArrayCollection();
         $this->employeeWeekSchedules = new ArrayCollection();
+        $this->services = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -101,6 +100,17 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getCategory(): ?string
+    {
+        return $this->category;
+    }
+
+    public function setCategory(string $category): static
+    {
+        $this->category = $category;
+
+        return $this;
+    }
     public function getFirstname(): ?string
     {
         return $this->firstname;
@@ -133,36 +143,6 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEstablishment(?Establishment $establishment): static
     {
         $this->establishment = $establishment;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Slot>
-     */
-    public function getSlots(): Collection
-    {
-        return $this->slots;
-    }
-
-    public function addSlot(Slot $slot): static
-    {
-        if (!$this->slots->contains($slot)) {
-            $this->slots->add($slot);
-            $slot->setEmployee($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSlot(Slot $slot): static
-    {
-        if ($this->slots->removeElement($slot)) {
-            // set the owning side to null (unless already changed)
-            if ($slot->getEmployee() === $this) {
-                $slot->setEmployee(null);
-            }
-        }
 
         return $this;
     }
@@ -270,17 +250,6 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
         $this->plainPassword = null;
     }
 
-    public function getService(): ?Service
-    {
-        return $this->service;
-    }
-
-    public function setService(?Service $service): static
-    {
-        $this->service = $service;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, EmployeeWeekSchedule>
@@ -306,6 +275,36 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($employeeWeekSchedule->getEmployee() === $this) {
                 $employeeWeekSchedule->setEmployee(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Service>
+     */
+    public function getServices(): Collection
+    {
+        return $this->services;
+    }
+
+    public function addService(Service $service): static
+    {
+        if (!$this->services->contains($service)) {
+            $this->services->add($service);
+            $service->setEmployee($this);
+        }
+
+        return $this;
+    }
+
+    public function removeService(Service $service): static
+    {
+        if ($this->services->removeElement($service)) {
+            // set the owning side to null (unless already changed)
+            if ($service->getEmployee() === $this) {
+                $service->setEmployee(null);
             }
         }
 

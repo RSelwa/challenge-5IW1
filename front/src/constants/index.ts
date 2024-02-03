@@ -1,29 +1,8 @@
-import type { HoraireType, SemaineType, Slots } from "@/types/api/slots"
+import type { HoraireType, SemaineType } from "@/types/api/slots"
 
 export const dropdownMenuSideOffset = 16
 
 // Exemple de données pour le type Slots
-export const slotsData: Slots[] = [
-  {
-    employeeId: "EMP001",
-    startTime: 1705500240000, // 	Wed Jan 17 2024 14:04:00
-    duration: 1, // 1 heure en millisecondes
-    status: "booked"
-  },
-  {
-    employeeId: "EMP001",
-    startTime: 1705493040000, // Wed Jan 17 2024 12:04:00
-    duration: 1, // 1 heure en millisecondes
-    status: "booked"
-  },
-  {
-    employeeId: "EMP001",
-    startTime: 1705571521000, // Thu Jan 18 2024 10:52:01
-    duration: 2, // 2 heures en millisecondes
-    status: "available"
-  }
-  // Ajoutez autant d'entrées que nécessaire
-]
 export const defaultHoraireType: HoraireType = {
   startTimeMatinée: 8, // 8:00 AM en millisecondes
   endTimeMatinée: 12, // 12:00 PM en millisecondes

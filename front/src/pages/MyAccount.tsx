@@ -1,6 +1,5 @@
 import React from "react"
 import UserInfosForm from "@/pages/UserInfosForm"
-import Notation from "../components/Notations"
 
 const MyAccount = () => {
   return (
@@ -11,7 +10,6 @@ const MyAccount = () => {
         </h1>
         <UserInfosForm />
       </div>
-      <Notation idTarget={"user333"} />
     </div>
   )
 }

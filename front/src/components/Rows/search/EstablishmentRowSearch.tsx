@@ -9,11 +9,11 @@ type Props = {
 const EstablishmentRowSearch = ({ establishment }: Props) => {
   return (
     <ProfileSearch
-      address={establishment.address}
-      name={establishment.name}
-      service={establishment.city}
-      zipCode={establishment.zipCode}
       urlImage=""
+      name={establishment.name}
+      address={establishment.address}
+      zipCode={establishment.zipCode}
+      employeeId={establishment.employees[0].id}
     />
   )
 }

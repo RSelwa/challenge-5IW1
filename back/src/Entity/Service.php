@@ -28,16 +28,24 @@ class Service
     #[Groups(['service:read', 'employee:read'])]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column]
     #[Groups(['service:read', 'employee:read'])]
-    private ?string $type = null;
+    private ?int $duration = null;
 
-    #[ORM\OneToMany(mappedBy: 'service', targetEntity: Employee::class)]
-    private Collection $employees;
+    #[ORM\ManyToOne(inversedBy: 'services')]
+    #[Groups(['establishment:read', 'employee:read', 'slot:read'])]
+    private ?Employee $employee = null;
+
+    #[ORM\Column]
+    private ?int $price = null;
+
+    #[ORM\OneToMany(mappedBy: 'service', targetEntity: Slot::class)]
+    #[Groups(['establishment:read', 'employee:read', 'slot:read'])]
+    private Collection $slots;
 
     public function __construct()
     {
-        $this->employees = new ArrayCollection();
+        $this->slots = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -64,42 +72,66 @@ class Service
         return $this;
     }
 
-    public function getType(): ?string
+    public function getDuration(): ?int
     {
-        return $this->type;
+        return $this->duration;
     }
 
-    public function setType(?string $type): static
+    public function setDuration(int $duration): static
     {
-        $this->type = $type;
+        $this->duration = $duration;
+
+        return $this;
+    }
+
+    public function getEmployee(): ?Employee
+    {
+        return $this->employee;
+    }
+
+    public function setEmployee(?Employee $employee): static
+    {
+        $this->employee = $employee;
+
+        return $this;
+    }
+
+    public function getPrice(): ?int
+    {
+        return $this->price;
+    }
+
+    public function setPrice(int $price): static
+    {
+        $this->price = $price;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Employee>
+     * @return Collection<int, Slot>
      */
-    public function getEmployees(): Collection
+    public function getSlots(): Collection
     {
-        return $this->employees;
+        return $this->slots;
     }
 
-    public function addEmployee(Employee $employee): static
+    public function addSlot(Slot $slot): static
     {
-        if (!$this->employees->contains($employee)) {
-            $this->employees->add($employee);
-            $employee->setService($this);
+        if (!$this->slots->contains($slot)) {
+            $this->slots->add($slot);
+            $slot->setService($this);
         }
 
         return $this;
     }
 
-    public function removeEmployee(Employee $employee): static
+    public function removeSlot(Slot $slot): static
     {
-        if ($this->employees->removeElement($employee)) {
+        if ($this->slots->removeElement($slot)) {
             // set the owning side to null (unless already changed)
-            if ($employee->getService() === $this) {
-                $employee->setService(null);
+            if ($slot->getService() === $this) {
+                $slot->setService(null);
             }
         }
 

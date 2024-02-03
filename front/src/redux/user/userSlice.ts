@@ -1,16 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit"
 import type { PayloadAction } from "@reduxjs/toolkit"
+import type { PlaceData } from "@/types/maps"
 import type { reduxStatus, reduxUserFront } from "@/types/redux/user"
-import type { RootState } from "@/redux/store"
-import type { MapsPlaceData } from "@/types/maps"
 import { defaultLocation } from "@/constants/maps"
+import type { RootState } from "@/redux/store"
 
 // Define the initial state using that type
 const initialState: reduxUserFront = {
   email: "",
   status: ["VISTOR"],
   searchPlace: {
-    address: '',
+    address: "",
     geometry: defaultLocation
   }
 }
@@ -36,7 +36,7 @@ export const userSlice = createSlice({
       state.email = action.payload.email
       state.status = action.payload.status
     },
-    changeSearchPlace: (state, action: PayloadAction<MapsPlaceData>) => {
+    changeSearchPlace: (state, action: PayloadAction<PlaceData>) => {
       state.searchPlace = action.payload
     }
   }

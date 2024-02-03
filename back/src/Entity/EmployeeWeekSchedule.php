@@ -23,7 +23,7 @@ class EmployeeWeekSchedule
     #[ORM\ManyToOne(inversedBy: 'employeeWeekSchedules')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
-    private ?Employee $Employee = null;
+    private ?Employee $employee = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
@@ -52,12 +52,12 @@ class EmployeeWeekSchedule
 
     public function getEmployee(): ?Employee
     {
-        return $this->Employee;
+        return $this->employee;
     }
 
-    public function setEmployee(?Employee $Employee): static
+    public function setEmployee(?Employee $employee): static
     {
-        $this->Employee = $Employee;
+        $this->employee = $employee;
 
         return $this;
     }

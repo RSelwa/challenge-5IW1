@@ -12,6 +12,19 @@ export const fetchServices = async (): Promise<ServicesWithId[]> => {
   const services: ServicesWithId[] = await response.json()
   return services
 }
+export const fetchServicesByEmployeeId = async (
+  employeeId: string
+): Promise<ServicesWithId[]> => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_URL}${SERVICE_API_ROUTES}?employee_id=${employeeId}`,
+    requestOptions({ method: "GET" })
+  )
+  if (!response.ok) throw new Error("Something went wrong")
+
+  const services: ServicesWithId[] = await response.json()
+  return services
+}
+
 export const fetchService = async (id: string): Promise<ServicesWithId> => {
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}${SERVICE_API_ROUTES}/${id}`,

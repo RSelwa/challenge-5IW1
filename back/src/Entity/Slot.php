@@ -7,7 +7,6 @@ use App\Repository\SlotRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints\Date;
 
 #[ORM\Entity(repositoryClass: SlotRepository::class)]
 #[ApiResource(
@@ -28,10 +27,6 @@ class Slot
     #[Groups(['slot:read'])]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'slots')]
-    #[Groups(['slot:read', 'slot:read'])]
-    private ?Employee $employee = null;
-
     #[ORM\Column(length: 255)]
     #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:read'])]
     private ?string $startTime = null;
@@ -43,6 +38,11 @@ class Slot
     #[ORM\Column(length: 255)]
     #[Groups(['slot:read', 'slot:read'])]
     private ?string $status = null;
+
+    #[ORM\ManyToOne(inversedBy: 'slots')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:read'])]
+    private ?Service $service = null;
 
     public function getId(): ?string
     {
@@ -80,18 +80,6 @@ class Slot
         return $this;
     }
     
-    public function getEmployee(): ?Employee
-    {
-        return $this->employee;
-    }
-
-    public function setEmployee(?Employee $employee): static
-    {
-        $this->employee = $employee;
-
-        return $this;
-    }
-
     public function getStartTime(): ?string
     {
         return $this->startTime;
@@ -112,6 +100,18 @@ class Slot
     public function setDuration(string $duration): static
     {
         $this->duration = $duration;
+
+        return $this;
+    }
+
+    public function getService(): ?Service
+    {
+        return $this->service;
+    }
+
+    public function setService(?Service $service): static
+    {
+        $this->service = $service;
 
         return $this;
     }
