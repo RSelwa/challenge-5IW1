@@ -1,25 +1,27 @@
-import type { SyntheticEvent } from "react"
 import React, { useEffect, useState } from "react"
 import Rating from "@mui/material/Rating"
 import Typography from "@mui/material/Typography"
-import toast, { LoaderIcon } from "react-hot-toast"
+import { LoaderIcon } from "react-hot-toast"
 import type { NotationType } from "@/types/api/notation"
+import { EMPLOYEE_API_ROUTES, USER_API_ROUTES } from "@/constants/db"
 import { fetchNotations, patchNotation, postNotation } from "@/lib/notations"
 import { parseJwt } from "@/utils/redux"
 
 type Props = {
-  idTarget: string
+  idNotationTarget: string
 }
 type NotationForm = {
+  id?: string
   note: NotationType["note"]
-  comments: NotationType["comments"]
+  comment: NotationType["comment"]
 }
-const Notation = ({ idTarget }: Props) => {
+const Notation = ({ idNotationTarget }: Props) => {
   const { id } = parseJwt(localStorage.getItem("token") || "")
   const [isLoading, setIsLoading] = useState(false)
   const [notation, setNotation] = useState<NotationForm>({
+    id: undefined,
     note: 0,
-    comments: ""
+    comment: ""
   })
   const [isExistingNotation, setIsExistingNotation] = useState(false)
 
@@ -30,19 +32,27 @@ const Notation = ({ idTarget }: Props) => {
       const notations = await fetchNotations()
 
       const isExistingNote = notations.some(
-        (notation) => notation.idFrom === id && notation.idTarget === idTarget
+        (notation) =>
+          notation.idNotationFrom.replace(USER_API_ROUTES + "/", "") === id &&
+          notation.idNotationTarget.replace(EMPLOYEE_API_ROUTES + "/", "") ===
+            idNotationTarget
       )
       setIsExistingNotation(isExistingNote)
 
       if (isExistingNote) {
         const notation = notations.find(
-          (notation) => notation.idFrom === id && notation.idTarget === idTarget
+          (notation) =>
+            notation.idNotationFrom.replace(USER_API_ROUTES + "/", "") === id &&
+            notation.idNotationTarget.replace(EMPLOYEE_API_ROUTES + "/", "") ===
+              idNotationTarget
         )
-        if (notation)
+        if (notation) {
           setNotation({
-            comments: notation.comments,
+            id: notation.id,
+            comment: notation.comment,
             note: notation.note
           })
+        }
       }
     } catch (error) {
       console.error(error)
@@ -54,17 +64,16 @@ const Notation = ({ idTarget }: Props) => {
     setIsLoading(true)
     try {
       const newNotation: NotationType = {
-        idFrom: id,
-        idTarget: idTarget,
-        comments: notation.comments,
-        note: notation.note
+        note: notation.note,
+        comment: notation.comment,
+        idNotationTarget: "/api/employees/" + idNotationTarget,
+        idNotationFrom: "/api/users/" + id
       }
-      // throw new Error("TEST")
 
-      if (isExistingNotation) {
+      if (isExistingNotation && notation.id) {
         console.log("patch", newNotation)
 
-        // await patchNotation({ ...newNotation, id: notation.id })
+        await patchNotation({ ...newNotation, id: notation.id })
       } else {
         console.log("post", newNotation)
 
@@ -73,10 +82,6 @@ const Notation = ({ idTarget }: Props) => {
       fetchPotentialNotation()
     } catch (error) {
       console.log(error)
-
-      if (error instanceof Error) {
-        toast.error(error.message)
-      }
     }
     setIsLoading(false)
   }
@@ -85,13 +90,19 @@ const Notation = ({ idTarget }: Props) => {
     fetchPotentialNotation()
   }, [])
 
-  if (isLoading) return <LoaderIcon />
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center p-3">
+        <LoaderIcon />
+      </div>
+    )
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault()
         onSubmit()
       }}
+      className="flex flex-col gap-2"
     >
       <Typography component="legend">Notation</Typography>
       <Rating
@@ -101,20 +112,23 @@ const Notation = ({ idTarget }: Props) => {
           setNotation((prevState) => ({ ...prevState, note: value || 0 }))
         }
       />
-      <br />
       <input
         type="text"
         placeholder="Laisser un commentaire"
-        value={notation.comments}
-        onChange={(e) =>
+        value={notation.comment}
+        onChange={(e) => {
           setNotation((prevState) => ({
             ...prevState,
-            comments: e.target.value
+            comment: e.target.value
           }))
-        }
+        }}
       />
-      <br />
-      <button type="submit">Noter</button>
+      <button
+        className="rounded bg-cyan-500 px-4 py-2 text-center text-white"
+        type="submit"
+      >
+        Noter
+      </button>
     </form>
   )
 }

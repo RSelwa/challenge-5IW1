@@ -138,7 +138,7 @@ const ReservationButton = ({
                   <Cross1Icon />
                 </Popover.Close>
                 <Popover.Arrow className="fill-white" />
-                <Notation idTarget={employeeId} />
+                <Notation idNotationTarget={employeeId} />
               </Popover.Content>
             </Popover.Portal>
           </Popover.Root>
