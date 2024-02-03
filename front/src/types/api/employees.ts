@@ -14,3 +14,11 @@ export type Employees = {
   category: string
   services: (ServicesWithId & { slots: SlotsWithId })[]
 }
+
+export type EmployeePost = {
+  firstname: string
+  lastname: string
+  category: string
+  email: string
+  plainPassword: string
+}

@@ -55,7 +55,7 @@ import Error from "@/components/ui/Error"
 import App from "@/App"
 import AdminHome from "@/pages/AdminHome"
 import Login from "@/pages/auth/Login"
-import SigninOrganization from "@/pages/auth/SigninOrganisation"
+import SigninOrgaEmployee from "@/pages/auth/SigninOrgaEmployee"
 import MyAccount from "@/pages/MyAccount"
 import ReservationCreneau from "@/pages/reservation-creneau"
 import ReservationService from "@/pages/reservation-service"
@@ -102,7 +102,7 @@ const authRoutes: RouteObject[] = [
   },
   {
     path: "/signin/organization",
-    element: getLayout(<SigninOrganization />)
+    element: getLayout(<SigninOrgaEmployee />)
   }
 ]
 export const adminRoutes: RouteObject[] = [
