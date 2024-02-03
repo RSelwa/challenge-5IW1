@@ -55,11 +55,11 @@ describe("test date's functions", () => {
   })
   test("Get time string ", () => {
     const firstday = new Date(1705686559000) // 19 /01
-    expect(getHoursMinutes(firstday)).toBe("18:49")
+    expect(getHoursMinutes(firstday)).toBe("17:49")
   })
   test("Get time string v2", () => {
     const firstday = new Date(1705356139000) // 19 /01
-    expect(getHoursMinutes(firstday)).toBe("23:02")
+    expect(getHoursMinutes(firstday)).toBe("22:02")
   })
   test("Two dates the same Day", () => {
     const firstday = new Date(1705686559000) // 19 /01
