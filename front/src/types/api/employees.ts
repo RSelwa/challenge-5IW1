@@ -13,3 +13,11 @@ export type Employees = {
   employeeSpecificSchedules: EmployeeSpecificSchedulesWithId[]
   service: Services
 }
+
+export type EmployeePost = {
+  firstname: string
+  lastname: string
+  category: string
+  email: string
+  plainPassword: string
+}
