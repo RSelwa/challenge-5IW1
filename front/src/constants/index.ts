@@ -1,6 +1,6 @@
 import type { HoraireType, SemaineType } from "@/types/api/slots"
 
-export const dropdownMenuSideOffset = 16
+export const dropdownMenuSideOffset = 0
 
 // Exemple de données pour le type Slots
 export const defaultHoraireType: HoraireType = {

@@ -7,8 +7,11 @@ import type { reduxUserFront } from "@/types/redux/user"
 import { useAppSelector } from "@/redux/hook"
 import AdminLayout from "@/components/Layout/AdminLayout"
 import ClientLayout from "@/components/Layout/ClientLayout"
+import EmployeeLayout from "@/components/Layout/EmployeeLayout"
+import OrganisationLayout from "@/components/Layout/OrganisationLayout"
 import VisitorLayout from "@/components/Layout/VisitorLayout"
-import { dropdownMenuSideOffset } from "@/constants"
+import { GoogleMapsAPIContext } from "@/App"
+import { useGoogleMapsAPI } from "@/config/googleMapsAPI"
 
 const Layout = ({
   children,
@@ -17,6 +20,8 @@ const Layout = ({
   children: JSX.Element
   adminSecurity: boolean
 }) => {
+  const { isLoaded } = useGoogleMapsAPI()
+
   const navigate = useNavigate()
   const userStatus = useAppSelector(
     (state) => (state.user as reduxUserFront).status
@@ -26,7 +31,7 @@ const Layout = ({
   }, [])
 
   return (
-    <>
+    <GoogleMapsAPIContext.Provider value={{ isLoaded }}>
       <div className="flex w-full items-center justify-between bg-blue-500 px-5 py-4">
         <Link to="/">
           <h1 className="font-black italic tracking-widest text-white">
@@ -51,19 +56,21 @@ const Layout = ({
             </DropdownMenu.Trigger>
 
             <DropdownMenu.Portal>
-              <DropdownMenu.Content
-                sideOffset={dropdownMenuSideOffset}
-                className="absolute -right-5 top-0 z-10 w-52 space-y-3 rounded-md bg-white p-2 font-bold text-red-500 shadow-md"
-              >
+              <DropdownMenu.Content className="absolute -right-5 top-0 z-10 w-52 space-y-3 rounded-md bg-white p-2 font-bold text-red-500 shadow-md">
                 {userStatus?.includes("ROLE_USER") && <ClientLayout />}
                 {userStatus?.includes("ROLE_ADMIN") && <AdminLayout />}
+                {userStatus?.includes("ROLE_ORGANIZATION") && (
+                  <OrganisationLayout />
+                )}
+                {userStatus?.includes("ROLE_EMPLOYEE") && <EmployeeLayout />}
               </DropdownMenu.Content>
             </DropdownMenu.Portal>
           </DropdownMenu.Root>
         )}
       </div>
+
       {children}
-    </>
+    </GoogleMapsAPIContext.Provider>
   )
 }
 

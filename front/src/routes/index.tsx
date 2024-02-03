@@ -56,7 +56,9 @@ import App from "@/App"
 import AdminHome from "@/pages/AdminHome"
 import Login from "@/pages/auth/Login"
 import SigninOrgaEmployee from "@/pages/auth/SigninOrgaEmployee"
+import MyOrganisation from "@/pages/mon-organisation"
 import MyAccount from "@/pages/MyAccount"
+import NewEstablisement from "@/pages/new-establishment"
 import ReservationCreneau from "@/pages/reservation-creneau"
 import ReservationService from "@/pages/reservation-service"
 import ReservationUser from "@/pages/reservations-user"
@@ -72,7 +74,17 @@ const getLayout = (
     </Fragment>
   </Layout>
 )
-
+const organisationRoutes: RouteObject[] = [
+  {
+    path: "/mon-organisation",
+    element: getLayout(<MyOrganisation />)
+  },
+  {
+    path: "/new-establishment/:organisationId",
+    element: getLayout(<NewEstablisement />)
+  }
+]
+const employeeRoutes: RouteObject[] = []
 const defaultRoutes: RouteObject[] = [
   {
     path: "/",
@@ -278,6 +290,8 @@ export const adminRoutes: RouteObject[] = [
 export const routes: RouteObject[] = [
   ...defaultRoutes,
   ...adminRoutes,
+  ...organisationRoutes,
+  ...employeeRoutes,
   ...authRoutes,
   {
     path: "/*",

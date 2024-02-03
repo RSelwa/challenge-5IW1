@@ -10,3 +10,13 @@ export type Establishments = {
   lat: number
   lng: number
 }
+export type EstablishmentPost = {
+  name: Establishments["name"]
+  address: Establishments["address"]
+  zipCode: Establishments["zipCode"]
+  city: Establishments["city"]
+  country: Establishments["country"]
+  lat: Establishments["lat"]
+  lng: Establishments["lng"]
+  organization: string
+}

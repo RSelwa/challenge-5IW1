@@ -4,6 +4,10 @@ export type UserToken = {
   iat: number
   exp: number
   roles: RoleUser[]
-  id: string //! FIX: It's email
+  id: string
 }
-export type RoleUser = "ROLE_USER" | "ROLE_ADMIN"
+export type RoleUser =
+  | "ROLE_USER"
+  | "ROLE_ADMIN"
+  | "ROLE_EMPLOYEE"
+  | "ROLE_ORGANIZATION"
