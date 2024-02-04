@@ -1,5 +1,6 @@
 import type { Dispatch, SetStateAction } from "react"
 import React, { useState } from "react"
+import { Translate } from "react-auto-translate"
 import type { EmployeesWithId } from "@/types/withId"
 import { fetchSearch } from "@/lib/search"
 import { fetchData } from "@/utils/db"
@@ -7,7 +8,6 @@ import Map from "@/components/maps/Map"
 import SearchResult from "@/components/Rows/search/SearchResult"
 import SearchBar from "@/components/ui/SearchBar"
 import UserTitle from "@/components/ui/UserTitle"
-import Planning from "@/pages/planning"
 import type { SearchQuery } from "@/types"
 
 const Home = () => {
@@ -36,12 +36,13 @@ const Home = () => {
           />
         </div>
       </div>
-      <Planning />
       <div
         className="relative mx-auto grid w-11/12 gap-4  py-4"
         style={{ gridTemplateColumns: "2fr 1fr" }}
       >
-        <p className="col-span-2 font-bold">{resultsSearch.length} résultats</p>
+        <p className="col-span-2 font-bold">
+          <Translate>{resultsSearch.length} résultats</Translate>
+        </p>
         <div className=" flex min-h-[200px] w-full flex-col gap-5 overflow-y-auto p-1">
           {resultsSearch.map((search, index) => (
             <SearchResult searchResult={search} key={index} />

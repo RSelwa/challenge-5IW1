@@ -1,18 +1,17 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { ChevronDownIcon } from "@radix-ui/react-icons"
 import Avatar from "boring-avatars"
+import { Translator } from "react-auto-translate"
 import { Link, useNavigate } from "react-router-dom"
 import type { reduxUserFront } from "@/types/redux/user"
 import { useAppSelector } from "@/redux/hook"
+import FrenchFlag from "@/components/icons/fr"
+import GrandFuckigBritain from "@/components/icons/gb"
 import AdminLayout from "@/components/Layout/AdminLayout"
 import ClientLayout from "@/components/Layout/ClientLayout"
 import VisitorLayout from "@/components/Layout/VisitorLayout"
 import { dropdownMenuSideOffset } from "@/constants"
-import LangToggleBtn from "@/components/LangToggleBtn";
-import { Translator, Translate } from 'react-auto-translate';
-
-
 
 const Layout = ({
   children,
@@ -22,6 +21,7 @@ const Layout = ({
   adminSecurity: boolean
 }) => {
   const navigate = useNavigate()
+  const [langage, setLangage] = useState<"fr" | "en">("fr")
   const userStatus = useAppSelector(
     (state) => (state.user as reduxUserFront).status
   )
@@ -31,24 +31,19 @@ const Layout = ({
 
   return (
     <Translator
-    from='fr'
-    to='en'
-    googleApiKey='AIzaSyB6ajtNlNKLpIX2SHuxnPk1OkDLSorFyYY'
-  >
-   
+      from="fr"
+      to={langage}
+      googleApiKey={import.meta.env.VITE_KEY_GOOGLE_MAPS}
+    >
       <div className="flex w-full items-center justify-between bg-blue-500 px-5 py-4">
         <Link to="/">
           <h1 className="font-black italic tracking-widest text-white">
             DOCTOGES
           </h1>
         </Link>
-        <LangToggleBtn currentLanguage={""} onToggle={function (): void {
-          throw new Error("Function not implemented.")
-        } } />
         {userStatus?.includes("VISTOR") ? (
           <VisitorLayout />
         ) : (
-          
           <DropdownMenu.Root>
             <DropdownMenu.Trigger className="group flex items-center gap-2">
               <Avatar
@@ -76,9 +71,22 @@ const Layout = ({
         )}
       </div>
       {children}
-      
-      </Translator>
-    
+      <label
+        htmlFor="langage"
+        className="absolute bottom-4 right-4 z-50 cursor-pointer rounded-full"
+      >
+        {langage === "fr" ? <FrenchFlag /> : <GrandFuckigBritain />}
+      </label>
+      <input
+        id="langage"
+        type="checkbox"
+        className="hidden"
+        onChange={(e) => {
+          if (e.target.checked) setLangage("en")
+          if (!e.target.checked) setLangage("fr")
+        }}
+      />
+    </Translator>
   )
 }
 
