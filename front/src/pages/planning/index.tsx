@@ -3,6 +3,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons"
 import { Button } from "@radix-ui/themes"
 import { LoaderIcon } from "react-hot-toast"
 import type { PlanningWeekDay, Slots } from "@/types/api/slots"
+import type { SemaineTypeWithId } from "@/types/withId"
 import { dayInSeconds, weekInSeconds } from "@/constants/date"
 import { fetchEmployee } from "@/lib/employees"
 import {
@@ -14,7 +15,6 @@ import {
   getInitialDay,
   isInSameDay
 } from "@/utils/date"
-import { semaineTypeData } from "@/constants"
 import AvailableSlot from "@/pages/planning/available-slot"
 import { cn } from "@/utils"
 
@@ -32,7 +32,7 @@ const Planning = ({
   idReservation?: string
 }) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date())
-  const [needLoadReservations, setNeedLoadReservations] = useState(false)
+  const [weekSchedule, setWeekSchedule] = useState<SemaineTypeWithId[]>([])
   const [isPlanningExpanded, setIsPlanningExpanded] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [weekDays, setWeekDays] = useState<PlanningWeekDay[]>([])
@@ -62,7 +62,6 @@ const Planning = ({
           reservations: []
         }
       ])
-    setNeedLoadReservations((prevState) => !prevState)
   }
   const cantChangePreviousWeek = (): boolean => {
     const currentTime = new Date().getTime()
@@ -74,25 +73,11 @@ const Planning = ({
     return false
   }
 
-  const fetchSemaineType = (employeeId: string) => {
-    try {
-      // const response = await fetch(
-      //   `${import.meta.env.VITE_API_URL}/auth`,
-      //   requestOptions({ method: "POST", data: data })
-      // )
-      // if (!response.ok) throw new Error("Something went wrong")
-      // const { token } = await response.json()
-    } catch (error) {
-      console.log(employeeId)
-
-      console.error(error)
-    }
-  }
-
   const fetchReservations = async (employeeId: string) => {
     try {
-      const { services } = await fetchEmployee(employeeId)
-
+      const { services, employeeWeekSchedules } =
+        await fetchEmployee(employeeId)
+      setWeekSchedule(employeeWeekSchedules)
       // reservation pour tous les services toujours actif
       const slotsData = services
         .map((service) => service.slots)
@@ -134,20 +119,17 @@ const Planning = ({
   }
   const fetchDataForPlanning = async () => {
     setIsLoading(true)
-    await Promise.all([
-      fetchSemaineType(employeeId),
-      fetchReservations(employeeId)
-    ])
+    await loadDatesWeek()
+    await fetchReservations(employeeId)
     setIsLoading(false)
   }
   useEffect(() => {
-    loadDatesWeek()
     fetchDataForPlanning()
   }, [currentDate])
 
   useEffect(() => {
-    fetchDataForPlanning()
-  }, [needLoadReservations])
+    console.log(weekSchedule)
+  }, [weekSchedule])
 
   return (
     <div className="flex w-fit gap-4 rounded bg-white p-2">
@@ -177,7 +159,7 @@ const Planning = ({
                   {getAvailableReservation({
                     day: day.date,
                     reservations: day.reservations,
-                    semaineTypeUser: semaineTypeData,
+                    semaineTypeUser: weekSchedule,
                     duration: duration
                   }).map((dateOfReservation, i) =>
                     isPlanningExpanded || i < 4 ? (

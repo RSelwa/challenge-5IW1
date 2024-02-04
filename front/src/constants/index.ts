@@ -10,25 +10,17 @@ export const defaultHoraireType: HoraireType = {
   endTimeAfternoon: 18 // 6:00 PM en millisecondes
 }
 // Exemple de données pour le type SemaineType
-export const semaineTypeData: SemaineType[] = [
-  // {
-  //   employeeId: "EMP001",
-  //   dayOfWeek: 1, // Lundi
-  //   startTimeMatinee: 9, // 8:00 AM en millisecondes
-  //   endTimeMatinee: 12, // 12:00 PM en millisecondes
-  //   startTimeAprem: 14, // 2:00 PM en millisecondes
-  //   endTimeAprem: 18 // 6:00 PM en millisecondes
-  // },
-  // {
-  //   employeeId: "EMP002",
-  //   dayOfWeek: 3, // Mercredi
-  //   startTimeMatinee: 12, // 9:00 AM en millisecondes
-  //   endTimeMatinee: 12, // 1:00 PM en millisecondes
-  //   startTimeAprem: 14, // 2:00 PM en millisecondes
-  //   endTimeAprem: 18 // 6:00 PM en millisecondes
-  // }
-  // Ajoutez autant d'entrées que nécessaire
-]
+export const semaineTypeData: SemaineType[] = Array.from(
+  { length: 7 },
+  (_, index) => ({
+    employee: "EMP001",
+    day: index + 1,
+    startTimeMorning: 9,
+    endTimeMorning: 12,
+    startTimeAfternoon: 14,
+    endTimeAfternoon: 18
+  })
+)
 
 export const AVATAR_COLORS = {
   ROLE_USER: {

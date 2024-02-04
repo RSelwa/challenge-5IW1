@@ -8,8 +8,8 @@ export type Slots = {
 export type SlotsStatus = "reserved" | "canceled" | "passed"
 
 export type SemaineType = {
-  employeeId: string
-  dayOfWeek: number // number of day of the week
+  employee: string
+  day: number // number of day of the week
 } & HoraireType
 
 export type ServiceSlot = {
