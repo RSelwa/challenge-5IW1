@@ -26,10 +26,10 @@ export type ServiceSlot = {
   user: string
 }
 export type HoraireType = {
-  startTimeMatinee: number // heure
-  endTimeMatinee: number // heure
-  startTimeAprem: number // heure
-  endTimeAprem: number // heure
+  startTimeMorning: number // heure
+  endTimeMorning: number // heure
+  startTimeAfternoon: number // heure
+  endTimeAfternoon: number // heure
 }
 
 export type PlanningWeekDay = { date: Date; reservations: Slots[] }

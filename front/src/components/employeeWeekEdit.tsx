@@ -28,10 +28,10 @@ const EmployeeWeekEdit = ({ day, employeeId }: Props) => {
     } else {
       const newDay = {
         day: data.dayOfWeek,
-        endTimeAprem: data.endTimeAprem,
-        endTimeMatinee: data.endTimeMatinee,
-        startTimeAprem: data.startTimeAprem,
-        startTimeMatinee: data.startTimeMatinee,
+        endTimeAfternoon: data.endTimeAfternoon,
+        endTimeMorning: data.endTimeMorning,
+        startTimeMorning: data.startTimeMorning,
+        startTimeAfternoon: data.startTimeAfternoon,
 
         employee: EMPLOYEE_API_ROUTES + "/" + data.employeeId
       }
@@ -60,7 +60,7 @@ const EmployeeWeekEdit = ({ day, employeeId }: Props) => {
       <p>{daysInWeekSchedule[day.dayOfWeek]}</p>
       <input
         className="w-[150px]"
-        {...register("startTimeMatinee", {
+        {...register("startTimeMorning", {
           valueAsNumber: true
         })}
         type="number"
@@ -68,29 +68,29 @@ const EmployeeWeekEdit = ({ day, employeeId }: Props) => {
       />
       <input
         className="w-[150px]"
-        {...register("endTimeMatinee", {
+        {...register("endTimeMorning", {
           valueAsNumber: true
         })}
         type="number"
-        min={day.startTimeMatinee}
+        min={day.startTimeMorning}
       />
 
       <input
         className="w-[150px]"
-        {...register("startTimeAprem", {
+        {...register("startTimeAfternoon", {
           valueAsNumber: true
         })}
         type="number"
-        min={day.endTimeMatinee}
+        min={day.endTimeMorning}
       />
 
       <input
         className="w-[150px]"
-        {...register("endTimeAprem", {
+        {...register("endTimeAfternoon", {
           valueAsNumber: true
         })}
         type="number"
-        min={day.startTimeAprem}
+        min={day.startTimeAfternoon}
       />
 
       <div>

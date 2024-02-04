@@ -16,10 +16,10 @@ const EmployeeSchedule = () => {
         id: "",
         employeeId: employeeId || "",
         dayOfWeek: index,
-        startTimeMatinee: defaultHoraireType.startTimeMatinee,
-        endTimeMatinee: defaultHoraireType.endTimeMatinee,
-        startTimeAprem: defaultHoraireType.startTimeAprem,
-        endTimeAprem: defaultHoraireType.endTimeAprem
+        startTimeMorning: defaultHoraireType.startTimeMorning,
+        endTimeMorning: defaultHoraireType.endTimeMorning,
+        startTimeAfternoon: defaultHoraireType.startTimeAfternoon,
+        endTimeAfternoon: defaultHoraireType.endTimeAfternoon
       }))
   )
 
