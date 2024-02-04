@@ -21,13 +21,24 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
 #[ApiResource(
     normalizationContext: [ 'groups' => ['employee:read', 'slot:read']],
-    denormalizationContext: [ 'groups' => ['employee:write']],
     operations: [
         new Get(),
         new GetCollection(),
-        new Post(processor: UserPasswordHasher::class),
-        new Put(processor: UserPasswordHasher::class),
-        new Patch(processor: UserPasswordHasher::class),
+        new Post(
+            processor: UserPasswordHasher::class,
+            denormalizationContext: ['groups' => 'employee:create'],
+        ),
+        new Put(
+            processor: UserPasswordHasher::class,
+            denormalizationContext: ['groups' => 'employee:update'],
+        ),
+        new Patch(
+            processor: UserPasswordHasher::class,
+            // security: "is_granted('ROLE_ADMIN')",
+            // securityMessage: 'Not admin',
+            inputFormats: [ "json" ],
+            denormalizationContext: ['groups' => 'employee:update'],
+        ),
     ],
 )]
 
@@ -41,20 +52,20 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:write'])]
+    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:create', 'employee:update'])]
     private ?string $category = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:write'])]
+    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:create', 'employee:update'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:write'])]
+    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:create', 'employee:update'])]
     private ?string $lastname = null;
 
     #[ORM\ManyToOne(inversedBy: 'employees')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['employee:read', 'employee:write'])]
+    #[ORM\JoinColumn(nullable: true)]
+    #[Groups(['employee:read', 'employee:create', 'employee:update'])]
     private ?Establishment $establishment = null;
     
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: EmployeeSpecificSchedule::class)]
@@ -62,7 +73,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $employeeSpecificSchedules;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['establishment:read', 'employee:read', 'employee:write'])]
+    #[Groups(['establishment:read', 'employee:read', 'employee:create', 'employee:update'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
@@ -70,7 +81,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 
     private ?array $roles = ['ROLE_EMPLOYEE'];
 
-    #[Groups(['employee:write'])]
+    #[Groups(['employee:create'])]
     private ?string $plainPassword = null;
 
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: EmployeeWeekSchedule::class)]

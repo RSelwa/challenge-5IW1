@@ -4,7 +4,8 @@ security:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
         App\Entity\User: 'auto'
         App\Entity\Organization: 'auto'
-        App\Entity\Admin: auto
+        App\Entity\Employee: 'auto'
+        App\Entity\Admin: 'auto'
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         user_provider:
@@ -49,7 +50,7 @@ security:
         ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ALLOWED_TO_SWITCH]
 
     access_control:
-    - { path: ^/admin, roles: ROLE_ADMIN }
+    - { path: ^/*, roles: ROLE_ADMIN }
     # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
