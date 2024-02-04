@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import type { SemaineTypeWithId } from "@/types/withId"
-import { daysInWeekSchedule } from "@/constants/date"
+import { fetchEmployee } from "@/lib/employees"
 import EmployeeWeekEdit from "@/components/employeeWeekEdit"
 import { defaultHoraireType } from "@/constants"
 
@@ -14,8 +14,8 @@ const EmployeeSchedule = () => {
       .fill(0)
       .map((_, index) => ({
         id: "",
-        employeeId: employeeId || "",
-        dayOfWeek: index,
+        employee: employeeId || "",
+        day: index + 1,
         startTimeMorning: defaultHoraireType.startTimeMorning,
         endTimeMorning: defaultHoraireType.endTimeMorning,
         startTimeAfternoon: defaultHoraireType.startTimeAfternoon,
@@ -24,9 +24,18 @@ const EmployeeSchedule = () => {
   )
 
   const fetchEmployeeSchedule = async () => {
+    if (!employeeId) return
     setIsLoading(true)
     try {
       console.log(employeeId)
+      const { employeeWeekSchedules } = await fetchEmployee(employeeId)
+      employeeWeekSchedules.forEach((schedule) => {
+        setScheduleDays((prevState) => {
+          const index = schedule.day
+          prevState[index - 1] = schedule
+          return [...prevState]
+        })
+      })
     } catch (error) {
       console.error(error)
     }
