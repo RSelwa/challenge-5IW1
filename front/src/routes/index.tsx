@@ -62,6 +62,7 @@ import NewEstablisement from "@/pages/new-establishment"
 import ReservationCreneau from "@/pages/reservation-creneau"
 import ReservationService from "@/pages/reservation-service"
 import ReservationUser from "@/pages/reservations-user"
+import EmployeeSchedule from "@/pages/schedule-employee"
 
 const getLayout = (
   element: JSX.Element,
@@ -82,6 +83,10 @@ const organisationRoutes: RouteObject[] = [
   {
     path: "/new-establishment/:organisationId",
     element: getLayout(<NewEstablisement />)
+  },
+  {
+    path: "/schedule/:employeeId",
+    element: getLayout(<EmployeeSchedule />)
   }
 ]
 const employeeRoutes: RouteObject[] = []

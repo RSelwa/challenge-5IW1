@@ -108,7 +108,7 @@ export const isInPlageHoraire = (
   const hour = date.getHours()
 
   return (
-    (hour > horaireDay.startTimeMatinée && hour < horaireDay.endTimeMatinée) ||
+    (hour > horaireDay.startTimeMatinee && hour < horaireDay.endTimeMatinee) ||
     (hour > horaireDay.startTimeAprem && hour < horaireDay.endTimeAprem)
   )
 }
@@ -160,8 +160,8 @@ export const getSlotsByHoraireDay = (
 ): Date[] => {
   const availableMatin = countRepetitions(
     duration,
-    horaireOfDay.startTimeMatinée,
-    horaireOfDay.endTimeMatinée
+    horaireOfDay.startTimeMatinee,
+    horaireOfDay.endTimeMatinee
   )
   const availableAprem = countRepetitions(
     duration,
@@ -170,7 +170,7 @@ export const getSlotsByHoraireDay = (
   )
 
   const slotsMatin = getSlotsDatesFromRange(
-    horaireOfDay.startTimeMatinée,
+    horaireOfDay.startTimeMatinee,
     availableMatin,
     day
   )

@@ -19,4 +19,4 @@ export type OrganizationPost = {
   email: string
   plainPassword: string
 }
-type OrganizationStatus = "PENDING"
+type OrganizationStatus = "PENDING" | "ACCEPTED" | "REFUSED"

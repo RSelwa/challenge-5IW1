@@ -26,8 +26,8 @@ export type ServiceSlot = {
   user: string
 }
 export type HoraireType = {
-  startTimeMatinée: number // heure
-  endTimeMatinée: number // heure
+  startTimeMatinee: number // heure
+  endTimeMatinee: number // heure
   startTimeAprem: number // heure
   endTimeAprem: number // heure
 }

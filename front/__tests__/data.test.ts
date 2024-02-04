@@ -75,9 +75,9 @@ describe("test date's functions", () => {
     const firstday = new Date(1710860539000) // 19 /03 16:02
     const plageHoraires: HoraireType = {
       endTimeAprem: 18,
-      endTimeMatinée: 12,
+      endTimeMatinee: 12,
       startTimeAprem: 14,
-      startTimeMatinée: 8
+      startTimeMatinee: 8
     }
     expect(isInPlageHoraire(firstday, plageHoraires)).toBe(true)
   })
@@ -85,9 +85,9 @@ describe("test date's functions", () => {
     const firstday = new Date(1710885739000) // 19 /03 23:02
     const plageHoraires: HoraireType = {
       endTimeAprem: 18,
-      endTimeMatinée: 12,
+      endTimeMatinee: 12,
       startTimeAprem: 14,
-      startTimeMatinée: 8
+      startTimeMatinee: 8
     }
     expect(isInPlageHoraire(firstday, plageHoraires)).toBe(false)
   })
@@ -95,9 +95,9 @@ describe("test date's functions", () => {
     const firstday = new Date(1710835339000) // 19 /03 08:02
     const plageHoraires: HoraireType = {
       endTimeAprem: 18,
-      endTimeMatinée: 12,
+      endTimeMatinee: 12,
       startTimeAprem: 14,
-      startTimeMatinée: 12
+      startTimeMatinee: 12
     }
     expect(isInPlageHoraire(firstday, plageHoraires)).toBe(false)
   })

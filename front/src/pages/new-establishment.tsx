@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Autocomplete } from "@react-google-maps/api"
 import { useParams } from "react-router-dom"
-import { EstablishmentPost } from "@/types/api/establishment"
+import type { EstablishmentPost } from "@/types/api/establishment"
 import { ORGANIZATION_API_ROUTES } from "@/constants/db"
 import { postEstablisment } from "@/lib/establishments"
 import { normalizeMapsPlaceData } from "@/utils/maps"

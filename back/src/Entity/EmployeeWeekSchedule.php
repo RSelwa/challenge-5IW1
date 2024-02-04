@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EmployeeWeekScheduleRepository::class)]
 #[ApiResource(
-    denormalizationContext: [ 'groups' => ['employee-week-schedule:write']]
+    denormalizationContext: [ 'groups' => ['employee-week-schedule:write','employee-week-schedule:update']],
 )]
 class EmployeeWeekSchedule
 {
@@ -18,7 +18,7 @@ class EmployeeWeekSchedule
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    private ?int $id = null;
+    private ?string $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'employeeWeekSchedules')]
     #[ORM\JoinColumn(nullable: false)]

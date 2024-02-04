@@ -4,6 +4,7 @@ import { ChevronDownIcon } from "@radix-ui/react-icons"
 import Avatar from "boring-avatars"
 import { Link, useNavigate } from "react-router-dom"
 import type { reduxUserFront } from "@/types/redux/user"
+import { parseJwt } from "@/utils/redux"
 import { useAppSelector } from "@/redux/hook"
 import AdminLayout from "@/components/Layout/AdminLayout"
 import ClientLayout from "@/components/Layout/ClientLayout"
@@ -12,6 +13,7 @@ import OrganisationLayout from "@/components/Layout/OrganisationLayout"
 import VisitorLayout from "@/components/Layout/VisitorLayout"
 import { GoogleMapsAPIContext } from "@/App"
 import { useGoogleMapsAPI } from "@/config/googleMapsAPI"
+import { AVATAR_COLORS } from "@/constants"
 
 const Layout = ({
   children,
@@ -21,6 +23,7 @@ const Layout = ({
   adminSecurity: boolean
 }) => {
   const { isLoaded } = useGoogleMapsAPI()
+  const { roles } = parseJwt(localStorage.getItem("token") || "")
 
   const navigate = useNavigate()
   const userStatus = useAppSelector(
@@ -45,9 +48,9 @@ const Layout = ({
             <DropdownMenu.Trigger className="group flex items-center gap-2">
               <Avatar
                 size={32}
-                name="Maya Angelou"
-                variant={userStatus?.includes("ROLE_ADMIN") ? "marble" : "beam"}
-                colors={["#92A1C6", "#146A7C", "#fff", "#C271B4", "#74FFC9"]}
+                variant="beam"
+                name={AVATAR_COLORS[roles[0]].name}
+                colors={AVATAR_COLORS[roles[0]].color}
               />
               <ChevronDownIcon
                 color="white"

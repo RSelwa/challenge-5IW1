@@ -16,7 +16,7 @@ const MyOrganisation = () => {
     try {
       const orga = await fetchOrganization(id)
       setOrganisation(orga)
-      console.log(orga)
+      console.log(orga.establishments)
     } catch (error) {
       console.error(error)
     }
@@ -28,7 +28,10 @@ const MyOrganisation = () => {
   }, [])
 
   return (
-    <main className="mx-auto mt-12 w-10/12 rounded-lg bg-white p-8">
+    <main
+      data-status={organisation?.status}
+      className="mx-auto mt-12 w-10/12 rounded-lg bg-white p-8 ring data-[status=PENDING]:ring-orange-500 data-[status=REFUSED]:ring-red-500 data-[status=VALIDATED]:ring-green-500"
+    >
       <h1 className="mb-4 text-xl font-bold">Mon organisation</h1>
       {isLoading && !organisation && (
         <div className="mt-8 flex items-center justify-center">
@@ -51,28 +54,32 @@ const MyOrganisation = () => {
           </p>
           <hr />
           <div className="flex items-center justify-between">
-            <p>Etablissements:</p>
+            <strong>Etablissements:</strong>
             <Link
               to={"/new-establishment/" + organisation.id}
               className="flex items-center gap-2 rounded bg-emerald-500 px-4 py-2 text-white hover:bg-green-700"
             >
               <PlusIcon /> Ajouter un établissement
             </Link>
-            {/* <AddEstablishmentButton organisationId={organisation.id} /> */}
-            {/* <button onClick={}></button> */}
           </div>
           <article className="grid grid-cols-4 gap-3">
             {organisation.establishments.map((establishment, i) => (
               <div key={i} className="rounded bg-background p-2">
-                <p className="text-center">{establishment.name}</p>
-                <div>
-                  Employés:
-                  {establishment.employees.map((employee, index) => (
-                    <div key={index}>
-                      {employee.firstname} {employee.lastname}
-                    </div>
-                  ))}
-                </div>
+                <p className="text-center font-bold">{establishment.name}</p>
+                {establishment.employees.length > 0 && (
+                  <div>
+                    Employés:
+                    {establishment.employees.map((employee, index) => (
+                      <Link
+                        to={"/schedule/" + employee.id}
+                        key={index}
+                        className="cursor-pointer rounded px-2 py-1 hover:bg-hover"
+                      >
+                        {employee.firstname} {employee.lastname}
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </article>
