@@ -26,16 +26,16 @@ const EmployeeWeekEdit = ({ day, employeeId }: Props) => {
     if (data.id) {
       editDaySchedule()
     } else {
-      const newDay: SemaineType = {
-        dayOfWeek: data.dayOfWeek,
+      const newDay = {
+        day: data.dayOfWeek,
         endTimeAprem: data.endTimeAprem,
         endTimeMatinee: data.endTimeMatinee,
         startTimeAprem: data.startTimeAprem,
         startTimeMatinee: data.startTimeMatinee,
 
-        employeeId: EMPLOYEE_API_ROUTES + "/" + data.employeeId
+        employee: EMPLOYEE_API_ROUTES + "/" + data.employeeId
       }
-      postNewDaySchedule(newDay)
+      postNewDaySchedule(newDay as any)
     }
   }
   const postNewDaySchedule = async (newDay: SemaineType) => {

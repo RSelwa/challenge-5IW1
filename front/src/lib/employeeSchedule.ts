@@ -1,7 +1,7 @@
-import { SemaineType } from "@/types/api/slots"
+import type { SemaineType } from "@/types/api/slots"
 import type { SemaineTypeWithId } from "@/types/withId"
 import { EMPLOYEEWEEKSCHEDULE_API_ROUTES } from "@/constants/db"
-import { formDataHeader, requestOptions } from "@/utils/db"
+import { requestOptions } from "@/utils/db"
 
 export const fetchEmployeeWeekSchedules = async (): Promise<
   SemaineTypeWithId[]
@@ -48,15 +48,16 @@ export const editEmployeeWeekSchedule = async (
 export const postEmployeeWeekSchedule = async (
   employeeWeekSchedule: SemaineType
 ) => {
-  const { headers, formData } = formDataHeader(employeeWeekSchedule)
-
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}${EMPLOYEEWEEKSCHEDULE_API_ROUTES}`,
-    requestOptions({
+
+    {
       method: "POST",
-      headers,
-      body: formData
-    })
+      body: JSON.stringify(employeeWeekSchedule),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    }
   )
   if (!response.ok) throw new Error("Something went wrong")
 }

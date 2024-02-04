@@ -25,27 +25,27 @@ class EmployeeWeekSchedule
     #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
     private ?Employee $employee = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column]
     #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
-    private ?string $startTimeMorning = null;
+    private ?int $startTimeMorning = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column]
     #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
-    private ?string $endTimeMorning = null;
+    private ?int $endTimeMorning = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column]
     #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
-    private ?string $startTimeAfternoon = null;
+    private ?int $startTimeAfternoon = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column]
     #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
-    private ?string $endTimeAfternoon = null;
+    private ?int $endTimeAfternoon = null;
 
     #[ORM\Column]
     #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
     private ?int $day = null;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -62,48 +62,48 @@ class EmployeeWeekSchedule
         return $this;
     }
 
-    public function getStartTimeMorning(): ?string
+    public function getStartTimeMorning(): ?int
     {
         return $this->startTimeMorning;
     }
 
-    public function setStartTimeMorning(string $startTimeMorning): static
+    public function setStartTimeMorning(int $startTimeMorning): static
     {
         $this->startTimeMorning = $startTimeMorning;
 
         return $this;
     }
 
-    public function getEndTimeMorning(): ?string
+    public function getEndTimeMorning(): ?int
     {
         return $this->endTimeMorning;
     }
 
-    public function setEndTimeMorning(?string $endTimeMorning): static
+    public function setEndTimeMorning(?int $endTimeMorning): static
     {
         $this->endTimeMorning = $endTimeMorning;
 
         return $this;
     }
 
-    public function getStartTimeAfternoon(): ?string
+    public function getStartTimeAfternoon(): ?int
     {
         return $this->startTimeAfternoon;
     }
 
-    public function setStartTimeAfternoon(?string $startTimeAfternoon): static
+    public function setStartTimeAfternoon(?int $startTimeAfternoon): static
     {
         $this->startTimeAfternoon = $startTimeAfternoon;
 
         return $this;
     }
 
-    public function getEndTimeAfternoon(): ?string
+    public function getEndTimeAfternoon(): ?int
     {
         return $this->endTimeAfternoon;
     }
 
-    public function setEndTimeAfternoon(?string $endTimeAfternoon): static
+    public function setEndTimeAfternoon(?int $endTimeAfternoon): static
     {
         $this->endTimeAfternoon = $endTimeAfternoon;
 
