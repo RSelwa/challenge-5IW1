@@ -9,6 +9,10 @@ import AdminLayout from "@/components/Layout/AdminLayout"
 import ClientLayout from "@/components/Layout/ClientLayout"
 import VisitorLayout from "@/components/Layout/VisitorLayout"
 import { dropdownMenuSideOffset } from "@/constants"
+import LangToggleBtn from "@/components/LangToggleBtn";
+import { Translator, Translate } from 'react-auto-translate';
+
+
 
 const Layout = ({
   children,
@@ -26,16 +30,25 @@ const Layout = ({
   }, [])
 
   return (
-    <>
+    <Translator
+    from='fr'
+    to='en'
+    googleApiKey='AIzaSyB6ajtNlNKLpIX2SHuxnPk1OkDLSorFyYY'
+  >
+   
       <div className="flex w-full items-center justify-between bg-blue-500 px-5 py-4">
         <Link to="/">
           <h1 className="font-black italic tracking-widest text-white">
             DOCTOGES
           </h1>
         </Link>
+        <LangToggleBtn currentLanguage={""} onToggle={function (): void {
+          throw new Error("Function not implemented.")
+        } } />
         {userStatus?.includes("VISTOR") ? (
           <VisitorLayout />
         ) : (
+          
           <DropdownMenu.Root>
             <DropdownMenu.Trigger className="group flex items-center gap-2">
               <Avatar
@@ -63,7 +76,9 @@ const Layout = ({
         )}
       </div>
       {children}
-    </>
+      
+      </Translator>
+    
   )
 }
 
