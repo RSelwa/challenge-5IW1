@@ -1,11 +1,14 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { ChevronDownIcon } from "@radix-ui/react-icons"
 import Avatar from "boring-avatars"
+import { Translator } from "react-auto-translate"
 import { Link, useNavigate } from "react-router-dom"
 import type { reduxUserFront } from "@/types/redux/user"
 import { parseJwt } from "@/utils/redux"
 import { useAppSelector } from "@/redux/hook"
+import FrenchFlag from "@/components/icons/fr"
+import GrandFuckigBritain from "@/components/icons/gb"
 import AdminLayout from "@/components/Layout/AdminLayout"
 import ClientLayout from "@/components/Layout/ClientLayout"
 import EmployeeLayout from "@/components/Layout/EmployeeLayout"
@@ -26,6 +29,7 @@ const Layout = ({
   const { roles } = parseJwt(localStorage.getItem("token") || "")
 
   const navigate = useNavigate()
+  const [langage, setLangage] = useState<"fr" | "en">("fr")
   const userStatus = useAppSelector(
     (state) => (state.user as reduxUserFront).status
   )
@@ -34,46 +38,67 @@ const Layout = ({
   }, [])
 
   return (
-    <GoogleMapsAPIContext.Provider value={{ isLoaded }}>
-      <div className="flex w-full items-center justify-between bg-blue-500 px-5 py-4">
-        <Link to="/">
-          <h1 className="font-black italic tracking-widest text-white">
-            DOCTOGES
-          </h1>
-        </Link>
-        {userStatus?.includes("VISTOR") ? (
-          <VisitorLayout />
-        ) : (
-          <DropdownMenu.Root>
-            <DropdownMenu.Trigger className="group flex items-center gap-2">
-              <Avatar
-                size={32}
-                variant="beam"
-                name={AVATAR_COLORS[roles[0]].name}
-                colors={AVATAR_COLORS[roles[0]].color}
-              />
-              <ChevronDownIcon
-                color="white"
-                className="transition-transform group-data-[state=open]:rotate-180"
-              />
-            </DropdownMenu.Trigger>
+    <Translator
+      from="fr"
+      to={langage}
+      googleApiKey={import.meta.env.VITE_KEY_GOOGLE_MAPS}
+    >
+      <GoogleMapsAPIContext.Provider value={{ isLoaded }}>
+        <div className="flex w-full items-center justify-between bg-blue-500 px-5 py-4">
+          <Link to="/">
+            <h1 className="font-black italic tracking-widest text-white">
+              DOCTOGES
+            </h1>
+          </Link>
+          {userStatus?.includes("VISTOR") ? (
+            <VisitorLayout />
+          ) : (
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger className="group flex items-center gap-2">
+                <Avatar
+                  size={32}
+                  variant="beam"
+                  name={AVATAR_COLORS[roles[0]].name}
+                  colors={AVATAR_COLORS[roles[0]].color}
+                />
+                <ChevronDownIcon
+                  color="white"
+                  className="transition-transform group-data-[state=open]:rotate-180"
+                />
+              </DropdownMenu.Trigger>
 
-            <DropdownMenu.Portal>
-              <DropdownMenu.Content className="absolute -right-5 top-0 z-10 w-52 space-y-3 rounded-md bg-white p-2 font-bold text-red-500 shadow-md">
-                {userStatus?.includes("ROLE_USER") && <ClientLayout />}
-                {userStatus?.includes("ROLE_ADMIN") && <AdminLayout />}
-                {userStatus?.includes("ROLE_ORGANIZATION") && (
-                  <OrganisationLayout />
-                )}
-                {userStatus?.includes("ROLE_EMPLOYEE") && <EmployeeLayout />}
-              </DropdownMenu.Content>
-            </DropdownMenu.Portal>
-          </DropdownMenu.Root>
-        )}
-      </div>
+              <DropdownMenu.Portal>
+                <DropdownMenu.Content className="absolute -right-5 top-0 z-10 w-52 space-y-3 rounded-md bg-white p-2 font-bold text-red-500 shadow-md">
+                  {userStatus?.includes("ROLE_USER") && <ClientLayout />}
+                  {userStatus?.includes("ROLE_ADMIN") && <AdminLayout />}
+                  {userStatus?.includes("ROLE_ORGANIZATION") && (
+                    <OrganisationLayout />
+                  )}
+                  {userStatus?.includes("ROLE_EMPLOYEE") && <EmployeeLayout />}
+                </DropdownMenu.Content>
+              </DropdownMenu.Portal>
+            </DropdownMenu.Root>
+          )}
+        </div>
 
-      {children}
-    </GoogleMapsAPIContext.Provider>
+        {children}
+        <label
+          htmlFor="langage"
+          className="absolute bottom-4 right-4 z-50 cursor-pointer rounded-full"
+        >
+          {langage === "fr" ? <FrenchFlag /> : <GrandFuckigBritain />}
+        </label>
+        <input
+          id="langage"
+          type="checkbox"
+          className="hidden"
+          onChange={(e) => {
+            if (e.target.checked) setLangage("en")
+            if (!e.target.checked) setLangage("fr")
+          }}
+        />
+      </GoogleMapsAPIContext.Provider>
+    </Translator>
   )
 }
 
