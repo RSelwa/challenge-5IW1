@@ -1,3 +1,4 @@
+import type { Establishments } from "@/types/api/establishment"
 import type { EstablishmentsWithId } from "@/types/withId"
 import { ESTABLISHMENT_API_ROUTES } from "@/constants/db"
 import { requestOptions } from "@/utils/db"
@@ -40,4 +41,21 @@ export const editEstablishment = async (
   } catch (error) {
     console.error(error)
   }
+}
+
+export const postEstablisment = async (
+  establishment: Omit<Establishments, "employees">
+) => {
+  const response = await fetch(
+    `${import.meta.env.VITE_API_URL}${ESTABLISHMENT_API_ROUTES}`,
+    {
+      method: "POST",
+      body: JSON.stringify(establishment),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    }
+  )
+  if (!response.ok) throw new Error("Something went wrong")
+  // const orga = await response.json()
 }
