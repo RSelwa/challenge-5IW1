@@ -3,11 +3,7 @@ import { useForm } from "react-hook-form"
 import { SemaineType } from "@/types/api/slots"
 import type { SemaineTypeWithId } from "@/types/withId"
 import { daysInWeekSchedule } from "@/constants/date"
-import {
-  EMPLOYEE_API_ROUTES,
-  EMPLOYEEWEEKSCHEDULE_API_ROUTES,
-  USER_API_ROUTES
-} from "@/constants/db"
+import { EMPLOYEE_API_ROUTES } from "@/constants/db"
 import { postEmployeeWeekSchedule } from "@/lib/employeeSchedule"
 
 type Props = {
@@ -27,15 +23,15 @@ const EmployeeWeekEdit = ({ day, employeeId }: Props) => {
       editDaySchedule()
     } else {
       const newDay = {
-        day: data.dayOfWeek,
+        day: data.day,
         endTimeAfternoon: data.endTimeAfternoon,
         endTimeMorning: data.endTimeMorning,
         startTimeMorning: data.startTimeMorning,
         startTimeAfternoon: data.startTimeAfternoon,
 
-        employee: EMPLOYEE_API_ROUTES + "/" + data.employeeId
+        employee: EMPLOYEE_API_ROUTES + "/" + data.employee
       }
-      postNewDaySchedule(newDay as any)
+      postNewDaySchedule(newDay)
     }
   }
   const postNewDaySchedule = async (newDay: SemaineType) => {
@@ -57,7 +53,7 @@ const EmployeeWeekEdit = ({ day, employeeId }: Props) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="rounded bg-white p-2">
-      <p>{daysInWeekSchedule[day.dayOfWeek]}</p>
+      <p>{daysInWeekSchedule[day.day]}</p>
       <input
         className="w-[150px]"
         {...register("startTimeMorning", {
