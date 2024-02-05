@@ -25,7 +25,7 @@ class OrganizationFixtures extends Fixture
         $organization->setManagerLastname("test");
         $organization->setKbisFile(new File(__DIR__ . "/../../public/uploads/file1-fixture"));
         $organization->setKbis("file1-fixture");
-        $organization->setEmail("orga.valid@test.fr");
+        $organization->setEmail("orga.valid@yopmail.com");
         $organization->setPassword($this->passwordHasher->hashPassword($organization, "test"));
         $organization->setStatus("VALIDATED");
 
@@ -39,7 +39,7 @@ class OrganizationFixtures extends Fixture
         $organization->setManagerLastname("test");
         $organization->setKbisFile(new File(__DIR__ . "/../../public/uploads/file2-fixture"));
         $organization->setKbis("file2-fixture");
-        $organization->setEmail("orga.pending@test.fr");
+        $organization->setEmail("orga.pending@yopmail.com");
         $organization->setPassword($this->passwordHasher->hashPassword($organization, "test"));
         $organization->setStatus("PENDING");
 
