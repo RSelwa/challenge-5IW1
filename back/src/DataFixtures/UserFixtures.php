@@ -20,7 +20,7 @@ class UserFixtures extends Fixture
         $user = new User();
         $user->setFirstname("user");
         $user->setLastname("test");
-        $user->setEmail("user@test.fr");
+        $user->setEmail("user-doctoges@yopmail.com");
         $user->setPassword("test");
         $user->setPassword($this->passwordHasher->hashPassword($user, "test"));
 
