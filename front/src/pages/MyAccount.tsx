@@ -6,11 +6,7 @@ import { Translator, Translate } from 'react-auto-translate';
 
 const MyAccount = () => {
   return (
-    <Translator
-      from='fr'
-      to='en'
-      googleApiKey='AIzaSyB6ajtNlNKLpIX2SHuxnPk1OkDLSorFyYY'
-    >
+    
     <div className="h-[calc(100vh-64px)] bg-blue-100 p-8">
       <div className="mx-auto w-10/12 rounded bg-white p-2 ">
         <h1 className="mb-6 mt-2 text-left text-xl font-black text-neutral-900">
@@ -22,7 +18,7 @@ const MyAccount = () => {
       </div>
       <Notation idTarget={"user333"} />
     </div>
-    </Translator>
+    
   )
 }
 
