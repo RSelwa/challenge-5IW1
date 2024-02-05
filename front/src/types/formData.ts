@@ -24,3 +24,11 @@ export type UserInfosProfileFormData = {
   lastname: string
   email: string 
 }
+
+export type SigninEmployeeFormData = {
+  firstname: string
+  lastname: string
+  category: string
+  email: string
+  plainPassword: string
+}

@@ -108,8 +108,8 @@ export const isInPlageHoraire = (
   const hour = date.getHours()
 
   return (
-    (hour > horaireDay.startTimeMatinée && hour < horaireDay.endTimeMatinée) ||
-    (hour > horaireDay.startTimeAprem && hour < horaireDay.endTimeAprem)
+    (hour > horaireDay.startTimeMorning && hour < horaireDay.endTimeMorning) ||
+    (hour > horaireDay.startTimeAfternoon && hour < horaireDay.endTimeAfternoon)
   )
 }
 
@@ -160,22 +160,22 @@ export const getSlotsByHoraireDay = (
 ): Date[] => {
   const availableMatin = countRepetitions(
     duration,
-    horaireOfDay.startTimeMatinée,
-    horaireOfDay.endTimeMatinée
+    horaireOfDay.startTimeMorning,
+    horaireOfDay.endTimeMorning
   )
   const availableAprem = countRepetitions(
     duration,
-    horaireOfDay.startTimeAprem,
-    horaireOfDay.endTimeAprem
+    horaireOfDay.startTimeAfternoon,
+    horaireOfDay.endTimeAfternoon
   )
 
   const slotsMatin = getSlotsDatesFromRange(
-    horaireOfDay.startTimeMatinée,
+    horaireOfDay.startTimeMorning,
     availableMatin,
     day
   )
   const slotsAprem = getSlotsDatesFromRange(
-    horaireOfDay.startTimeAprem,
+    horaireOfDay.startTimeAfternoon,
     availableAprem,
     day
   )
@@ -188,21 +188,22 @@ export const excludeReservedSlots = (
   reservations: Slots[],
   durationOfSlot: number
 ): Date[] => {
+  console.log(availableSlots)
+
   return availableSlots.filter((slot) => {
     const endOfCurrentSlot = slot.getTime() + durationOfSlot * 3600000 // duration hour in seconds
 
     const isSlotsOccpedByReservation = reservations.some((reservation) => {
-      console.log(reservation.duration)
-
-      const endOfReservation =
-        reservation.startTime + reservation.duration * 3600000 // duration hour in seconds
+      const endOfReservation: number =
+        new Date(reservation.startTime).getTime() +
+        parseInt(reservation.duration) * 3600000 // duration hour in seconds
 
       const reservationStartDuringSlot =
-        slot.getTime() <= reservation.startTime &&
-        reservation.startTime <= endOfCurrentSlot
+        slot.getTime() <= new Date(reservation.startTime).getTime() &&
+        new Date(reservation.startTime).getTime() <= endOfCurrentSlot
 
       const reservationCoverSlot =
-        reservation.startTime < slot.getTime() &&
+        new Date(reservation.startTime).getTime() < slot.getTime() &&
         endOfReservation > endOfCurrentSlot
 
       const reservationEndDuringSlot =
@@ -234,8 +235,9 @@ export const getAvailableReservation = ({
 }): Date[] => {
   const dayOfTheWeek = day.getDay()
   const horaireOfDay: HoraireType =
-    semaineTypeUser?.find((dayType) => dayType.dayOfWeek === dayOfTheWeek) ||
+    semaineTypeUser?.find((dayType) => dayType.day === dayOfTheWeek) ||
     defaultHoraireType
+  console.log(horaireOfDay)
 
   const reservationsDuringTheDay = reservations.filter((reservation) =>
     isInPlageHoraire(new Date(reservation.startTime), defaultHoraireType)
@@ -250,5 +252,31 @@ export const getAvailableReservation = ({
     availableReservations,
     reservationsDuringTheDay,
     duration
+  )
+}
+
+export const toIsoString = (date: Date): string => {
+  const tzo = -date.getTimezoneOffset(),
+    dif = tzo >= 0 ? "+" : "-",
+    pad = function (num: number) {
+      return (num < 10 ? "0" : "") + num
+    }
+
+  return (
+    date.getFullYear() +
+    "-" +
+    pad(date.getMonth() + 1) +
+    "-" +
+    pad(date.getDate()) +
+    "T" +
+    pad(date.getHours()) +
+    ":" +
+    pad(date.getMinutes()) +
+    ":" +
+    pad(date.getSeconds()) +
+    dif +
+    pad(Math.floor(Math.abs(tzo) / 60)) +
+    ":" +
+    pad(Math.abs(tzo) % 60)
   )
 }

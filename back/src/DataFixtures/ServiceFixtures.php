@@ -3,26 +3,33 @@
 namespace App\DataFixtures;
 
 use App\Entity\Service;
-use Symfony\Component\Uid\Uuid;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class ServiceFixtures extends Fixture
+class ServiceFixtures extends Fixture implements DependentFixtureInterface
 {
-    public const SERVICE_REFERENCE = "kine-service";
+    public function getDependencies()
+    {
+        return array(
+            EmployeeFixtures::class,
+        );
+    }
 
     public function load(ObjectManager $manager): void
     {
-        $serviceNames = array("Dentiste", "Cardiologue", "Nutritionniste", "Généraliste", "Kinésithérapeute");
+        $serviceNames = array("Préstation 1", "Préstation 2", "Préstation 3");
+        $serviceDurations = array(1, 2, 1);
+        $servicePrices = array(50, 70, 70);
 
-        foreach ($serviceNames as $serviceName) {
+        foreach ($serviceNames as  $index => $serviceName) {
             $service = new Service();
-            $service->setId(Uuid::v4());
             $service->setName($serviceName);
+            $service->setDuration($serviceDurations[$index]);
+            $service->setPrice($servicePrices[$index]);
+            $service->setEmployee($this->getReference(EmployeeFixtures::EMPLOYEE_REFERENCE));
             $manager->persist($service);
         }
-
-        $this->addReference(self::SERVICE_REFERENCE, $service);
 
         $manager->flush();
     }

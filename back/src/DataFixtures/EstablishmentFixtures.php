@@ -4,8 +4,6 @@ namespace App\DataFixtures;
 
 use App\Entity\Establishment;
 use App\DataFixtures\OrganizationFixtures;
-use App\DataFixtures\ServiceFixtures;
-use Symfony\Component\Uid\Uuid;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -27,7 +25,6 @@ class EstablishmentFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $establishment = new Establishment();
-        $establishment->setId(Uuid::v4());
         $establishment->setName("Etablissement 1");
         $establishment->setAddress("6 avenue Daniel Lesueur");
         $establishment->setCity("Paris");
@@ -42,7 +39,6 @@ class EstablishmentFixtures extends Fixture implements DependentFixtureInterface
         $manager->persist($establishment);
 
         $establishment = new Establishment();
-        $establishment->setId(Uuid::v4());
         $establishment->setName("Etablissement 2");
         $establishment->setAddress("29 rue du Louvre");
         $establishment->setCity("Paris");
@@ -57,7 +53,6 @@ class EstablishmentFixtures extends Fixture implements DependentFixtureInterface
         $manager->persist($establishment);
 
         $establishment = new Establishment();
-        $establishment->setId(Uuid::v4());
         $establishment->setName("Etablissement 3");
         $establishment->setAddress("200 rue du Faubourg Saint-Antoine");
         $establishment->setCity("Paris");
@@ -73,7 +68,6 @@ class EstablishmentFixtures extends Fixture implements DependentFixtureInterface
 
 
         $establishment = new Establishment();
-        $establishment->setId(Uuid::v4());
         $establishment->setName("Etablissement 4");
         $establishment->setAddress("211 rue du Faubourg Saint-Antoine");
         $establishment->setCity("Paris");

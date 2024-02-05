@@ -4,6 +4,7 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\HttpFoundation\JsonResponse;

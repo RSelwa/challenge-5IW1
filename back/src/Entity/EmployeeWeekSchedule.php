@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EmployeeWeekScheduleRepository::class)]
 #[ApiResource(
-    denormalizationContext: [ 'groups' => ['employee-week-schedule:write']]
+    denormalizationContext: [ 'groups' => ['employee-week-schedule:write','employee-week-schedule:update']],
 )]
 class EmployeeWeekSchedule
 {
@@ -18,92 +18,92 @@ class EmployeeWeekSchedule
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    private ?int $id = null;
+    private ?string $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'employeeWeekSchedules')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
-    private ?Employee $Employee = null;
+    private ?Employee $employee = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column]
     #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
-    private ?string $startTimeMorning = null;
+    private ?int $startTimeMorning = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column]
     #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
-    private ?string $endTimeMorning = null;
+    private ?int $endTimeMorning = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column]
     #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
-    private ?string $startTimeAfternoon = null;
+    private ?int $startTimeAfternoon = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column]
     #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
-    private ?string $endTimeAfternoon = null;
+    private ?int $endTimeAfternoon = null;
 
     #[ORM\Column]
     #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
     private ?int $day = null;
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     public function getEmployee(): ?Employee
     {
-        return $this->Employee;
+        return $this->employee;
     }
 
-    public function setEmployee(?Employee $Employee): static
+    public function setEmployee(?Employee $employee): static
     {
-        $this->Employee = $Employee;
+        $this->employee = $employee;
 
         return $this;
     }
 
-    public function getStartTimeMorning(): ?string
+    public function getStartTimeMorning(): ?int
     {
         return $this->startTimeMorning;
     }
 
-    public function setStartTimeMorning(string $startTimeMorning): static
+    public function setStartTimeMorning(int $startTimeMorning): static
     {
         $this->startTimeMorning = $startTimeMorning;
 
         return $this;
     }
 
-    public function getEndTimeMorning(): ?string
+    public function getEndTimeMorning(): ?int
     {
         return $this->endTimeMorning;
     }
 
-    public function setEndTimeMorning(?string $endTimeMorning): static
+    public function setEndTimeMorning(?int $endTimeMorning): static
     {
         $this->endTimeMorning = $endTimeMorning;
 
         return $this;
     }
 
-    public function getStartTimeAfternoon(): ?string
+    public function getStartTimeAfternoon(): ?int
     {
         return $this->startTimeAfternoon;
     }
 
-    public function setStartTimeAfternoon(?string $startTimeAfternoon): static
+    public function setStartTimeAfternoon(?int $startTimeAfternoon): static
     {
         $this->startTimeAfternoon = $startTimeAfternoon;
 
         return $this;
     }
 
-    public function getEndTimeAfternoon(): ?string
+    public function getEndTimeAfternoon(): ?int
     {
         return $this->endTimeAfternoon;
     }
 
-    public function setEndTimeAfternoon(?string $endTimeAfternoon): static
+    public function setEndTimeAfternoon(?int $endTimeAfternoon): static
     {
         $this->endTimeAfternoon = $endTimeAfternoon;
 

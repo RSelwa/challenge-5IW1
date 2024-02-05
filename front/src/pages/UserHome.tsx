@@ -14,12 +14,18 @@ const Home = () => {
   const [resultsSearch, setResultsSearch] = useState<EmployeesWithId[]>([])
   const [searchQuery, setSearchQuery] = useState<SearchQuery>({
     service: "",
-    localisation: ""
+    radiusInKm: 99999,
+    localisation: {
+      address: "",
+      geometry: {
+        lat: 0,
+        lng: 0
+      }
+    }
   })
 
   const submit = (searchQuery: SearchQuery) => {
-    console.log(searchQuery)
-    fetchData(fetchSearch(), [setResultsSearch] as Dispatch<
+    fetchData(fetchSearch(searchQuery), [setResultsSearch] as Dispatch<
       SetStateAction<EmployeesWithId[]>
     >[])
   }
@@ -32,7 +38,7 @@ const Home = () => {
           <SearchBar
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
-            onClick={submit}
+            onSubmitForm={submit}
           />
         </div>
       </div>
