@@ -94,6 +94,10 @@ jobs:
   #         build: yarn build
   #         start: yarn dev
   #         browser: chrome
+  deploy-vercel:
+    needs: units-test
+    uses: ./.github/workflows/vercel.yaml
+    secrets: inherit # <= this one
 
   test-github-actions-front:
     needs: units-test
