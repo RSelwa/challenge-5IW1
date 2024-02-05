@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240131233846 extends AbstractMigration
+final class Version20240204162021 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,13 +20,14 @@ final class Version20240131233846 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('CREATE SEQUENCE notations_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE "user" (id UUID NOT NULL, firstname VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE admin (id UUID NOT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE employee (id UUID NOT NULL, establishment_id UUID NOT NULL, category VARCHAR(255) NOT NULL, firstname VARCHAR(255) NOT NULL, lastname VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_5D9F75A18565851 ON employee (establishment_id)');
         $this->addSql('CREATE TABLE employee_specific_schedule (id UUID NOT NULL, employee_id UUID DEFAULT NULL, date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, type VARCHAR(255) NOT NULL, start_time_morning VARCHAR(255) DEFAULT NULL, end_time_morning VARCHAR(255) DEFAULT NULL, start_time_afternoon VARCHAR(255) DEFAULT NULL, end_time_afternoon VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_6B74964D8C03F15C ON employee_specific_schedule (employee_id)');
-        $this->addSql('CREATE TABLE employee_week_schedule (id UUID NOT NULL, employee_id UUID NOT NULL, start_time_morning VARCHAR(255) DEFAULT NULL, end_time_morning VARCHAR(255) DEFAULT NULL, start_time_afternoon VARCHAR(255) DEFAULT NULL, end_time_afternoon VARCHAR(255) DEFAULT NULL, day INT NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE employee_week_schedule (id UUID NOT NULL, employee_id UUID NOT NULL, start_time_morning INT NOT NULL, end_time_morning INT NOT NULL, start_time_afternoon INT NOT NULL, end_time_afternoon INT NOT NULL, day INT NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_9485D6358C03F15C ON employee_week_schedule (employee_id)');
         $this->addSql('CREATE TABLE establishment (id UUID NOT NULL, organization_id UUID NOT NULL, name VARCHAR(255) NOT NULL, address VARCHAR(255) NOT NULL, zip_code VARCHAR(255) NOT NULL, city VARCHAR(255) NOT NULL, country VARCHAR(255) NOT NULL, lat DOUBLE PRECISION DEFAULT NULL, lng DOUBLE PRECISION DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_DBEFB1EE32C8A3DE ON establishment (organization_id)');
@@ -54,6 +55,7 @@ final class Version20240131233846 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
+        $this->addSql('DROP SEQUENCE notations_id_seq CASCADE');
         $this->addSql('ALTER TABLE employee DROP CONSTRAINT FK_5D9F75A18565851');
         $this->addSql('ALTER TABLE employee_specific_schedule DROP CONSTRAINT FK_6B74964D8C03F15C');
         $this->addSql('ALTER TABLE employee_week_schedule DROP CONSTRAINT FK_9485D6358C03F15C');

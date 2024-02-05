@@ -33,7 +33,7 @@ class EmployeeFixtures extends Fixture implements DependentFixtureInterface
         $employee->setFirstname("Antoine");
         $employee->setLastname("Dupont");
         $employee->setEstablishment($this->getReference(EstablishmentFixtures::ESTABLISHMENT_REFERENCE_1));
-        $employee->setEmail("employee@test.fr");
+        $employee->setEmail("antoine-dupont@yopmail.com");
         $employee->setPassword($this->passwordHasher->hashPassword($employee, "test"));
         $employee->setCategory("Kinésithérapeute");
 
@@ -45,7 +45,7 @@ class EmployeeFixtures extends Fixture implements DependentFixtureInterface
         $employee->setFirstname("Gael");
         $employee->setLastname("Fickou");
         $employee->setEstablishment($this->getReference(EstablishmentFixtures::ESTABLISHMENT_REFERENCE_2));
-        $employee->setEmail("gael@fickou.fr");
+        $employee->setEmail("gael-fickou@yopmail.com");
         $employee->setPassword($this->passwordHasher->hashPassword($employee, "test"));
         $employee->setCategory("Généraliste");
 
@@ -55,7 +55,7 @@ class EmployeeFixtures extends Fixture implements DependentFixtureInterface
         $employee->setFirstname("Damien");
         $employee->setLastname("Penaud");
         $employee->setEstablishment($this->getReference(EstablishmentFixtures::ESTABLISHMENT_REFERENCE_3));
-        $employee->setEmail("damien@penaud.fr");
+        $employee->setEmail("damien-penaud@yopmail.com");
         $employee->setPassword($this->passwordHasher->hashPassword($employee, "test"));
         $employee->setCategory("Dentiste");
 
@@ -65,7 +65,7 @@ class EmployeeFixtures extends Fixture implements DependentFixtureInterface
         $employee->setFirstname("Thomas");
         $employee->setLastname("Ramos");
         $employee->setEstablishment($this->getReference(EstablishmentFixtures::ESTABLISHMENT_REFERENCE_4));
-        $employee->setEmail("thomas@ramos.fr");
+        $employee->setEmail("thomas-ramos@yopmail.com");
         $employee->setPassword($this->passwordHasher->hashPassword($employee, "test"));
         $employee->setCategory("Cardiologue");
 
@@ -75,7 +75,7 @@ class EmployeeFixtures extends Fixture implements DependentFixtureInterface
         $employee->setFirstname("Matthieu");
         $employee->setLastname("Jalibert");
         $employee->setEstablishment($this->getReference(EstablishmentFixtures::ESTABLISHMENT_REFERENCE_4));
-        $employee->setEmail("matthieu@jalibert.fr");
+        $employee->setEmail("matthieu-jalibert@yopmail.com");
         $employee->setPassword($this->passwordHasher->hashPassword($employee, "test"));
         $employee->setCategory("Radiologue");
 

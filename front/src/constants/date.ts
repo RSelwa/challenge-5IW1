@@ -13,13 +13,24 @@ export const monthNames = [
   "Décembre"
 ]
 
-export const daysInWeek = [  "Dimanche",
-"Lundi",
-"Mardi",
-"Mercredi",
-"Jeudi",
-"Vendredi",
-"Samedi"];
+export const daysInWeek = [
+  "Dimanche",
+  "Lundi",
+  "Mardi",
+  "Mercredi",
+  "Jeudi",
+  "Vendredi",
+  "Samedi"
+]
+export const daysInWeekSchedule = [
+  "Lundi",
+  "Mardi",
+  "Mercredi",
+  "Jeudi",
+  "Vendredi",
+  "Samedi",
+  "Dimanche"
+]
 export const hourInSeconds = 3600
 export const dayInSeconds = 86400
 export const weekInSeconds = 604800
