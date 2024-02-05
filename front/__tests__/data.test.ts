@@ -74,30 +74,30 @@ describe("test date's functions", () => {
   test("Date in during time slots ", () => {
     const firstday = new Date(1710860539000) // 19 /03 16:02
     const plageHoraires: HoraireType = {
-      endTimeAprem: 18,
-      endTimeMatinee: 12,
-      startTimeAprem: 14,
-      startTimeMatinee: 8
+      endTimeAfternoon: 18,
+      endTimeMorning: 12,
+      startTimeAfternoon: 14,
+      startTimeMorning: 8
     }
     expect(isInPlageHoraire(firstday, plageHoraires)).toBe(true)
   })
   test("Date in during time slots v2", () => {
     const firstday = new Date(1710885739000) // 19 /03 23:02
     const plageHoraires: HoraireType = {
-      endTimeAprem: 18,
-      endTimeMatinee: 12,
-      startTimeAprem: 14,
-      startTimeMatinee: 8
+      endTimeAfternoon: 18,
+      endTimeMorning: 12,
+      startTimeAfternoon: 14,
+      startTimeMorning: 8
     }
     expect(isInPlageHoraire(firstday, plageHoraires)).toBe(false)
   })
   test("Date in during time slots v3", () => {
     const firstday = new Date(1710835339000) // 19 /03 08:02
     const plageHoraires: HoraireType = {
-      endTimeAprem: 18,
-      endTimeMatinee: 12,
-      startTimeAprem: 14,
-      startTimeMatinee: 12
+      endTimeAfternoon: 18,
+      endTimeMorning: 12,
+      startTimeAfternoon: 14,
+      startTimeMorning: 12
     }
     expect(isInPlageHoraire(firstday, plageHoraires)).toBe(false)
   })
