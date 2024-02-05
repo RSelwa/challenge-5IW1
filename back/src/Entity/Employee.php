@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
@@ -30,15 +31,22 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ),
         new Put(
             processor: UserPasswordHasher::class,
+            security: "is_granted('ROLE_ADMIN') or object.getId() == user.getId()",
+            securityMessage: "Operation not permitted",
+            inputFormats: [ "json" ],
             denormalizationContext: ['groups' => 'employee:update'],
         ),
         new Patch(
             processor: UserPasswordHasher::class,
-            // security: "is_granted('ROLE_ADMIN')",
-            // securityMessage: 'Not admin',
+            security: "is_granted('ROLE_ADMIN') or object.getId() == user.getId()",
+            securityMessage: "Operation not permitted",
             inputFormats: [ "json" ],
             denormalizationContext: ['groups' => 'employee:update'],
         ),
+        new Delete(
+            security: "is_granted('ROLE_ADMIN')",
+            securityMessage: "Operation not permitted",
+        )
     ],
 )]
 
