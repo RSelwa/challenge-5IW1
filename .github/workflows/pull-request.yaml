@@ -1,9 +1,10 @@
 name: 🖌️ Front end
 
 on:
-  push:
-    paths:
-      - "front/**"
+  pull_request:
+    branches:
+      - develop
+      - main
 
 jobs:
   base:
@@ -18,9 +19,3 @@ jobs:
     needs: build
     uses: ./.github/workflows/test-units.yaml
     secrets: inherit
-
-  deploy-vercel-prod:
-    if: github.ref_name == 'develop'
-    needs: units-test
-    uses: ./.github/workflows/vercel-prod.yaml
-    secrets: inherit # <= this one
