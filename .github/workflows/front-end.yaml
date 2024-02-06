@@ -10,96 +10,21 @@ jobs:
     uses: ./.github/workflows/base.yaml
 
   build:
-    name: 📦 Build
     needs: base
-    runs-on: ubuntu-latest
-    steps:
-      - name: ✨ Checkout
-        uses: actions/checkout@v3
-      - name: 🧶 Install Yarn
-        uses: actions/setup-node@v3
-        with:
-          node-version: "20"
-          cache: "yarn"
-          cache-dependency-path: front/yarn.lock
-      - name: 🏎️ Cache Dependencies
-        uses: actions/cache/restore@v3
-        id: yarn-cache
-        with:
-          path: front/node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          # restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-      - name: 📦 Build front
-        run: yarn build
-        working-directory: front
+    uses: ./.github/workflows/build.yaml
+    secrets: inherit
 
   units-test:
-    name: 🧪 Units Test
     needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: ✨ Checkout
-        uses: actions/checkout@v3
-      - name: 🧶 Install Yarn
-        uses: actions/setup-node@v3
-        with:
-          node-version: "20"
-          cache: "yarn"
-          cache-dependency-path: front/yarn.lock
-      - name: 🏎️ Cache Dependencies
-        uses: actions/cache/restore@v3
-        id: yarn-cache
-        with:
-          path: front/node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          # restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-      - name: 🧪 Units Test
-        run: yarn test
-        working-directory: front
+    uses: ./.github/workflows/test-units.yaml
+    secrets: inherit
 
-  # cypress-run:
-  #   name: 🖼️ Cypress
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: ✨ Checkout
-  #       uses: actions/checkout@v3
-  #     - name: 🧶 Install Yarn
-  #       uses: actions/setup-node@v3
-  #       with:
-  #         node-version: "20"
-  #         cache: "yarn"
-  #         cache-dependency-path: front/yarn.lock
-  #     - name: 🏎️ Cache Dependencies
-  #       uses: actions/cache@v3
-  #       id: yarn-cache
-  #       with:
-  #         path: front/node_modules
-  #         key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-  #         restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-  #     - name: 🖼️ Cache Cypress
-  #       uses: actions/cache@v3
-  #       id: cache-cypress-binary
-  #       with:
-  #         path: ~/.cache/Cypress
-  #         key: binary-${{ hashFiles('**/yarn.lock') }}
-  #         restore-keys: binary-${{ hashFiles('**/yarn.lock') }}
+  cypress-run:
+    uses: ./.github/workflows/cypress.yaml
+    secrets: inherit
 
-  #     - name: 📦 Install Cypress binaries
-  #       run: npx cypress install
-  #     - name: 🖼️ Cypress run
-  #       uses: cypress-io/github-action@v6
-  #       with:
-  #         working-directory: front
-  #         build: yarn build
-  #         start: yarn dev
-  #         browser: chrome
-  deploy-vercel:
+  deploy-vercel-prod:
+    if: github.ref_name == 'develop'
     needs: units-test
-    uses: ./.github/workflows/vercel.yaml
-    secrets: inherit # <= this one
-
-  test-github-actions-front:
-    needs: units-test
-    uses: ./.github/workflows/buildAndPushFront.yaml
+    uses: ./.github/workflows/vercel-prod.yaml
     secrets: inherit # <= this one

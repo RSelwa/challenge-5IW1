@@ -1,4 +1,4 @@
-name: 🚀 Deploy front on vercel
+name: 🚀 Deploy front prod on vercel
 
 on:
   workflow_call:
