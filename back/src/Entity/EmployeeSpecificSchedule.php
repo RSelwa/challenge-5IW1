@@ -22,28 +22,28 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new GetCollection(),
         new Post(
             securityPostDenormalize: "
-                 is_granted('ROLE_ADMIN') 
-                 or object.getEmployee().getId() == user.getId() 
-                 or object.getEmployee().getEstablishment().getOrganization().getId() == user.getId()
+                is_granted('ROLE_ADMIN') 
+                or object.getEmployee().getId() == user.getId() 
+                or object.getEmployee().getEstablishment().getOrganization().getId() == user.getId()
             ",
             securityPostDenormalizeMessage: "Operation not permitted",
             denormalizationContext: ['groups' => 'employee-specific-schedule:create'],
         ),
         new Put(
-            securityPostDenormalize: "
-                 is_granted('ROLE_ADMIN')
-                 or object.getEmployee().getEstablishment().getOrganization().getId() == user.getId()
+            security: "
+                is_granted('ROLE_ADMIN')
+                or object.getEmployee().getEstablishment().getOrganization().getId() == user.getId()
             ",
-            securityPostDenormalizeMessage: "Operation not permitted",
+            securityMessage: "Operation not permitted",
             inputFormats: [ "json" ],
             denormalizationContext: ['groups' => 'employee-specific-schedule:update'],
         ),
         new Patch(
-            securityPostDenormalize: "
-                 is_granted('ROLE_ADMIN')
-                 or object.getEmployee().getEstablishment().getOrganization().getId() == user.getId()
+            security: "
+                is_granted('ROLE_ADMIN')
+                or object.getEmployee().getEstablishment().getOrganization().getId() == user.getId()
             ",
-            securityPostDenormalizeMessage: "Operation not permitted",
+            securityMessage: "Operation not permitted",
             inputFormats: [ "json" ],
             denormalizationContext: ['groups' => 'employee-specific-schedule:update'],
         ),

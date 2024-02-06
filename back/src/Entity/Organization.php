@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
@@ -25,13 +27,31 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ORM\Entity(repositoryClass: OrganizationRepository::class)]
 #[ApiResource(
     normalizationContext: [ 'groups' => ['organization:read', 'service:read', 'employee:read']],
-    denormalizationContext: [ 'groups' => ['organization:write']],
     operations: [
         new Get(),
         new GetCollection(),
-        new Post(processor: UserPasswordHasher::class),
-        new Put(processor: UserPasswordHasher::class),
-        new Patch(processor: UserPasswordHasher::class),
+        new Post(
+            processor: UserPasswordHasher::class,
+            denormalizationContext: ['groups' => 'organization:create'],
+        ),
+        new Put(
+            processor: UserPasswordHasher::class,
+            security: "is_granted('ROLE_ADMIN') or object.getId() == user.getId()",
+            securityMessage: "Operation not permitted",
+            inputFormats: [ "json" ],
+            denormalizationContext: ['groups' => 'organization:update'],
+        ),
+        new Patch(
+            processor: UserPasswordHasher::class,
+            security: "is_granted('ROLE_ADMIN') or object.getId() == user.getId()",
+            securityMessage: "Operation not permitted",
+            inputFormats: [ "json" ],
+            denormalizationContext: ['groups' => 'organization:update'],
+        ),
+        new Delete(
+            security: "is_granted('ROLE_ADMIN') or object.getId() == user.getId()",
+            securityMessage: "Operation not permitted",
+        )
     ],
 )]
 
@@ -45,15 +65,15 @@ class Organization implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'organization:write', 'employee:read'])]
+    #[Groups(['organization:read', 'organization:create', 'employee:read', 'organization:update'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'organization:write', 'employee:read'])]
+    #[Groups(['organization:read', 'organization:create', 'employee:read', 'organization:update'])]
     private ?string $managerFirstname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'organization:write', 'employee:read'])]
+    #[Groups(['organization:read', 'organization:create', 'employee:read', 'organization:update'])]
     private ?string $managerLastname = null;
 
     #[ORM\Column(length: 255)]
@@ -61,22 +81,23 @@ class Organization implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $kbis = null;
 
     #[Vich\UploadableField(mapping: 'kbis_upload', fileNameProperty: 'kbis')]
-    #[Groups(['organization:write'])]
+    #[Groups(['organization:create'])]
     private ?File $kbisFile = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['organization:read', 'organization:write', 'employee:read'])]
+    #[Groups(['organization:read', 'organization:create', 'employee:read'])]
     private ?string $siret = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'organization:write', 'employee:read'])]
+    #[Groups(['organization:read', 'organization:create', 'employee:read', 'organization:update'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'put:admin', 'employee:read'])]
+    #[Groups(['organization:read', 'put:admin', 'employee:read', 'organization:update'])]
+    #[ApiProperty(securityPostDenormalize: "is_granted('ROLE_ADMIN')")]
     private ?string $status = 'PENDING';
 
     #[ORM\OneToMany(mappedBy: 'organization', targetEntity: Establishment::class)]
@@ -85,7 +106,7 @@ class Organization implements UserInterface, PasswordAuthenticatedUserInterface
 
     private ?array $roles = ['ROLE_ORGANIZATION'];
 
-    #[Groups(['organization:write'])]
+    #[Groups(['organization:create'])]
     private ?string $plainPassword = null;
 
     public function __construct()

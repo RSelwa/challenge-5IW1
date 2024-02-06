@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
@@ -25,13 +26,28 @@ use Symfony\Component\Serializer\Annotation\Groups;
     operations: [
         new Get(),
         new GetCollection(),
-        new Post(processor: UserPasswordHasher::class),
-        new Put(processor: UserPasswordHasher::class),
-        new Patch(
-            normalizationContext: ['groups' => 'user-read-update'],
-            denormalizationContext: ['groups' => 'user-update'],
-            validationContext: ['groups' => 'user-update']
+        new Post(
+            processor: UserPasswordHasher::class,
+            denormalizationContext: ['groups' => 'user:create'],
         ),
+        new Put(
+            processor: UserPasswordHasher::class,
+            security: "is_granted('ROLE_ADMIN') or object.getId() == user.getId()",
+            securityMessage: "Operation not permitted",
+            inputFormats: [ "json" ],
+            denormalizationContext: ['groups' => 'user:update'],
+        ),
+        new Patch(
+            processor: UserPasswordHasher::class,
+            security: "is_granted('ROLE_ADMIN') or object.getId() == user.getId()",
+            securityMessage: "Operation not permitted",
+            inputFormats: [ "json" ],
+            denormalizationContext: ['groups' => 'user:update'],
+        ),
+        new Delete(
+            security: "is_granted('ROLE_ADMIN')",
+            securityMessage: "Operation not permitted",
+        )
     ],
 )]
 
@@ -45,15 +61,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user-read-update', 'user-update'])]
+    #[Groups(['user:read', 'user:create', 'user:update'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user-read-update', 'user-update'])]
+    #[Groups(['user:read', 'user:create', 'user:update'])]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user-read-update', 'user-update'])]
+    #[Groups(['user:read', 'user:create', 'user:update'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
@@ -65,10 +81,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     private ?array $roles = ['ROLE_USER'];
 
-    #[Groups(['user:write'])]
+    #[Groups(['user:create', 'user:update'])]
     private ?string $plainPassword = null;
 
     #[ORM\OneToMany(mappedBy: 'idNotationFrom', targetEntity: Notations::class, orphanRemoval: true)]
+    #[Groups(['user:read'])]
     private Collection $notations;
 
 

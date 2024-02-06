@@ -3,6 +3,12 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\EmployeeWeekScheduleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,7 +16,43 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EmployeeWeekScheduleRepository::class)]
 #[ApiResource(
-    denormalizationContext: [ 'groups' => ['employee-week-schedule:write','employee-week-schedule:update']],
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Post(
+            securityPostDenormalize: "
+                is_granted('ROLE_ADMIN') 
+                or object.getEmployee().getEstablishment().getOrganization().getId() == user.getId()
+            ",
+            securityPostDenormalizeMessage: "Operation not permitted",
+            denormalizationContext: ['groups' => 'employee-week-schedule:create'],
+        ),
+        new Put(
+            security: "
+                is_granted('ROLE_ADMIN')
+                or object.getEmployee().getEstablishment().getOrganization().getId() == user.getId()
+            ",
+            securityMessage: "Operation not permitted",
+            inputFormats: [ "json" ],
+            denormalizationContext: ['groups' => 'employee-week-schedule:update'],
+        ),
+        new Patch(
+            security: "
+                is_granted('ROLE_ADMIN')
+                or object.getEmployee().getEstablishment().getOrganization().getId() == user.getId()
+            ",
+            securityMessage: "Operation not permitted",
+            inputFormats: [ "json" ],
+            denormalizationContext: ['groups' => 'employee-week-schedule:update'],
+        ),
+        new Delete(
+            security: "
+                is_granted('ROLE_ADMIN') 
+                or object.getEmployee().getEstablishment().getOrganization().getId() == user.getId()
+            ",
+            securityMessage: "Operation not permitted",
+        )
+    ],
 )]
 class EmployeeWeekSchedule
 {
@@ -22,27 +64,27 @@ class EmployeeWeekSchedule
 
     #[ORM\ManyToOne(inversedBy: 'employeeWeekSchedules')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
+    #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:create'])]
     private ?Employee $employee = null;
 
     #[ORM\Column]
-    #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
+    #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:create', 'employee-week-schedule:update'])]
     private ?int $startTimeMorning = null;
 
     #[ORM\Column]
-    #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
+    #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:create', 'employee-week-schedule:update'])]
     private ?int $endTimeMorning = null;
 
     #[ORM\Column]
-    #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
+    #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:create', 'employee-week-schedule:update'])]
     private ?int $startTimeAfternoon = null;
 
     #[ORM\Column]
-    #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
+    #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:create', 'employee-week-schedule:update'])]
     private ?int $endTimeAfternoon = null;
 
     #[ORM\Column]
-    #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:write'])]
+    #[Groups(['establishment:read', 'employee:read', 'employee-week-schedule:create', 'employee-week-schedule:update'])]
     private ?int $day = null;
 
     public function getId(): ?string

@@ -3,6 +3,10 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\SlotRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,7 +15,30 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: SlotRepository::class)]
 #[ApiResource(
     normalizationContext: [ 'groups' => ['slot:read']],
-    denormalizationContext: [ 'groups' => ['slot:read']]
+    denormalizationContext: [ 'groups' => ['slot:read']],
+    operations: [
+        new Post(
+            securityPostDenormalize: "is_granted('ROLE_ADMIN') or object.getUser().getId() == user.getId()",
+            securityPostDenormalizeMessage: "Operation not permitted",
+            denormalizationContext: ['groups' => 'slot:create'],
+        ),
+        new Put(
+            security: "is_granted('ROLE_ADMIN') or object.getUser().getId() == user.getId()",
+            securityMessage: "Operation not permitted",
+            inputFormats: [ "json" ],
+            denormalizationContext: ['groups' => 'slot:update'],
+        ),
+        new Patch(
+            security: "is_granted('ROLE_ADMIN') or object.getUser().getId() == user.getId()",
+            securityMessage: "Operation not permitted",
+            inputFormats: [ "json" ],
+            denormalizationContext: ['groups' => 'slot:update'],
+        ),
+        new Delete(
+            security: "is_granted('ROLE_ADMIN') or object.getUser().getId() == user.getId()",
+            securityMessage: "Operation not permitted",
+        )
+    ]
 )]
 class Slot
 {
@@ -24,24 +51,24 @@ class Slot
 
     #[ORM\ManyToOne(inversedBy: 'slots')]
     #[ORM\JoinColumn(nullable: true)]
-    #[Groups(['slot:read'])]
+    #[Groups(['slot:read', 'slot:create'])]
     private ?User $user = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:read'])]
+    #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:create', 'slot:update'])]
     private ?string $startTime = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:read'])]
+    #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:create'])]
     private ?string $duration = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['slot:read', 'slot:read'])]
-    private ?string $status = null;
+    #[Groups(['slot:read'])]
+    private ?string $status = "PENDING";
 
     #[ORM\ManyToOne(inversedBy: 'slots')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:read'])]
+    #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:create'])]
     private ?Service $service = null;
 
     public function getId(): ?string
