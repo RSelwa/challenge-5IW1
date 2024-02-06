@@ -7,3 +7,7 @@ export const defaultLocation: PlaceGeometryData = {
 }
 
 export const placesLibrary = ["places"] as Libraries
+export const containerStyle = {
+  width: "400px",
+  height: "600px"
+}
