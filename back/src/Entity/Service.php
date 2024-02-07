@@ -41,7 +41,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
         )
     ]
 )]
-
 class Service
 {
     #[ORM\Id]

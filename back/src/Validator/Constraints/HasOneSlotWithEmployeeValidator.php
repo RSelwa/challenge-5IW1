@@ -18,12 +18,12 @@ class HasOneSlotWithEmployeeValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        $user = $value->getUser();
-        $employee = $value->getEmployee();
+        $user = $value->getIdNotationFrom();
+        $employee = $value->getIdNotationTarget();
         $now = time();
 
-        $existingSlot = $this->slotRepository->findSlotByUserAndEmployee($user, $employee, $now);
-        if (!empty($existingSlot)) {
+        $existingSlot = $this->slotRepository->findByUserAndEmployee($user, $employee, $now);
+        if (empty($existingSlot)) {
             $this->context->buildViolation($constraint->message)
                 ->addViolation();
         }

@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Validator\Constraints as AcmeAssert;
 
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
 #[ApiResource(
@@ -82,6 +83,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Groups(['establishment:read', 'employee:read', 'employee:create', 'employee:update'])]
+    #[AcmeAssert\UniqueEmail]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]

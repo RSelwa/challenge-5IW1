@@ -10,7 +10,7 @@ use App\Repository\UserRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
-class NotAlreadyNotatedValidator extends ConstraintValidator
+class UniqueEmailValidator extends ConstraintValidator
 {
     private $userRepository;
     private $employeeRepository;
@@ -18,10 +18,10 @@ class NotAlreadyNotatedValidator extends ConstraintValidator
     private $adminRepository;
 
     public function __construct(
-      UserRepository $userRepository,
-      EmployeeRepository $employeeRepository,
-      OrganizationRepository $organizationRepository,
-      AdminRepository $adminRepository,
+        UserRepository $userRepository,
+        EmployeeRepository $employeeRepository,
+        OrganizationRepository $organizationRepository,
+        AdminRepository $adminRepository,
     )
     {
         $this->userRepository = $userRepository;
@@ -32,10 +32,10 @@ class NotAlreadyNotatedValidator extends ConstraintValidator
 
     public function validate($email, Constraint $constraint)
     {
-        $existingUser = $this->userRepository->findNotationByUserAndEmployee($email);
-        $existingEmployee = $this->employeeRepository->findNotationByUserAndEmployee($email);
-        $existingOrganization = $this->organizationRepository->findNotationByUserAndEmployee($email);
-        $existingAdmin = $this->adminRepository->findNotationByUserAndEmployee($email);
+        $existingUser = $this->userRepository->findByEmail($email);
+        $existingEmployee = $this->employeeRepository->findByEmail($email);
+        $existingOrganization = $this->organizationRepository->findByEmail($email);
+        $existingAdmin = $this->adminRepository->findByEmail($email);
 
         if (!empty($existingUser) || !empty($existingEmployee) || !empty($existingOrganization) || !empty($existingAdmin)) {
             $this->context->buildViolation($constraint->message)

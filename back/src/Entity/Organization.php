@@ -22,6 +22,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use App\Validator\Constraints as AcmeAssert;
 
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: OrganizationRepository::class)]
@@ -90,6 +91,7 @@ class Organization implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Groups(['organization:read', 'organization:create', 'employee:read', 'organization:update'])]
+    #[AcmeAssert\UniqueEmail]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]

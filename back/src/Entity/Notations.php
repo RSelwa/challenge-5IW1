@@ -10,33 +10,36 @@ use ApiPlatform\Metadata\Put;
 use App\Repository\NotationsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Validator\Constraints as AcmeAssert;
 
 #[ORM\Entity(repositoryClass: NotationsRepository::class)]
 #[ApiResource(
     operations: [
         new Post(
-            securityPostDenormalize: "is_granted('ROLE_ADMIN') or object.getIdNotationFrom() == user.getId()",
+            securityPostDenormalize: "is_granted('ROLE_ADMIN') or object.getIdNotationFrom().getId() == user.getId()",
             securityPostDenormalizeMessage: "Operation not permitted",
             denormalizationContext: ['groups' => 'notation:create'],
         ),
         new Put(
-            security: "is_granted('ROLE_ADMIN') or object.getIdNotationFrom() == user.getId()",
+            security: "is_granted('ROLE_ADMIN') or object.getIdNotationFrom().getId() == user.getId()",
             securityMessage: "Operation not permitted",
             inputFormats: [ "json" ],
             denormalizationContext: ['groups' => 'notation:update'],
         ),
         new Patch(
-            security: "is_granted('ROLE_ADMIN') or object.getIdNotationFrom() == user.getId()",
+            security: "is_granted('ROLE_ADMIN') or object.getIdNotationFrom().getId() == user.getId()",
             securityMessage: "Operation not permitted",
             inputFormats: [ "json" ],
             denormalizationContext: ['groups' => 'notation:update'],
         ),
         new Delete(
-            security: "is_granted('ROLE_ADMIN') or object.getIdNotationFrom() == user.getId()",
+            security: "is_granted('ROLE_ADMIN') or object.getIdNotationFrom().getId() == user.getId()",
             securityMessage: "Operation not permitted",
         )
     ],
 )]
+#[AcmeAssert\HasOneSlotWithEmployee]
+#[AcmeAssert\NotAlreadyNotated]
 class Notations
 {
     #[ORM\Id]

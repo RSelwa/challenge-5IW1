@@ -22,7 +22,7 @@ class SlotRepository extends ServiceEntityRepository
     }
     
     // Méthode pour trouver un créneau par rapport au startTime et à la durée
-    public function findSlotByTime($startTime, $endTime, $service)
+    public function findByTime($startTime, $endTime, $service)
     {
         return $this->createQueryBuilder('s')
             ->andWhere('s.service = :service')
@@ -36,12 +36,13 @@ class SlotRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findSlotByUserAndEmployee($user, $employee, $now): array
+    public function findByUserAndEmployee($user, $employee, $now): array
     {
         return $this->createQueryBuilder('s')
+            ->innerJoin('s.service', 'service')
             ->andWhere('s.user = :user')
-            ->andWhere('s.employee = :employee')
-            ->andWhere('s.status = VALIDATED')
+            ->andWhere('service.employee = :employee')
+            ->andWhere("s.status = 'VALIDATED'")
             ->andWhere('s.startTime < :now')
             ->setParameter('user', $user)
             ->setParameter('employee', $employee)
