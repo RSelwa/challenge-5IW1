@@ -23,4 +23,5 @@ export type EmployeePost = {
   category: string
   email: string
   plainPassword: string
+  establishment: string
 }
