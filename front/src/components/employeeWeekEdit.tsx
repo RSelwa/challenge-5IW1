@@ -1,26 +1,34 @@
 import React, { Fragment, useState } from "react"
 import { useForm } from "react-hook-form"
-import { SemaineType } from "@/types/api/slots"
 import type { SemaineTypeWithId } from "@/types/withId"
 import { daysInWeekSchedule } from "@/constants/date"
 import { EMPLOYEE_API_ROUTES } from "@/constants/db"
-import { postEmployeeWeekSchedule } from "@/lib/employeeSchedule"
+import {
+  editEmployeeWeekSchedule,
+  postEmployeeWeekSchedule
+} from "@/lib/employeeSchedule"
 
 type Props = {
   day: SemaineTypeWithId
-  employeeId: string
+  fetchEmployeeSchedule: () => void
 }
 
-const EmployeeWeekEdit = ({ day, employeeId }: Props) => {
+const EmployeeWeekEdit = ({ day, fetchEmployeeSchedule }: Props) => {
   const [isEditing, setIsEditing] = useState(false)
   const { register, reset, handleSubmit } = useForm<SemaineTypeWithId>({
     defaultValues: day as any
   })
+  const values = [
+    { value: "startTimeMorning", label: "Début de matinée" },
+    { value: "endTimeMorning", label: "Fin de matinée" },
+    { value: "startTimeAfternoon", label: "Début de l'après midi" },
+    { value: "endTimeAfternoon", label: "Fin de l'après midi" }
+  ]
 
-  const onSubmit = (data: SemaineTypeWithId) => {
+  const onSubmit = async (data: SemaineTypeWithId) => {
     console.log(data)
     if (data.id) {
-      editDaySchedule()
+      await editEmployeeWeekSchedule(data)
     } else {
       const newDay = {
         day: data.day,
@@ -29,67 +37,39 @@ const EmployeeWeekEdit = ({ day, employeeId }: Props) => {
         startTimeMorning: data.startTimeMorning,
         startTimeAfternoon: data.startTimeAfternoon,
 
-        employee: EMPLOYEE_API_ROUTES + "/" + data.employee
+        employee: data.employee.includes(EMPLOYEE_API_ROUTES)
+          ? data.employee
+          : EMPLOYEE_API_ROUTES + "/" + data.employee
       }
-      postNewDaySchedule(newDay)
-    }
-  }
-  const postNewDaySchedule = async (newDay: SemaineType) => {
-    try {
-      console.log(newDay)
-
       await postEmployeeWeekSchedule(newDay)
-    } catch (error) {
-      console.error(error)
     }
-  }
-  const editDaySchedule = async () => {
-    try {
-      console.log("edit")
-    } catch (error) {
-      console.error(error)
-    }
+    fetchEmployeeSchedule()
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="rounded bg-white p-2">
-      <p>{daysInWeekSchedule[day.day]}</p>
-      <input
-        className="w-[150px]"
-        {...register("startTimeMorning", {
-          valueAsNumber: true
-        })}
-        type="number"
-        min={6}
-      />
-      <input
-        className="w-[150px]"
-        {...register("endTimeMorning", {
-          valueAsNumber: true
-        })}
-        type="number"
-        min={day.startTimeMorning}
-      />
-
-      <input
-        className="w-[150px]"
-        {...register("startTimeAfternoon", {
-          valueAsNumber: true
-        })}
-        type="number"
-        min={day.endTimeMorning}
-      />
-
-      <input
-        className="w-[150px]"
-        {...register("endTimeAfternoon", {
-          valueAsNumber: true
-        })}
-        type="number"
-        min={day.startTimeAfternoon}
-      />
-
-      <div>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="space-y-4 rounded bg-white p-2"
+    >
+      <p>{daysInWeekSchedule[day.day - 1]}</p>
+      <div className="space-y-2">
+        {values.map(({ value, label }) => (
+          <fieldset key={value} className="grid grid-cols-5">
+            <label className="col-span-4" htmlFor={value}>
+              {label}
+            </label>
+            <input
+              className="w-12"
+              {...register(value as any, {
+                valueAsNumber: true
+              })}
+              type="number"
+              disabled={!isEditing}
+            />
+          </fieldset>
+        ))}
+      </div>
+      <div className="flex items-center gap-2">
         {isEditing && (
           <Fragment>
             <button
@@ -97,13 +77,26 @@ const EmployeeWeekEdit = ({ day, employeeId }: Props) => {
                 reset()
                 setIsEditing(false)
               }}
+              className="rounded bg-red-500 px-2 py-1 text-sm text-white hover:bg-red-600"
             >
               Annuler
             </button>
-            <button type="submit">Sauvegarder</button>
+            <button
+              type="submit"
+              className="rounded bg-emerald-500 px-2 py-1 text-sm text-white hover:bg-emerald-600"
+            >
+              Sauvegarder
+            </button>
           </Fragment>
         )}
-        {!isEditing && <button onClick={() => setIsEditing(true)}>Edit</button>}
+        {!isEditing && (
+          <button
+            className="rounded bg-blue-500 px-2 py-1 text-sm text-white hover:bg-blue-600"
+            onClick={() => setIsEditing(true)}
+          >
+            Edit
+          </button>
+        )}
       </div>
     </form>
   )

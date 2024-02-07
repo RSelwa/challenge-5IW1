@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react"
+import { LoaderIcon } from "react-hot-toast"
 import { useParams } from "react-router-dom"
 import type { SemaineTypeWithId } from "@/types/withId"
-import { fetchEmployee } from "@/lib/employees"
+import { fetchEmployeeWeekSchedules } from "@/lib/employeeSchedule"
 import EmployeeWeekEdit from "@/components/employeeWeekEdit"
 import { defaultHoraireType } from "@/constants"
 
@@ -27,8 +28,13 @@ const EmployeeSchedule = () => {
     if (!employeeId) return
     setIsLoading(true)
     try {
-      console.log(employeeId)
-      const { employeeWeekSchedules } = await fetchEmployee(employeeId)
+      // const { employeeWeekSchedules } = await fetchEmployee(employeeId)
+      const allWeekSchedules = await fetchEmployeeWeekSchedules()
+
+      const employeeWeekSchedules = allWeekSchedules.filter((weekSchedule) =>
+        weekSchedule.employee.includes(employeeId)
+      )
+
       employeeWeekSchedules.forEach((schedule) => {
         setScheduleDays((prevState) => {
           const index = schedule.day
@@ -46,11 +52,20 @@ const EmployeeSchedule = () => {
   }, [])
 
   return (
-    <div>
+    <div className="p-2">
+      {isLoading && (
+        <div className="flex items-center justify-center">
+          <LoaderIcon />
+        </div>
+      )}
       {!isLoading && employeeId && (
         <div className="grid grid-cols-7 gap-3">
           {scheduleDays.map((day, i) => (
-            <EmployeeWeekEdit key={i} day={day} employeeId={employeeId} />
+            <EmployeeWeekEdit
+              fetchEmployeeSchedule={fetchEmployeeSchedule}
+              key={i}
+              day={day}
+            />
           ))}
         </div>
       )}
