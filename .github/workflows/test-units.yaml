@@ -1,0 +1,28 @@
+name: 🧪 Units Test
+
+on:
+  workflow_call:
+
+jobs:
+  units-test:
+    name: 🧪 Units Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: ✨ Checkout
+        uses: actions/checkout@v3
+      - name: 🧶 Install Yarn
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+          cache: "yarn"
+          cache-dependency-path: front/yarn.lock
+      - name: 🏎️ Cache Dependencies
+        uses: actions/cache/restore@v3
+        id: yarn-cache
+        with:
+          path: front/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          # restore-keys: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+      - name: 🧪 Units Test
+        run: yarn test
+        working-directory: front
