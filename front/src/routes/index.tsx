@@ -57,6 +57,7 @@ import AdminHome from "@/pages/AdminHome"
 import Login from "@/pages/auth/Login"
 import SigninOrgaEmployee from "@/pages/auth/SigninOrgaEmployee"
 import MyOrganisation from "@/pages/mon-organisation"
+import MyServices from "@/pages/my-services"
 import MyAccount from "@/pages/MyAccount"
 import NewEstablisement from "@/pages/new-establishment"
 import ReservationCreneau from "@/pages/reservation-creneau"
@@ -87,6 +88,10 @@ const organisationRoutes: RouteObject[] = [
   {
     path: "/schedule/:employeeId",
     element: getLayout(<EmployeeSchedule />)
+  },
+  {
+    path: "/my-services/:employeeId",
+    element: getLayout(<MyServices />)
   }
 ]
 const employeeRoutes: RouteObject[] = []

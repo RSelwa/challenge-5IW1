@@ -37,6 +37,7 @@ class Service
     private ?Employee $employee = null;
 
     #[ORM\Column]
+    #[Groups(['employee:read', 'service:update', 'service:create', 'slot:read'])]
     private ?int $price = null;
 
     #[ORM\OneToMany(mappedBy: 'service', targetEntity: Slot::class)]
