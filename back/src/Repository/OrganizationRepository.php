@@ -56,4 +56,14 @@ class OrganizationRepository extends ServiceEntityRepository implements Password
 
         $this->save($organization, true);
     }
+
+    public function findByEmail($email): array
+    {
+        return $this->createQueryBuilder('o')
+            ->andWhere('o.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

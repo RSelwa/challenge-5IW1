@@ -56,4 +56,14 @@ class AdminRepository extends ServiceEntityRepository implements PasswordUpgrade
 
         $this->save($admin, true);
     }
+
+    public function findByEmail($email): array
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

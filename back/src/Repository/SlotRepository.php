@@ -35,4 +35,19 @@ class SlotRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findSlotByUserAndEmployee($user, $employee, $now): array
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.user = :user')
+            ->andWhere('s.employee = :employee')
+            ->andWhere('s.status = VALIDATED')
+            ->andWhere('s.startTime < :now')
+            ->setParameter('user', $user)
+            ->setParameter('employee', $employee)
+            ->setParameter('now', $now)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
