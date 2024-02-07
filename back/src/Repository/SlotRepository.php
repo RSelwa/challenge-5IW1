@@ -20,29 +20,19 @@ class SlotRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Slot::class);
     }
-
-//    /**
-//     * @return Slot[] Returns an array of Slot objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('b.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Slot
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    
+    // Méthode pour trouver un créneau par rapport au startTime et à la durée
+    public function findSlotByTime($startTime, $endTime, $service)
+    {
+        return $this->createQueryBuilder('s')
+            ->andWhere('s.service = :service')
+            ->andWhere('(s.startTime + (s.duration * 60)) >= :startTime') // Vérifie si la fin du créneau est après ou au moment où startTime commence
+            ->orWhere('s.startTime >= :startTime')
+            ->andWhere('s.startTime <= :endTime')
+            ->setParameter('service', $service)
+            ->setParameter('startTime', $startTime)
+            ->setParameter('endTime', $endTime)
+            ->getQuery()
+            ->getResult();
+    }
 }

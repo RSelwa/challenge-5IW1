@@ -11,6 +11,10 @@ use App\Repository\SlotRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Validator\Constraints as AcmeAssert;
+use Doctrine\DBAL\Types\BigIntType;
+use Symfony\Component\Validator\Constraints\Date;
+
 
 #[ORM\Entity(repositoryClass: SlotRepository::class)]
 #[ApiResource(
@@ -40,6 +44,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         )
     ]
 )]
+#[AcmeAssert\UniqueSlot]
 class Slot
 {
     #[ORM\Id]
@@ -56,11 +61,11 @@ class Slot
 
     #[ORM\Column(length: 255)]
     #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:create', 'slot:update'])]
-    private ?string $startTime = null;
+    private ?int $startTime = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:create'])]
-    private ?string $duration = null;
+    private ?int $duration = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['slot:read'])]
@@ -112,7 +117,7 @@ class Slot
         return $this->startTime;
     }
 
-    public function setStartTime(string $startTime): static
+    public function setStartTime(int $startTime): static
     {
         $this->startTime = $startTime;
 
@@ -124,7 +129,7 @@ class Slot
         return $this->duration;
     }
 
-    public function setDuration(string $duration): static
+    public function setDuration(int $duration): static
     {
         $this->duration = $duration;
 
