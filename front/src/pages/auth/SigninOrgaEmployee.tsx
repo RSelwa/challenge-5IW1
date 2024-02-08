@@ -19,7 +19,7 @@ const SigninOrgaAndEmployee = () => {
           value="login"
         >
           <Accordion.Trigger className=" w-full text-center text-lg font-bold">
-           <Translate> S'enregistrer en tant qu'employée ?</Translate>
+           <Translate> S'enregistrer en tant qu'employé ?</Translate>
           </Accordion.Trigger>
           <Accordion.Content className="mt-6">
             <SigninEmployeeForm />
