@@ -100,7 +100,7 @@ const ReservationButton = ({
           <Dialog.Root>
             <Dialog.Trigger asChild>
               <button className="invisible rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700 group-hover:visible">
-                <Translate>décaller le rendez-vous</Translate>
+                <Translate>Décaller le rendez-vous</Translate>
               </button>
             </Dialog.Trigger>
             <Dialog.Portal>
