@@ -84,7 +84,7 @@ const Layout = ({
         {children}
         <label
           htmlFor="langage"
-          className="absolute bottom-4 right-4 z-50 cursor-pointer rounded-full"
+          className="fixed bottom-4 right-4 z-50 cursor-pointer rounded-full"
         >
           {langage === "fr" ? <FrenchFlag /> : <GrandFuckigBritain />}
         </label>

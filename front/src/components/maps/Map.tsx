@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react"
+import { useSelector } from "react-redux"
+import { GoogleMap, Marker } from "@react-google-maps/api"
 import type { PlaceGeometryData } from "@/types/maps"
-import { defaultLocation } from "@/constants/maps"
- import { GoogleMap, Marker } from '@react-google-maps/api';
-import { GoogleMapsAPIContext } from "@/App";
-import { useSelector } from "react-redux";
-import type { RootState } from "@/redux/store";
-import type { EmployeesWithId } from "@/types/withId";
-import { getGeometryDataObjectFromEmployeeList } from "@/utils/maps";
+import type { EmployeesWithId } from "@/types/withId"
+import { containerStyle, defaultLocation } from "@/constants/maps"
+import { getGeometryDataObjectFromEmployeeList } from "@/utils/maps"
+import type { RootState } from "@/redux/store"
+import { GoogleMapsAPIContext } from "@/App"
 
 interface Props {
   employeeList: EmployeesWithId[]
@@ -14,17 +14,17 @@ interface Props {
 
 const Map = ({ employeeList }: Props) => {
   const { isLoaded } = useContext(GoogleMapsAPIContext)
-  
-  const searchPlace = useSelector((state: RootState) => state.user.searchPlace.geometry)
-  const [ userLocation, setUserLocation ] = useState<PlaceGeometryData>(defaultLocation)
-  const [ placeGeometryData, setPlaceGeometryData ] = useState<Record<string, PlaceGeometryData>>({})
+
+  const searchPlace = useSelector(
+    (state: RootState) => state.user.searchPlace.geometry
+  )
+  const [userLocation, setUserLocation] =
+    useState<PlaceGeometryData>(defaultLocation)
+  const [placeGeometryData, setPlaceGeometryData] = useState<
+    Record<string, PlaceGeometryData>
+  >({})
   const mapCenter = searchPlace ?? userLocation
-  
-  const containerStyle = {
-    width: '400px',
-    height: '600px'
-  };
-  
+
   const getCurrentPositionSuccess = (position: GeolocationPosition) => {
     setUserLocation({
       lat: position.coords.latitude,
@@ -38,11 +38,9 @@ const Map = ({ employeeList }: Props) => {
 
   useEffect(() => {
     if (employeeList.length !== 0) {
-      setPlaceGeometryData(
-        getGeometryDataObjectFromEmployeeList(employeeList)
-      )
+      setPlaceGeometryData(getGeometryDataObjectFromEmployeeList(employeeList))
     }
-  }, [ employeeList ])
+  }, [employeeList])
 
   return (
     <div className="sticky top-3 h-full max-h-[600px] w-full self-start">
@@ -56,12 +54,16 @@ const Map = ({ employeeList }: Props) => {
             mapTypeControl: false
           }}
         >
-          {employeeList.map(employee => (
-            <Marker key={employee.id} position={placeGeometryData[employee.id]} />
+          {employeeList.map((employee) => (
+            <Marker
+              key={employee.id}
+              position={placeGeometryData[employee.id]}
+            />
           ))}
         </GoogleMap>
-      ) : <></>
-    }
+      ) : (
+        <></>
+      )}
     </div>
   )
 }

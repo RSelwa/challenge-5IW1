@@ -2,6 +2,7 @@ import React, { Fragment } from "react"
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu"
 import { Link } from "react-router-dom"
 import LogoutButton from "@/components/Layout/logoutButton"
+import { Translate } from "react-auto-translate"
 
 const OrganisationLayout = () => {
   return (
@@ -10,7 +11,7 @@ const OrganisationLayout = () => {
         <div>Organisation layout</div>
       </DropdownMenu.Item>
       <DropdownMenu.Item className="cursor-pointer rounded px-4 py-1 text-amber-500 hover:bg-gray-200">
-        <Link to="/mon-organisation">Mon organisation</Link>
+        <Link to="/mon-organisation"><Translate>Mon organisation</Translate></Link>
       </DropdownMenu.Item>
       <DropdownMenu.Item className="cursor-pointer rounded px-4 py-1 text-amber-500 hover:bg-gray-200">
         <LogoutButton />

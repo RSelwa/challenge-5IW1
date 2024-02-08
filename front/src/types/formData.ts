@@ -1,5 +1,3 @@
-import { SlotsWithId } from "./withId";
-
 export type LoginFormData = { email: string; password: string }
 export type SigninUserFormData = {
   email: string
@@ -22,13 +20,5 @@ export type SigninOrgaFormData = {
 export type UserInfosProfileFormData = {
   firstname: string
   lastname: string
-  email: string 
-}
-
-export type SigninEmployeeFormData = {
-  firstname: string
-  lastname: string
-  category: string
   email: string
-  plainPassword: string
 }

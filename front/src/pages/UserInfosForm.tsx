@@ -5,6 +5,8 @@ import toast, { LoaderIcon } from "react-hot-toast"
 import type { UserInfosProfileFormData } from "@/types/formData"
 import { editProfileUser, fetchUser } from "@/lib/users"
 import { parseJwt } from "@/utils/redux"
+import { Translate } from "react-auto-translate"
+
 
 const UserInfosForm = () => {
   const { handleSubmit, register, setValue } =
@@ -58,14 +60,14 @@ const UserInfosForm = () => {
       <input
         disabled={!isEditing}
         required
-        placeholder="First Name"
+        placeholder="Prénom"
         type="text"
         {...register("firstname")}
       />
       <input
         disabled={!isEditing}
         required
-        placeholder="Last Name"
+        placeholder="Nom"
         type="text"
         {...register("lastname")}
       />
@@ -87,10 +89,10 @@ const UserInfosForm = () => {
               className="bg-red-500 "
               type="button"
             >
-              Cancel
+            <Translate>Annuler</Translate>  
             </Button>
             <Button className="bg-green-500 " type="submit">
-              Save
+              <Translate>Sauvegarder</Translate>
             </Button>
           </Fragment>
         ) : (
@@ -99,7 +101,7 @@ const UserInfosForm = () => {
             className=" bg-amber-500 "
             type="button"
           >
-            Edit
+            <Translate>Modifier</Translate>
           </Button>
         )}
       </div>
