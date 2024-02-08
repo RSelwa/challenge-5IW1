@@ -7,6 +7,8 @@ import { ORGANIZATION_API_ROUTES } from "@/constants/db"
 import { defaultLocation } from "@/constants/maps"
 import { postEstablisment } from "@/lib/establishments"
 import { normalizeMapsPlaceData } from "@/utils/maps"
+import { Translate } from "react-auto-translate"
+
 
 const NewEstablisement = () => {
   const { organisationId } = useParams()
@@ -95,7 +97,7 @@ const NewEstablisement = () => {
           type="submit"
           className="rounded bg-emerald-500 px-4 py-2 text-white hover:bg-emerald-700"
         >
-          Créer un nouvel établissement
+          <Translate>Créer un nouvel établissement</Translate>
         </button>
       </div>
       <div className="space-y-4">

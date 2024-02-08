@@ -6,6 +6,8 @@ import type { NotationType } from "@/types/api/notation"
 import { EMPLOYEE_API_ROUTES, USER_API_ROUTES } from "@/constants/db"
 import { fetchNotations, patchNotation, postNotation } from "@/lib/notations"
 import { parseJwt } from "@/utils/redux"
+import { Translate } from "react-auto-translate"
+
 
 type Props = {
   idNotationTarget: string
@@ -104,7 +106,7 @@ const Notation = ({ idNotationTarget }: Props) => {
       }}
       className="flex flex-col gap-2"
     >
-      <Typography component="legend">Notation</Typography>
+      <Typography component="legend"><Translate>Notation</Translate></Typography>
       <Rating
         name="notation"
         value={notation.note}
@@ -127,7 +129,7 @@ const Notation = ({ idNotationTarget }: Props) => {
         className="rounded bg-cyan-500 px-4 py-2 text-center text-white"
         type="submit"
       >
-        Noter
+        <Translate>Noter</Translate>
       </button>
     </form>
   )

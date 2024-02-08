@@ -5,6 +5,8 @@ import type { EmployeePost } from "@/types/api/employees"
 import { ESTABLISHMENT_API_ROUTES } from "@/constants/db"
 import { specialisationsDoctolib } from "@/constants/employee"
 import { postEmployee } from "@/lib/employees"
+import { Translate } from "react-auto-translate"
+
 
 type Props = {
   establishmentId: string
@@ -56,7 +58,7 @@ const ModalNewEmployee = ({ establishmentId }: Props) => {
         type="submit"
         className="rounded bg-emerald-500 px-4 py-2 text-white hover:bg-emerald-700"
       >
-        Créer un nouvel employé
+        <Translate>Créer un nouvel employé</Translate>
       </button>
     </form>
   )

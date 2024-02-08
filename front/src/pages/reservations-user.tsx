@@ -12,6 +12,8 @@ import { dateToString, getHoursMinutes } from "@/utils/date"
 import Notation from "@/components/Notations"
 import ReservationsPannel from "@/components/ui/reservations-pannel"
 import Planning from "@/pages/planning"
+import { Translate } from "react-auto-translate"
+
 
 const ReservationButton = ({
   reservations,
@@ -76,7 +78,7 @@ const ReservationButton = ({
               )
             }
           >
-            Mark as done
+          <Translate> Marquer comme passé</Translate>
           </button>
         )}
         {reservation.status === "reserved" && (
@@ -91,14 +93,14 @@ const ReservationButton = ({
               )
             }
           >
-            Cancel
+            <Translate>Annuler</Translate>
           </button>
         )}
         {reservation.status === "reserved" && (
           <Dialog.Root>
             <Dialog.Trigger asChild>
               <button className="invisible rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-700 group-hover:visible">
-                décaller le rendez-vous
+                <Translate>Décaller le rendez-vous</Translate>
               </button>
             </Dialog.Trigger>
             <Dialog.Portal>
@@ -120,7 +122,7 @@ const ReservationButton = ({
         {reservation.status === "passed" && employeeId && (
           <Popover.Root>
             <Popover.Trigger className="invisible rounded bg-amber-600 px-4 py-2 text-white hover:bg-amber-700 group-hover:visible">
-              Notez le practicien
+              <Translate>Notez le practicien</Translate>
             </Popover.Trigger>
             <Popover.Portal>
               <Popover.Content className="data-[state=open]:data-[side=top]:animate-slideDownAndFade data-[state=open]:data-[side=right]:animate-slideLeftAndFade data-[state=open]:data-[side=bottom]:animate-slideUpAndFade data-[state=open]:data-[side=left]:animate-slideRightAndFade w-[260px] rounded bg-white p-5 shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2)] will-change-[transform,opacity] focus:shadow-[0_10px_38px_-10px_hsla(206,22%,7%,.35),0_10px_20px_-15px_hsla(206,22%,7%,.2),0_0_0_2px_theme(colors.violet7)]">
@@ -141,7 +143,7 @@ const ReservationButton = ({
             className="invisible rounded bg-cyan-500 px-4 py-2 text-white hover:bg-cyan-700 group-hover:visible"
             to={`/reservation-creneau/${serviceId().replace("/api/services/", "")}?employeeId=${employeeId}`}
           >
-            Reprendre un rendez-vous
+            <Translate>Reprendre un rendez-vous</Translate>
           </Link>
         )}
       </div>

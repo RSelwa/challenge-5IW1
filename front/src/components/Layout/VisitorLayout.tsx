@@ -1,6 +1,8 @@
 import React from "react"
 import { Button } from "@radix-ui/themes"
 import { Link } from "react-router-dom"
+import { Translate } from "react-auto-translate"
+
 
 const VisitorLayout = () => {
   return (
@@ -12,7 +14,7 @@ const VisitorLayout = () => {
             variant="outline"
             highContrast
           >
-            Vous etes manager?
+            <Translate>Vous etes manager ?</Translate>
           </Button>
         </Link>
         <Link to="/login">
@@ -21,7 +23,7 @@ const VisitorLayout = () => {
             variant="outline"
             highContrast
           >
-            Login
+           <Translate>Se connecter</Translate> 
           </Button>
         </Link>
       </div>
