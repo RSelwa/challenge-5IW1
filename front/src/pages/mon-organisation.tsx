@@ -48,7 +48,7 @@ const MyOrganisation = () => {
             {organisation.name}
           </p>
           <p>
-            <strong><Translate>Status:</Translate></strong>
+            <strong><Translate>Statut:</Translate></strong>
             {organisation.status}
           </p>
           <p>
