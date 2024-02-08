@@ -7,6 +7,8 @@ import {
   editEmployeeWeekSchedule,
   postEmployeeWeekSchedule
 } from "@/lib/employeeSchedule"
+import { Translate } from "react-auto-translate"
+
 
 type Props = {
   day: SemaineTypeWithId
@@ -79,13 +81,13 @@ const EmployeeWeekEdit = ({ day, fetchEmployeeSchedule }: Props) => {
               }}
               className="rounded bg-red-500 px-2 py-1 text-sm text-white hover:bg-red-600"
             >
-              Annuler
+             <Translate>Annuler</Translate> 
             </button>
             <button
               type="submit"
               className="rounded bg-emerald-500 px-2 py-1 text-sm text-white hover:bg-emerald-600"
             >
-              Sauvegarder
+              <Translate>Sauvegarder</Translate>
             </button>
           </Fragment>
         )}
@@ -94,7 +96,7 @@ const EmployeeWeekEdit = ({ day, fetchEmployeeSchedule }: Props) => {
             className="rounded bg-blue-500 px-2 py-1 text-sm text-white hover:bg-blue-600"
             onClick={() => setIsEditing(true)}
           >
-            Edit
+            <Translate>Modifier</Translate>
           </button>
         )}
       </div>

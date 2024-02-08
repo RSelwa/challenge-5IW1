@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import type { SigninUserFormData } from "@/types/formData"
 import { signInUser } from "@/lib/auth"
+import { Translate } from "react-auto-translate"
+
 
 const SigninUsers = () => {
   const { handleSubmit, register, setValue } = useForm<SigninUserFormData>()
@@ -35,7 +37,7 @@ const SigninUsers = () => {
         <input placeholder="lastname" type="text" {...register("lastname")} />
         <input
           className="col-span-2"
-          placeholder="Password"
+          placeholder="Mot de passe"
           type="password"
           {...register("plainPassword")}
         />
@@ -52,7 +54,7 @@ const SigninUsers = () => {
             </Checkbox.Indicator>
           </Checkbox.Root>
           <label className="Label" htmlFor="terms">
-            Accept terms and conditions.
+          <Translate>Accepter les termes et les conditions.</Translate>
           </label>
         </div>
         <Button
@@ -60,7 +62,7 @@ const SigninUsers = () => {
           color="amber"
           className="col-span-2 w-full bg-amber-400 font-bold capitalize text-neutral-800 hover:bg-amber-500"
         >
-          S'inscrire
+         <Translate>S'enregistrer</Translate> 
         </Button>
       </form>
     </div>

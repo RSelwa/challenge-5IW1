@@ -6,6 +6,7 @@ import type { EmployeePost } from "@/types/api/employees"
 import { specialisationsDoctolib } from "@/constants/employee"
 import { postEmployee } from "@/lib/employees"
 import { postData } from "@/utils/db"
+import { Translate } from "react-auto-translate"
 
 const SigninEmployeeForm = () => {
   const { handleSubmit, register } = useForm<EmployeePost>()
@@ -24,19 +25,19 @@ const SigninEmployeeForm = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2 gap-4">
       <input
         required
-        placeholder="Employee firstname"
+        placeholder="Prénom de l'employée"
         type="text"
         {...register("firstname")}
       />
       <input
         required
-        placeholder="Employee lastname"
+        placeholder="Nom de l'employée"
         type="text"
         {...register("lastname")}
       />
       <select value={selected} onChange={handleChange}>
         <option disabled={true} value="">
-          Select a category
+         <Translate>Selectionner une cathégorie</Translate> 
         </option>
         {specialisationsDoctolib.map((category, index) => (
           <option key={index} value={category}>
@@ -53,7 +54,7 @@ const SigninEmployeeForm = () => {
       />
       <input
         required
-        placeholder="Password"
+        placeholder="Mot de passe"
         type="password"
         className="col-span-2"
         {...register("plainPassword")}
@@ -63,7 +64,7 @@ const SigninEmployeeForm = () => {
         className="col-span-2 w-full bg-amber-500 text-neutral-800"
         type="submit"
       >
-        Submit
+       <Translate>Envoyer</Translate> 
       </Button>
     </form>
   )

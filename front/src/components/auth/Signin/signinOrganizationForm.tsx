@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form"
 import type { SigninOrgaFormData } from "@/types/formData"
 import { postOrganization } from "@/lib/organizations"
 import { postData } from "@/utils/db"
+import { Translate } from "react-auto-translate"
+
 
 const SigninOrganizationForm = () => {
   const { handleSubmit, register } = useForm<SigninOrgaFormData>()
@@ -15,20 +17,20 @@ const SigninOrganizationForm = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2 gap-4">
       <input
         required
-        placeholder="Organisation's name"
+        placeholder="Nom de l'organisation"
         type="text"
         className="col-span-2"
         {...register("name")}
       />
       <input
         required
-        placeholder="Manager firstname"
+        placeholder="Prénom du manager"
         type="text"
         {...register("managerFirstname")}
       />
       <input
         required
-        placeholder="Manager Lastname"
+        placeholder="Nom du manager"
         type="text"
         {...register("managerLastname")}
       />
@@ -41,7 +43,7 @@ const SigninOrganizationForm = () => {
       />
       <input
         required
-        placeholder="Password"
+        placeholder="Mot de passe"
         type="password"
         className="col-span-2"
         {...register("plainPassword")}
@@ -63,7 +65,7 @@ const SigninOrganizationForm = () => {
         className="col-span-2 w-full bg-amber-500 text-neutral-800"
         type="submit"
       >
-        Submit
+       <Translate>Envoyer </Translate> 
       </Button>
     </form>
   )
