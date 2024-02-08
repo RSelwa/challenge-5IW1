@@ -37,7 +37,7 @@ const SigninEmployeeForm = () => {
       />
       <select value={selected} onChange={handleChange}>
         <option disabled={true} value="">
-         <Translate>Selectionner une cathégorie</Translate> 
+         <Translate>Selectionner une catégorie</Translate> 
         </option>
         {specialisationsDoctolib.map((category, index) => (
           <option key={index} value={category}>
