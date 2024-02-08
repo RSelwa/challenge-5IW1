@@ -23,8 +23,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Post(
             securityPostDenormalize: "
                 is_granted('ROLE_ADMIN') 
-                or object.getEmployee().getId() == user.getId() 
-                or object.getEmployee().getEstablishment().getOrganization().getId() == user.getId()
+                or (is_granted('ROLE_EMPLOYEE') and object.getEmployee().getId() == user.getId()) 
+                or (is_granted('ROLE_ORGANIZATION') and object.getEmployee().getEstablishment().getOrganization().getId() == user.getId())
             ",
             securityPostDenormalizeMessage: "Operation not permitted",
             denormalizationContext: ['groups' => 'employee-specific-schedule:create'],
@@ -32,7 +32,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Put(
             security: "
                 is_granted('ROLE_ADMIN')
-                or object.getEmployee().getEstablishment().getOrganization().getId() == user.getId()
+                or (is_granted('ROLE_ORGANIZATION') and object.getEmployee().getEstablishment().getOrganization().getId() == user.getId())
             ",
             securityMessage: "Operation not permitted",
             inputFormats: [ "json" ],
@@ -41,7 +41,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Patch(
             security: "
                 is_granted('ROLE_ADMIN')
-                or object.getEmployee().getEstablishment().getOrganization().getId() == user.getId()
+                or (is_granted('ROLE_ORGANIZATION') and object.getEmployee().getEstablishment().getOrganization().getId() == user.getId())
             ",
             securityMessage: "Operation not permitted",
             inputFormats: [ "json" ],
@@ -50,7 +50,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Delete(
             security: "
                 is_granted('ROLE_ADMIN') 
-                or object.getEmployee().getEstablishment().getOrganization().getId() == user.getId()
+                or (is_granted('ROLE_ORGANIZATION') and object.getEmployee().getEstablishment().getOrganization().getId() == user.getId())
             ",
             securityMessage: "Operation not permitted",
         )
@@ -98,7 +98,7 @@ class EmployeeSpecificSchedule
     #[ApiProperty(
         securityPostDenormalize: "
             is_granted('ROLE_ADMIN') 
-            or object.getEmployee().getEstablishment().getOrganization().getId() == user.getId()
+            or (is_granted('ROLE_ORGANIZATION') and object.getEmployee().getEstablishment().getOrganization().getId() == user.getId())
         ",
     )]
     private ?string $status = "PENDING";

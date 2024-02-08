@@ -19,24 +19,36 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: [ 'groups' => ['service:read', 'employee:read']],
     operations: [
         new Post(
-            securityPostDenormalize: "is_granted('ROLE_ADMIN') or object.getEmployee().getId() == user.getId()",
+            securityPostDenormalize: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_EMPLOYEE') and object.getEmployee().getId() == user.getId())
+            ",
             securityPostDenormalizeMessage: "Operation not permitted",
             denormalizationContext: ['groups' => 'service:create'],
         ),
         new Put(
-            security: "is_granted('ROLE_ADMIN') or object.getEmployee().getId() == user.getId()",
+            security: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_EMPLOYEE') and object.getEmployee().getId() == user.getId())
+            ",
             securityMessage: "Operation not permitted",
             inputFormats: [ "json" ],
             denormalizationContext: ['groups' => 'service:update'],
         ),
         new Patch(
-            security: "is_granted('ROLE_ADMIN') or object.getEmployee().getId() == user.getId()",
+            security: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_EMPLOYEE') and object.getEmployee().getId() == user.getId())
+            ",
             securityMessage: "Operation not permitted",
             inputFormats: [ "json" ],
             denormalizationContext: ['groups' => 'service:update'],
         ),
         new Delete(
-            security: "is_granted('ROLE_ADMIN') or object.getEmployee().getId() == user.getId()",
+            security: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_EMPLOYEE') and object.getEmployee().getId() == user.getId())
+            ",
             securityMessage: "Operation not permitted",
         )
     ]

@@ -26,19 +26,25 @@ use Symfony\Component\Serializer\Annotation\Groups;
             denormalizationContext: ['groups' => 'establishment:create'],
         ),
         new Put(
-            security: "is_granted('ROLE_ADMIN') or object.getOrganization().getId() == user.getId()",
+            security: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_ORGANIZATION') and object.getOrganization().getId() == user.getId())",
             securityMessage: "Operation not permitted",
             inputFormats: [ "json" ],
             denormalizationContext: ['groups' => 'establishment:update'],
         ),
         new Patch(
-            security: "is_granted('ROLE_ADMIN') or object.getOrganization().getId() == user.getId()",
+            security: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_ORGANIZATION') and object.getOrganization().getId() == user.getId())",
             securityMessage: "Operation not permitted",
             inputFormats: [ "json" ],
             denormalizationContext: ['groups' => 'establishment:update'],
         ),
         new Delete(
-            security: "is_granted('ROLE_ADMIN') or object.getOrganization().getId() == user.getId()",
+            security: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_ORGANIZATION') and object.getOrganization().getId() == user.getId())",
             securityMessage: "Operation not permitted",
         )
     ],

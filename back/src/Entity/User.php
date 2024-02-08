@@ -25,22 +25,29 @@ use App\Validator\Constraints as AcmeAssert;
 #[ApiResource(
     normalizationContext: [ 'groups' => ['user:read', 'slot:read']],
     operations: [
-        new Get(),
-        new GetCollection(),
+        new Get(
+            security: "
+                is_granted('ROLE_ADMIN')
+                or (is_granted('ROLE_USER') and object.getId() == user.getId())
+            "
+        ),
+        new GetCollection(
+            security: "is_granted('ROLE_ADMIN')",
+        ),
         new Post(
             processor: UserPasswordHasher::class,
             denormalizationContext: ['groups' => 'user:create'],
         ),
         new Put(
             processor: UserPasswordHasher::class,
-            security: "is_granted('ROLE_ADMIN') or object.getId() == user.getId()",
+            security: "is_granted('ROLE_ADMIN') or (is_granted('ROLE_USER') and object.getId() == user.getId())",
             securityMessage: "Operation not permitted",
             inputFormats: [ "json" ],
             denormalizationContext: ['groups' => 'user:update'],
         ),
         new Patch(
             processor: UserPasswordHasher::class,
-            security: "is_granted('ROLE_ADMIN') or object.getId() == user.getId()",
+            security: "is_granted('ROLE_ADMIN') or (is_granted('ROLE_USER') and object.getId() == user.getId())",
             securityMessage: "Operation not permitted",
             inputFormats: [ "json" ],
             denormalizationContext: ['groups' => 'user:update'],

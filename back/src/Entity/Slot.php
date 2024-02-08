@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
@@ -12,8 +15,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Validator\Constraints as AcmeAssert;
-use Doctrine\DBAL\Types\BigIntType;
-use Symfony\Component\Validator\Constraints\Date;
 
 
 #[ORM\Entity(repositoryClass: SlotRepository::class)]
@@ -21,25 +22,39 @@ use Symfony\Component\Validator\Constraints\Date;
     normalizationContext: [ 'groups' => ['slot:read']],
     denormalizationContext: [ 'groups' => ['slot:read']],
     operations: [
+        new Get(),
+        new GetCollection(),
         new Post(
-            securityPostDenormalize: "is_granted('ROLE_ADMIN') or object.getUser().getId() == user.getId()",
+            securityPostDenormalize: "
+                is_granted('ROLE_ADMIN') 
+                or object.getUser().getId() == user.getId()
+            ",
             securityPostDenormalizeMessage: "Operation not permitted",
             denormalizationContext: ['groups' => 'slot:create'],
         ),
         new Put(
-            security: "is_granted('ROLE_ADMIN') or object.getUser().getId() == user.getId()",
+            security: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_USER') and object.getUser().getId() == user.getId())
+            ",
             securityMessage: "Operation not permitted",
             inputFormats: [ "json" ],
             denormalizationContext: ['groups' => 'slot:update'],
         ),
         new Patch(
-            security: "is_granted('ROLE_ADMIN') or object.getUser().getId() == user.getId()",
+            security: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_USER') and object.getUser().getId() == user.getId())
+            ",
             securityMessage: "Operation not permitted",
             inputFormats: [ "json" ],
             denormalizationContext: ['groups' => 'slot:update'],
         ),
         new Delete(
-            security: "is_granted('ROLE_ADMIN') or object.getUser().getId() == user.getId()",
+            security: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_USER') and object.getUser().getId() == user.getId())
+            ",
             securityMessage: "Operation not permitted",
         )
     ]
@@ -57,6 +72,14 @@ class Slot
     #[ORM\ManyToOne(inversedBy: 'slots')]
     #[ORM\JoinColumn(nullable: true)]
     #[Groups(['slot:read', 'slot:create'])]
+    #[ApiProperty(
+        security: "
+            is_granted('ROLE_ADMIN') 
+            or (is_granted('ROLE_USER') and object.getUser().getId() == user.getId())
+            or (is_granted('ROLE_EMPLOYEE) and object.getService().getEmployee().getId() == user.getId())
+            or (is_granted('ROLE_ORGANIZATION) and object.getService().getEmployee().getEstablishment().getOrganization().getId() == user.getId())
+        ",
+    )]
     private ?User $user = null;
 
     #[ORM\Column(length: 255)]
@@ -68,7 +91,14 @@ class Slot
     private ?int $duration = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['slot:read'])]
+    #[Groups(['slot:read', 'slot:update'])]
+    #[ApiProperty(
+        security: "
+            is_granted('ROLE_ADMIN') 
+            or (is_granted('ROLE_EMPLOYEE) and object.getService().getEmployee().getId() == user.getId())
+            or (is_granted('ROLE_ORGANIZATION) and object.getService().getEmployee().getEstablishment().getOrganization().getId() == user.getId())
+        ",
+    )]
     private ?string $status = "PENDING";
 
     #[ORM\ManyToOne(inversedBy: 'slots')]

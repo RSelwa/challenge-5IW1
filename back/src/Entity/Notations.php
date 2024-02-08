@@ -14,26 +14,39 @@ use App\Validator\Constraints as AcmeAssert;
 
 #[ORM\Entity(repositoryClass: NotationsRepository::class)]
 #[ApiResource(
+    normalizationContext: ['groups' => 'notation:read'],
     operations: [
         new Post(
-            securityPostDenormalize: "is_granted('ROLE_ADMIN') or object.getIdNotationFrom().getId() == user.getId()",
+            securityPostDenormalize: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_USER') and object.getIdNotationFrom().getId() == user.getId())
+            ",
             securityPostDenormalizeMessage: "Operation not permitted",
             denormalizationContext: ['groups' => 'notation:create'],
         ),
         new Put(
-            security: "is_granted('ROLE_ADMIN') or object.getIdNotationFrom().getId() == user.getId()",
+            security: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_USER') and object.getIdNotationFrom().getId() == user.getId())
+            ",
             securityMessage: "Operation not permitted",
             inputFormats: [ "json" ],
             denormalizationContext: ['groups' => 'notation:update'],
         ),
         new Patch(
-            security: "is_granted('ROLE_ADMIN') or object.getIdNotationFrom().getId() == user.getId()",
+            security: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_USER') and object.getIdNotationFrom().getId() == user.getId())
+            ",
             securityMessage: "Operation not permitted",
             inputFormats: [ "json" ],
             denormalizationContext: ['groups' => 'notation:update'],
         ),
         new Delete(
-            security: "is_granted('ROLE_ADMIN') or object.getIdNotationFrom().getId() == user.getId()",
+            security: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_USER') and object.getIdNotationFrom().getId() == user.getId())
+            ",
             securityMessage: "Operation not permitted",
         )
     ],
@@ -45,25 +58,25 @@ class Notations
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['employee:read', 'user:read'])]
+    #[Groups(['employee:read', 'user:read', 'notation:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
-    #[Groups(['employee:read', 'user:read', 'notation:create', 'notation:update'])]
+    #[Groups(['employee:read', 'user:read', 'notation:read', 'notation:create', 'notation:update'])]
     private ?int $note = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['employee:read', 'user:read', 'notation:create', 'notation:update'])]
+    #[Groups(['employee:read', 'user:read', 'notation:read', 'notation:create', 'notation:update'])]
     private ?string $comment = null;
 
     #[ORM\ManyToOne(inversedBy: 'notations')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['employee:read', 'user:read', 'notation:create'])]
+    #[Groups(['employee:read', 'user:read', 'notation:read', 'notation:create'])]
     private ?Employee $idNotationTarget = null;
 
     #[ORM\ManyToOne(inversedBy: 'notations')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['employee:read', 'user:read', 'notation:create'])]
+    #[Groups(['employee:read', 'user:read', 'notation:read', 'notation:create'])]
     private ?User $idNotationFrom = null;
 
     public function getId(): ?int

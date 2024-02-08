@@ -32,14 +32,14 @@ use App\Validator\Constraints as AcmeAssert;
         ),
         new Put(
             processor: UserPasswordHasher::class,
-            security: "is_granted('ROLE_ADMIN') or object.getId() == user.getId()",
+            security: "is_granted('ROLE_ADMIN') or (is_granted('ROLE_EMPLOYEE') and object.getId() == user.getId())",
             securityMessage: "Operation not permitted",
             inputFormats: [ "json" ],
             denormalizationContext: ['groups' => 'employee:update'],
         ),
         new Patch(
             processor: UserPasswordHasher::class,
-            security: "is_granted('ROLE_ADMIN') or object.getId() == user.getId()",
+            security: "is_granted('ROLE_ADMIN') or (is_granted('ROLE_EMPLOYEE') and object.getId() == user.getId())",
             securityMessage: "Operation not permitted",
             inputFormats: [ "json" ],
             denormalizationContext: ['groups' => 'employee:update'],
