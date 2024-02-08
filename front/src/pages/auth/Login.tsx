@@ -2,6 +2,8 @@ import React from "react"
 import * as Accordion from "@radix-ui/react-accordion"
 import LoginWithPassword from "@/components/auth/Login"
 import SigninUsers from "@/components/auth/Signin/users"
+import { Translate } from "react-auto-translate"
+
 
 const Login = () => {
   return (
@@ -17,7 +19,7 @@ const Login = () => {
           value="login"
         >
           <Accordion.Trigger className=" w-full text-center text-lg font-bold">
-            J'ai déjà un compte Doctolib
+            <Translate>J'ai déjà un compte Doctoges</Translate>
           </Accordion.Trigger>
           <Accordion.Content className="mt-6">
             <LoginWithPassword />
@@ -28,7 +30,7 @@ const Login = () => {
           value="signin"
         >
           <Accordion.Trigger className=" w-full text-center text-lg font-bold">
-            Nouveau sur Doctolib ?
+           <Translate>Nouveau sur Doctoges ?</Translate> 
           </Accordion.Trigger>
           <Accordion.Content className="mt-6">
             <SigninUsers />

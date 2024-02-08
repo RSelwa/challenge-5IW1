@@ -8,6 +8,8 @@ import { postSlot } from "@/lib/slots"
 import { getHoursMinutes, toIsoString } from "@/utils/date"
 import { requestOptions } from "@/utils/db"
 import { parseJwt } from "@/utils/redux"
+import { Translate } from "react-auto-translate"
+
 
 type Props = {
   dateOfReservation: Date
@@ -80,20 +82,21 @@ const AvailableSlot = ({
       <Popover.Portal>
         <Popover.Content className="flex max-w-[350px] flex-col items-center gap-6 rounded bg-white p-4 shadow-xl">
           <p className="mx-auto  text-center">
-            Vous voulez réserver <i className="font-bold">{serviceName}</i> le{" "}
-            {dayOfReservation} à {hourOfReservation} ?
+            <Translate>Vous voulez réserver <i className="font-bold">{serviceName}</i> le{" "}
+            {dayOfReservation} à {hourOfReservation} ? </Translate>
           </p>
           <div className="flex w-fit items-center gap-4 ">
             <Popover.Close className="rounded bg-red-500 p-2 px-4 text-white transition-all hover:bg-red-700">
-              Non
+             <Translate>Non</Translate> 
             </Popover.Close>
             <button
               disabled={isLoading}
               className="flex items-center justify-center gap-2 rounded bg-green-500 px-4 py-2 text-white transition-all hover:bg-green-700 disabled:bg-green-300"
               onClick={idReservation ? modifyReservation : createReservation}
             >
-              Save {isLoading && <LoaderIcon />}
+              <Translate>Sauvegarder</Translate> {isLoading && <LoaderIcon />}
             </button>
+            
           </div>
         </Popover.Content>
       </Popover.Portal>

@@ -38,7 +38,7 @@ const LoginWithPassword = () => {
       >
         <input placeholder="Email" type="email" {...register("email")} />
         <input
-          placeholder="Password"
+          placeholder="Mot de passe"
           type="password"
           {...register("password")}
         />

@@ -2,6 +2,8 @@ import React from "react"
 import * as Accordion from "@radix-ui/react-accordion"
 import SigninOrganizationForm from "@/components/auth/Signin/signinOrganizationForm"
 import SigninEmployeeForm from "@/components/auth/Signin/signinEmployeeForm"
+import { Translate } from "react-auto-translate"
+
 
 const SigninOrgaAndEmployee = () => {
   return (
@@ -17,7 +19,7 @@ const SigninOrgaAndEmployee = () => {
           value="login"
         >
           <Accordion.Trigger className=" w-full text-center text-lg font-bold">
-            S'enregistrer en tant qu'employée ?
+           <Translate> S'enregistrer en tant qu'employé ?</Translate>
           </Accordion.Trigger>
           <Accordion.Content className="mt-6">
             <SigninEmployeeForm />
@@ -28,7 +30,7 @@ const SigninOrgaAndEmployee = () => {
           value="signin"
         >
           <Accordion.Trigger className=" w-full text-center text-lg font-bold">
-            S'enregistrer en tant qu'organisation ?
+            <Translate>S'enregistrer en tant qu'organisation ?</Translate>
           </Accordion.Trigger>
           <Accordion.Content className="mt-6">
             <SigninOrganizationForm />

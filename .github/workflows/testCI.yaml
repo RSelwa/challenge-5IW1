@@ -3,13 +3,9 @@ name: 🧪 Test CI/CD
 on:
   push:
     paths:
-      - ".github/workflows/**"
+      - ".githubA/workflows/**"
 
 jobs:
-  test-github-actions-front:
-    uses: ./.github/workflows/buildAndPushFront.yaml
-    secrets: inherit # <= this one
-
-  test-github-actions-Back:
-    uses: ./.github/workflows/buildAndPushBack.yaml
+  test-github-actions:
+    uses: ./.github/workflows/base.yaml
     secrets: inherit # <= this one

@@ -7,6 +7,8 @@ import {
 } from "@radix-ui/react-icons"
 import type { SearchQuery } from "@/types"
 import PlaceAutocomplete from "../maps/PlaceAutocomplete"
+import { Translate } from "react-auto-translate"
+
 
 type Props = {
   searchQuery: SearchQuery
@@ -72,13 +74,13 @@ const SearchBar = ({ searchQuery, setSearchQuery, onSubmitForm }: Props) => {
         <option value={1}>1 Km</option>
         <option value={5}>5 Km</option>
         <option value={10}>10 Km</option>
-        <option value={999999}>No limit</option>
+        <option value={999999}><Translate>Pas de limite</Translate></option>
       </select>
       <button
         className="group flex items-center gap-3 rounded-r-full bg-blue-950 px-4  py-1 text-end text-white hover:bg-blue-700"
         type="submit"
       >
-        Rechercher
+        <Translate>Rechercher</Translate>
         <ChevronRightIcon
           strokeOpacity={0}
           className="transition-transform duration-[1s] group-hover:translate-x-px"
