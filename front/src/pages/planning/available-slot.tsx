@@ -3,7 +3,10 @@ import * as Popover from "@radix-ui/react-popover"
 import { LoaderIcon } from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
 import type { Slots } from "@/types/api/slots"
+import type { EmailType } from "@/types/mail"
 import { SLOT_API_ROUTES } from "@/constants/db"
+import { postEmail } from "@/lib/mail"
+import { fetchService } from "@/lib/services"
 import { postSlot } from "@/lib/slots"
 import { getHoursMinutes, toIsoString } from "@/utils/date"
 import { requestOptions } from "@/utils/db"
@@ -33,6 +36,7 @@ const AvailableSlot = ({
   ) //jj/mm/yyyy
   const hourOfReservation = getHoursMinutes(dateOfReservation) //hh:mm
   const [isLoading, setIsLoading] = useState(false)
+
   const createReservation = async () => {
     try {
       setIsLoading(true)
@@ -46,11 +50,29 @@ const AvailableSlot = ({
       }
 
       await postSlot(newSlot as unknown as Slots)
+      sendEmailToEmployeeByServiceId(serviceId)
       navigate(`/reservations/${token.id}`)
     } catch (error) {
       console.error(error)
     }
     setIsLoading(false)
+  }
+
+  const sendEmailToEmployeeByServiceId = async (serviceId: string) => {
+    try {
+      const serviceDetails = await fetchService(serviceId)
+      const employeeEmail = serviceDetails.employee.email
+
+      const emailData: EmailType = {
+        to: employeeEmail,
+        subject: `Nouvelle réservation de ${serviceName}`,
+        body: `Bonjour,\n\nVous avez une nouvelle réservation pour le service "${serviceName}" le ${dayOfReservation} à ${hourOfReservation}.\n\nCordialement,`
+      }
+
+      await postEmail(emailData)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const modifyReservation = async () => {
@@ -67,6 +89,7 @@ const AvailableSlot = ({
         })
       )
       if (!response.ok) throw new Error("Something went wrong")
+      sendEmailToEmployeeByServiceId(serviceId)
       navigate(0)
     } catch (error) {
       console.error(error)

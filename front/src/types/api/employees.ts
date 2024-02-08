@@ -9,6 +9,7 @@ import type { Establishments } from "./establishment"
 export type Employees = {
   firstname: string
   lastname: string
+  email: string
   establishment: Establishments
   slots: SlotsWithId[]
   employeeSpecificSchedules: EmployeeSpecificSchedulesWithId[]

@@ -2,6 +2,9 @@ import React from "react"
 import { Button } from "@radix-ui/themes"
 import { useForm } from "react-hook-form"
 import type { SigninOrgaFormData } from "@/types/formData"
+import type { EmailType } from "@/types/mail"
+import { fetchAdmins } from "@/lib/admin"
+import { postEmail } from "@/lib/mail"
 import { postOrganization } from "@/lib/organizations"
 import { postData } from "@/utils/db"
 import { Translate } from "react-auto-translate"
@@ -10,9 +13,30 @@ import { Translate } from "react-auto-translate"
 const SigninOrganizationForm = () => {
   const { handleSubmit, register } = useForm<SigninOrgaFormData>()
 
-  const onSubmit = (data: SigninOrgaFormData) =>
-    postData(postOrganization(data))
+  const onSubmit = async (data: SigninOrgaFormData) => {
+    try {
+      await postData(postOrganization(data))
+      sendEmailsToAdmin(data.name)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  const sendEmailsToAdmin = async (orgaName: string) => {
+    try {
+      const admins = await fetchAdmins()
+      admins.forEach((admin) => {
+        const emailData: EmailType = {
+          to: admin.email,
+          subject: "Nouvelle inscription à valider",
+          body: `Une nouvelle organisation "${orgaName}" demande à être validée. Veuillez vous connecter à votre panel administrateur pour effectuer la validation.`
+        }
 
+        postEmail(emailData)
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2 gap-4">
       <input
