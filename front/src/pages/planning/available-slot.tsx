@@ -8,6 +8,10 @@ import { postSlot } from "@/lib/slots"
 import { getHoursMinutes, toIsoString } from "@/utils/date"
 import { requestOptions } from "@/utils/db"
 import { parseJwt } from "@/utils/redux"
+import { Services } from "@/types/api/services"
+import { fetchService } from "@/lib/services"
+import { EmailType } from "@/types/mail"
+import { postEmail } from "@/lib/mail"
 
 type Props = {
   dateOfReservation: Date
@@ -31,6 +35,7 @@ const AvailableSlot = ({
   ) //jj/mm/yyyy
   const hourOfReservation = getHoursMinutes(dateOfReservation) //hh:mm
   const [isLoading, setIsLoading] = useState(false)
+  
   const createReservation = async () => {
     try {
       setIsLoading(true)
@@ -44,12 +49,40 @@ const AvailableSlot = ({
       }
 
       await postSlot(newSlot as unknown as Slots)
+
+      const serviceDetails = await fetchService(serviceId);
+      const employeeEmail = serviceDetails.employee.email;
+  
+      const emailData: EmailType = {
+        to: employeeEmail,
+        subject: `Nouvelle réservation de ${serviceName}`,
+        body: `Bonjour,\n\nVous avez une nouvelle réservation pour le service "${serviceName}" le ${dayOfReservation} à ${hourOfReservation}.\n\nCordialement,`,
+      };
+  
+     
+      
+      await postEmail(emailData);
       navigate(`/reservations/${token.id}`)
     } catch (error) {
       console.error(error)
     }
     setIsLoading(false)
   }
+
+  const sendEmailByServiceId = async () => {
+    try {
+     
+      const response = await fetchService(serviceId);
+      const employeeEmail = response.employee.email;
+      
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  };
+  
+  
+
+  sendEmailByServiceId();
 
   const modifyReservation = async () => {
     try {
