@@ -69,20 +69,7 @@ const AvailableSlot = ({
     setIsLoading(false)
   }
 
-  const sendEmailByServiceId = async () => {
-    try {
-     
-      const response = await fetchService(serviceId);
-      const employeeEmail = response.employee.email;
-      
-    } catch (error) {
-      console.error('An error occurred:', error);
-    }
-  };
-  
-  
 
-  sendEmailByServiceId();
 
   const modifyReservation = async () => {
     try {
