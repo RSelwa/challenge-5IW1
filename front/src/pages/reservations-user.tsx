@@ -78,7 +78,7 @@ const ReservationButton = ({
               )
             }
           >
-          <Translate> Marquer comme fait</Translate>
+          <Translate> Marquer comme passé</Translate>
           </button>
         )}
         {reservation.status === "reserved" && (
