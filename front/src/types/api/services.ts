@@ -7,3 +7,11 @@ export type Services = {
   employee: EmployeesWithId
   slots: SlotsWithId[]
 }
+
+export type PostService = {
+  name: string
+  duration: number
+  employee: string
+  price: number
+  slots: string[]
+}
