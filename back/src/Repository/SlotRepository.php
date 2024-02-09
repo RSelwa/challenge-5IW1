@@ -21,17 +21,18 @@ class SlotRepository extends ServiceEntityRepository
         parent::__construct($registry, Slot::class);
     }
     
-    // Méthode pour trouver un créneau par rapport au startTime et à la durée
-    public function findByTime($startTime, $endTime, $service)
+    public function findByTime($startTime, $endTime, $service, $id)
     {
         return $this->createQueryBuilder('s')
+            ->andWhere('s.id != :id')
             ->andWhere('s.service = :service')
-            ->andWhere('(s.startTime + (s.duration * 60)) >= :startTime') // Vérifie si la fin du créneau est après ou au moment où startTime commence
+            ->andWhere('(s.startTime + (s.duration * 60)) >= :startTime')
             ->orWhere('s.startTime >= :startTime')
             ->andWhere('s.startTime <= :endTime')
             ->setParameter('service', $service)
             ->setParameter('startTime', $startTime)
             ->setParameter('endTime', $endTime)
+            ->setParameter('id', $id)
             ->getQuery()
             ->getResult();
     }
@@ -42,7 +43,6 @@ class SlotRepository extends ServiceEntityRepository
             ->innerJoin('s.service', 'service')
             ->andWhere('s.user = :user')
             ->andWhere('service.employee = :employee')
-            ->andWhere("s.status = 'VALIDATED'")
             ->andWhere('s.startTime < :now')
             ->setParameter('user', $user)
             ->setParameter('employee', $employee)

@@ -29,6 +29,7 @@ use App\Validator\Constraints as AcmeAssert;
         new Post(
             processor: UserPasswordHasher::class,
             denormalizationContext: ['groups' => 'employee:create'],
+            validationContext: ['groups' => 'employee:create'],
         ),
         new Put(
             processor: UserPasswordHasher::class,
@@ -57,7 +58,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    #[Groups(['organization:read', 'establishment:read', 'employee:read'])]
+    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'slot:read'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
@@ -74,7 +75,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(inversedBy: 'employees')]
     #[ORM\JoinColumn(nullable: true)]
-    #[Groups(['employee:read', 'employee:create', 'employee:update'])]
+    #[Groups(['employee:read', 'employee:update'])]
     private ?Establishment $establishment = null;
     
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: EmployeeSpecificSchedule::class)]
@@ -82,8 +83,8 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $employeeSpecificSchedules;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['establishment:read', 'employee:read', 'employee:create', 'employee:update'])]
-    #[AcmeAssert\UniqueEmail]
+    #[Groups(['establishment:read', 'employee:read', 'employee:create'])]
+    #[AcmeAssert\UniqueEmail(groups: ['employee:create'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]

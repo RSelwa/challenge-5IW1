@@ -77,24 +77,8 @@ class EmployeeSpecificSchedule
     #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:create', 'employee-specific-schedule:update'])]
     private ?string $type = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:create', 'employee-specific-schedule:update'])]
-    private ?string $startTimeMorning = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:create', 'employee-specific-schedule:update'])]
-    private ?string $endTimeMorning = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:create', 'employee-specific-schedule:update'])]
-    private ?string $startTimeAfternoon = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:create', 'employee-specific-schedule:update'])]
-    private ?string $endTimeAfternoon = null;
-
     #[ORM\Column(length: 255)]
-    #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:create', 'employee-specific-schedule:update'])]
+    #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:update'])]
     #[ApiProperty(
         securityPostDenormalize: "
             is_granted('ROLE_ADMIN') 
@@ -146,54 +130,6 @@ class EmployeeSpecificSchedule
     public function setType(string $type): static
     {
         $this->type = $type;
-
-        return $this;
-    }
-
-    public function getStartTimeMorning(): ?string
-    {
-        return $this->startTimeMorning;
-    }
-
-    public function setStartTimeMorning(?string $startTimeMorning): static
-    {
-        $this->startTimeMorning = $startTimeMorning;
-
-        return $this;
-    }
-
-    public function getEndTimeMorning(): ?string
-    {
-        return $this->endTimeMorning;
-    }
-
-    public function setEndTimeMorning(?string $endTimeMorning): static
-    {
-        $this->endTimeMorning = $endTimeMorning;
-
-        return $this;
-    }
-
-    public function getStartTimeAfternoon(): ?string
-    {
-        return $this->startTimeAfternoon;
-    }
-
-    public function setStartTimeAfternoon(?string $startTimeAfternoon): static
-    {
-        $this->startTimeAfternoon = $startTimeAfternoon;
-
-        return $this;
-    }
-
-    public function getEndTimeAfternoon(): ?string
-    {
-        return $this->endTimeAfternoon;
-    }
-
-    public function setEndTimeAfternoon(?string $endTimeAfternoon): static
-    {
-        $this->endTimeAfternoon = $endTimeAfternoon;
 
         return $this;
     }

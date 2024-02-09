@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ServiceRepository::class)]
 #[ApiResource(
-    normalizationContext: [ 'groups' => ['service:read', 'employee:read']],
+    normalizationContext: [ 'groups' => ['service:read', 'employee:read', 'user:read']],
     operations: [
         new Post(
             securityPostDenormalize: "
@@ -59,23 +59,23 @@ class Service
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    #[Groups(['service:read', 'employee:read'])]
+    #[Groups(['service:read', 'employee:read', 'user:read', 'slot:read'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['service:read', 'employee:read', 'service:create', 'service:update'])]
+    #[Groups(['service:read', 'employee:read', 'user:read', 'service:create', 'service:update'])]
     private ?string $name = null;
 
     #[ORM\Column]
-    #[Groups(['service:read', 'employee:read', 'service:create', 'service:update'])]
+    #[Groups(['service:read', 'employee:read', 'user:read', 'service:create', 'service:update'])]
     private ?int $duration = null;
 
     #[ORM\ManyToOne(inversedBy: 'services')]
-    #[Groups(['establishment:read', 'employee:read', 'service:create', 'slot:read'])]
+    #[Groups(['establishment:read', 'employee:read', 'user:read', 'service:create', 'slot:read'])]
     private ?Employee $employee = null;
 
     #[ORM\Column]
-    #[Groups(['employee:read', 'service:update', 'service:create', 'slot:read'])]
+    #[Groups(['employee:read', 'user:read', 'service:update', 'service:create', 'slot:read'])]
     private ?int $price = null;
 
     #[ORM\OneToMany(mappedBy: 'service', targetEntity: Slot::class)]

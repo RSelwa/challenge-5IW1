@@ -20,8 +20,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     normalizationContext: [ 'groups' => ['establishment:read', 'service:read, employee:read']],
     operations: [
+        new Get(),
+        new GetCollection(),
         new Post(
-            securityPostDenormalize: "is_granted('ROLE_ADMIN') or is_granted('ROLE_ORGANIZATION')",
+            securityPostDenormalize: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_ORGANIZATION') and object.getOrganization().getId() == user.getId())",
             securityPostDenormalizeMessage: "Operation not permitted",
             denormalizationContext: ['groups' => 'establishment:create'],
         ),

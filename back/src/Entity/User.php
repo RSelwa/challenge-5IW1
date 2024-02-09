@@ -23,13 +23,13 @@ use App\Validator\Constraints as AcmeAssert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: "\"user\"")]
 #[ApiResource(
-    normalizationContext: [ 'groups' => ['user:read', 'slot:read']],
+    normalizationContext: [ 'groups' => ['user:read']],
     operations: [
         new Get(
             security: "
                 is_granted('ROLE_ADMIN')
                 or (is_granted('ROLE_USER') and object.getId() == user.getId())
-            "
+            ",
         ),
         new GetCollection(
             security: "is_granted('ROLE_ADMIN')",
@@ -37,6 +37,7 @@ use App\Validator\Constraints as AcmeAssert;
         new Post(
             processor: UserPasswordHasher::class,
             denormalizationContext: ['groups' => 'user:create'],
+            validationContext: ['groups' => 'user:create']
         ),
         new Put(
             processor: UserPasswordHasher::class,
@@ -65,7 +66,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'slot:read'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
@@ -77,8 +78,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:create', 'user:update'])]
-    #[AcmeAssert\UniqueEmail]
+    #[Groups(['user:read', 'user:create'])]
+    #[AcmeAssert\UniqueEmail(groups: ['user:create'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]

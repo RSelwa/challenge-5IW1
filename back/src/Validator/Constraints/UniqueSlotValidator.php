@@ -23,9 +23,10 @@ class UniqueSlotValidator extends ConstraintValidator
         $duration = $value->getDuration() * 60;
         $endTime = $startTime + $duration;
         $service = $value->getService();
+        $id = $value->getId();
 
         // Vérification si le créneau est déjà pris
-        $existingSlots = $this->slotRepository->findByTime($startTime, $endTime, $service);
+        $existingSlots = $this->slotRepository->findByTime($startTime, $endTime, $service, $id);
         if (!empty($existingSlots)) {
             $this->context->buildViolation($constraint->message)
                 ->addViolation();

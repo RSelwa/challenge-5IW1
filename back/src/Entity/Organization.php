@@ -30,10 +30,13 @@ use App\Validator\Constraints as AcmeAssert;
     normalizationContext: [ 'groups' => ['organization:read', 'service:read', 'employee:read']],
     operations: [
         new Get(),
-        new GetCollection(),
+        new GetCollection(
+            security: "is_granted('ROLE_ADMIN')",
+        ),
         new Post(
             processor: UserPasswordHasher::class,
             denormalizationContext: ['groups' => 'organization:create'],
+            validationContext: ['groups' => 'organization:create'],
         ),
         new Put(
             processor: UserPasswordHasher::class,
@@ -88,6 +91,12 @@ class Organization implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Groups(['organization:read'])]
+    #[ApiProperty(
+        security: "
+            is_granted('ROLE_ADMIN') 
+            or (is_granted('ROLE_ORGANIZATION') and object.getId() == user.getId())
+        ",
+    )]
     private ?string $kbis = null;
 
     #[Vich\UploadableField(mapping: 'kbis_upload', fileNameProperty: 'kbis')]
@@ -99,8 +108,8 @@ class Organization implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $siret = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'organization:create', 'employee:read', 'organization:update'])]
-    #[AcmeAssert\UniqueEmail]
+    #[Groups(['organization:read', 'organization:create', 'employee:read' ])]
+    #[AcmeAssert\UniqueEmail(groups: ['organization:create'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
@@ -188,7 +197,7 @@ class Organization implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getKbisFile(): File
+    public function getKbisFile(): ?File
     {
         return $this->kbisFile;
     }
