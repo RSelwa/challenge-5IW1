@@ -280,3 +280,15 @@ export const toIsoString = (date: Date): string => {
     pad(Math.abs(tzo) % 60)
   )
 }
+
+export const getDatesBetween = (startDate: Date, endDate: Date) => {
+  const datesArray: Date[] = []
+  const currentDate = new Date(startDate)
+
+  while (currentDate <= endDate) {
+    datesArray.push(new Date(currentDate))
+    currentDate.setDate(currentDate.getDate() + 1)
+  }
+
+  return datesArray
+}

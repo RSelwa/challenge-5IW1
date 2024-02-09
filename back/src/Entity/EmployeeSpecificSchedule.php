@@ -33,21 +33,6 @@ class EmployeeSpecificSchedule
     #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:write'])]
     private ?string $type = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:write'])]
-    private ?string $startTimeMorning = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:write'])]
-    private ?string $endTimeMorning = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:write'])]
-    private ?string $startTimeAfternoon = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:write'])]
-    private ?string $endTimeAfternoon = null;
 
     public function getId(): ?string
     {
@@ -96,51 +81,5 @@ class EmployeeSpecificSchedule
         return $this;
     }
 
-    public function getStartTimeMorning(): ?string
-    {
-        return $this->startTimeMorning;
-    }
-
-    public function setStartTimeMorning(?string $startTimeMorning): static
-    {
-        $this->startTimeMorning = $startTimeMorning;
-
-        return $this;
-    }
-
-    public function getEndTimeMorning(): ?string
-    {
-        return $this->endTimeMorning;
-    }
-
-    public function setEndTimeMorning(?string $endTimeMorning): static
-    {
-        $this->endTimeMorning = $endTimeMorning;
-
-        return $this;
-    }
-
-    public function getStartTimeAfternoon(): ?string
-    {
-        return $this->startTimeAfternoon;
-    }
-
-    public function setStartTimeAfternoon(?string $startTimeAfternoon): static
-    {
-        $this->startTimeAfternoon = $startTimeAfternoon;
-
-        return $this;
-    }
-
-    public function getEndTimeAfternoon(): ?string
-    {
-        return $this->endTimeAfternoon;
-    }
-
-    public function setEndTimeAfternoon(?string $endTimeAfternoon): static
-    {
-        $this->endTimeAfternoon = $endTimeAfternoon;
-
-        return $this;
-    }
+   
 }
