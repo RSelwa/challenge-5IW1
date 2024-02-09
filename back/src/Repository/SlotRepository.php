@@ -23,12 +23,23 @@ class SlotRepository extends ServiceEntityRepository
     
     public function findByTime($startTime, $endTime, $service, $id)
     {
-        return $this->createQueryBuilder('s')
+        $qb = $this->createQueryBuilder('s');
+        
+        return $qb
             ->andWhere('s.id != :id')
             ->andWhere('s.service = :service')
-            ->andWhere('(s.startTime + (s.duration * 60)) >= :startTime')
-            ->orWhere('s.startTime >= :startTime')
-            ->andWhere('s.startTime <= :endTime')
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->andX(
+                        $qb->expr()->lte('s.startTime', ':startTime'),
+                        $qb->expr()->gte('(s.startTime + (s.duration * 60))', ':startTime')
+                    ),
+                    $qb->expr()->andX(
+                        $qb->expr()->gte('s.startTime', ':startTime'),
+                        $qb->expr()->lte('s.startTime', ':endTime'),
+                    )
+                )
+            )
             ->setParameter('service', $service)
             ->setParameter('startTime', $startTime)
             ->setParameter('endTime', $endTime)
