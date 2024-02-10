@@ -3,6 +3,11 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Repository\EstablishmentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,7 +18,31 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: EstablishmentRepository::class)]
 #[ApiResource(
     normalizationContext: [ 'groups' => ['establishment:read', 'service:read, employee:read']],
-    denormalizationContext: [ 'groups' => ['establishment:write']]
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Post(
+            securityPostDenormalize: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_ORGANIZATION') and object.getOrganization().getId() == user.getId() and object.getOrganization().getStatus() == 'VALIDATED')",
+            securityPostDenormalizeMessage: "Operation not permitted",
+            denormalizationContext: ['groups' => 'establishment:create'],
+        ),
+        new Patch(
+            security: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_ORGANIZATION') and object.getOrganization().getId() == user.getId())",
+            securityMessage: "Operation not permitted",
+            inputFormats: [ "json" ],
+            denormalizationContext: ['groups' => 'establishment:update'],
+        ),
+        new Delete(
+            security: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_ORGANIZATION') and object.getOrganization().getId() == user.getId())",
+            securityMessage: "Operation not permitted",
+        )
+    ],
 )]
 
 class Establishment
@@ -26,28 +55,28 @@ class Establishment
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'establishment:write', 'employee:read'])]
+    #[Groups(['organization:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'establishment:write', 'employee:read'])]
+    #[Groups(['organization:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'establishment:write', 'employee:read'])]
+    #[Groups(['organization:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
     private ?string $zipCode = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'establishment:write', 'employee:read'])]
+    #[Groups(['organization:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'establishment:write', 'employee:read'])]
+    #[Groups(['organization:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
     private ?string $country = null;
 
     #[ORM\ManyToOne(inversedBy: 'establishments')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['establishment:write', 'employee:read'])]
+    #[Groups(['establishment:create', 'employee:read'])]
     private ?Organization $organization = null;
 
     #[ORM\OneToMany(mappedBy: 'establishment', targetEntity: Employee::class)]
@@ -55,11 +84,11 @@ class Establishment
     private Collection $employees;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['organization:read', 'establishment:read', 'establishment:write', 'employee:read'])]
+    #[Groups(['organization:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
     private ?float $lat = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['organization:read', 'establishment:read', 'establishment:write', 'employee:read'])]
+    #[Groups(['organization:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
     private ?float $lng = null;
 
     public function __construct()
