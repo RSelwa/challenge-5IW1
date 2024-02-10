@@ -55,7 +55,7 @@ class Slot
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    #[Groups(['slot:read', 'slot:response'])]
+    #[Groups(['slot:read', 'slot:response', 'user:read'])]
     private ?string $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'slots')]

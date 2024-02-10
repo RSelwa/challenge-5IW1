@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AdminRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,6 +12,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use App\Validator\Constraints as AcmeAssert;
 
 #[ORM\Entity(repositoryClass: AdminRepository::class)]
+#[ApiResource(
+    normalizationContext: [ 'groups' => ['admin:read']],
+)]
 class Admin implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -21,6 +25,7 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[AcmeAssert\UniqueEmail]
+    #[Groups(['admin:read'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
