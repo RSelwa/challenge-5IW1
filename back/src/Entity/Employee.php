@@ -27,6 +27,10 @@ use App\Validator\Constraints as AcmeAssert;
         new GetCollection(),
         new Post(
             processor: UserPasswordHasher::class,
+            securityPostDenormalize: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_ORGANIZATION') and object.getEstablishment().getOrganization().getId() == user.getId())
+            ",
             denormalizationContext: ['groups' => 'employee:create'],
             validationContext: ['groups' => 'employee:create'],
         ),

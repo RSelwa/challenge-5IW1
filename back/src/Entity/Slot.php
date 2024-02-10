@@ -85,6 +85,10 @@ class Slot
     #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:response', 'user:read', 'slot:create'])]
     private ?int $duration = null;
 
+    #[ORM\Column(length: 255)]
+    #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:response', 'user:read', 'slot:create', 'slot:update'])]
+    private ?string $status = null;
+
     #[ORM\ManyToOne(inversedBy: 'slots')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:create', 'user:read'])]
@@ -146,6 +150,18 @@ class Slot
     public function setService(?Service $service): static
     {
         $this->service = $service;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }
