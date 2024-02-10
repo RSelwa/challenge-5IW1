@@ -4,9 +4,9 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use App\Repository\ServiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,6 +18,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     normalizationContext: [ 'groups' => ['service:read', 'employee:read', 'user:read']],
     operations: [
+        new Get(),
         new Post(
             securityPostDenormalize: "
                 is_granted('ROLE_ADMIN') 
@@ -25,15 +26,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
             ",
             securityPostDenormalizeMessage: "Operation not permitted",
             denormalizationContext: ['groups' => 'service:create'],
-        ),
-        new Put(
-            security: "
-                is_granted('ROLE_ADMIN') 
-                or (is_granted('ROLE_EMPLOYEE') and object.getEmployee().getId() == user.getId())
-            ",
-            securityMessage: "Operation not permitted",
-            inputFormats: [ "json" ],
-            denormalizationContext: ['groups' => 'service:update'],
         ),
         new Patch(
             security: "

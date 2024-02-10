@@ -8,7 +8,6 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use App\Repository\EstablishmentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -25,17 +24,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Post(
             securityPostDenormalize: "
                 is_granted('ROLE_ADMIN') 
-                or (is_granted('ROLE_ORGANIZATION') and object.getOrganization().getId() == user.getId())",
+                or (is_granted('ROLE_ORGANIZATION') and object.getOrganization().getId() == user.getId() and object.getOrganization().getStatus() == 'VALIDATED')",
             securityPostDenormalizeMessage: "Operation not permitted",
             denormalizationContext: ['groups' => 'establishment:create'],
-        ),
-        new Put(
-            security: "
-                is_granted('ROLE_ADMIN') 
-                or (is_granted('ROLE_ORGANIZATION') and object.getOrganization().getId() == user.getId())",
-            securityMessage: "Operation not permitted",
-            inputFormats: [ "json" ],
-            denormalizationContext: ['groups' => 'establishment:update'],
         ),
         new Patch(
             security: "

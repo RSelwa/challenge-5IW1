@@ -9,7 +9,6 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use App\Repository\OrganizationRepository;
 use App\State\UserPasswordHasher;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -37,16 +36,6 @@ use App\Validator\Constraints as AcmeAssert;
             processor: UserPasswordHasher::class,
             denormalizationContext: ['groups' => 'organization:create'],
             validationContext: ['groups' => 'organization:create'],
-        ),
-        new Put(
-            processor: UserPasswordHasher::class,
-            security: "
-                is_granted('ROLE_ADMIN') 
-                or (is_granted('ROLE_ORGANIZATION') and object.getId() == user.getId())
-            ",
-            securityMessage: "Operation not permitted",
-            inputFormats: [ "json" ],
-            denormalizationContext: ['groups' => 'organization:update'],
         ),
         new Patch(
             processor: UserPasswordHasher::class,
@@ -117,7 +106,7 @@ class Organization implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Groups(['organization:read', 'put:admin', 'employee:read', 'organization:update'])]
-    #[ApiProperty(securityPostDenormalize: "is_granted('ROLE_ADMIN')")]
+    #[ApiProperty(security: "is_granted('ROLE_ADMIN')")]
     private ?string $status = 'PENDING';
 
     #[ORM\OneToMany(mappedBy: 'organization', targetEntity: Establishment::class)]

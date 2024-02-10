@@ -6,16 +6,13 @@ use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use App\Repository\SlotRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Validator\Constraints as AcmeAssert;
-
 
 #[ORM\Entity(repositoryClass: SlotRepository::class)]
 #[ApiResource(
@@ -31,15 +28,6 @@ use App\Validator\Constraints as AcmeAssert;
             denormalizationContext: ['groups' => 'slot:create'],
             normalizationContext: ['groups' => 'slot:response'],
         ),
-        new Put(
-            security: "
-                is_granted('ROLE_ADMIN') 
-                or (is_granted('ROLE_USER') and object.getUser().getId() == user.getId())
-            ",
-            securityMessage: "Operation not permitted",
-            inputFormats: [ "json" ],
-            denormalizationContext: ['groups' => 'slot:update'],
-        ),
         new Patch(
             security: "
                 is_granted('ROLE_ADMIN') 
@@ -53,7 +41,7 @@ use App\Validator\Constraints as AcmeAssert;
         new Delete(
             security: "
                 is_granted('ROLE_ADMIN') 
-                or (is_granted('ROLE_EMPLOYEE') and object.getEmployee().getId() == user.getId())
+                or (is_granted('ROLE_EMPLOYEE') and object.getService().getEmployee().getId() == user.getId())
                 or (is_granted('ROLE_USER') and object.getUser().getId() == user.getId())
             ",
             securityMessage: "Operation not permitted",

@@ -7,7 +7,6 @@ use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Get;
 use App\Repository\UserRepository;
 use App\State\UserPasswordHasher;
@@ -38,13 +37,6 @@ use App\Validator\Constraints as AcmeAssert;
             processor: UserPasswordHasher::class,
             denormalizationContext: ['groups' => 'user:create'],
             validationContext: ['groups' => 'user:create']
-        ),
-        new Put(
-            processor: UserPasswordHasher::class,
-            security: "is_granted('ROLE_ADMIN') or (is_granted('ROLE_USER') and object.getId() == user.getId())",
-            securityMessage: "Operation not permitted",
-            inputFormats: [ "json" ],
-            denormalizationContext: ['groups' => 'user:update'],
         ),
         new Patch(
             processor: UserPasswordHasher::class,

@@ -6,7 +6,6 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use App\Repository\NotationsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -23,15 +22,6 @@ use App\Validator\Constraints as AcmeAssert;
             ",
             securityPostDenormalizeMessage: "Operation not permitted",
             denormalizationContext: ['groups' => 'notation:create'],
-        ),
-        new Put(
-            security: "
-                is_granted('ROLE_ADMIN') 
-                or (is_granted('ROLE_USER') and object.getIdNotationFrom().getId() == user.getId())
-            ",
-            securityMessage: "Operation not permitted",
-            inputFormats: [ "json" ],
-            denormalizationContext: ['groups' => 'notation:update'],
         ),
         new Patch(
             security: "

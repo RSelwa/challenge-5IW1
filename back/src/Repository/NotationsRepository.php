@@ -21,13 +21,15 @@ class NotationsRepository extends ServiceEntityRepository
         parent::__construct($registry, Notations::class);
     }
 
-    public function findByUserAndEmployee($user, $employee): array
+    public function findByUserAndEmployee($user, $employee, $id): array
     {
         return $this->createQueryBuilder('n')
+            ->andWhere('n.id != :id')
             ->andWhere('n.idNotationFrom = :user')
             ->andWhere('n.idNotationTarget = :employee')
             ->setParameter('user', $user)
             ->setParameter('employee', $employee)
+            ->setParameter('id', $id)
             ->getQuery()
             ->getResult()
         ;

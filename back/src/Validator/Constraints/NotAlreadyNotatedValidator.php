@@ -20,8 +20,9 @@ class NotAlreadyNotatedValidator extends ConstraintValidator
     {
         $user = $value->getIdNotationFrom();
         $employee = $value->getIdNotationTarget();
+        $id = $value->getId() ?? -1;
 
-        $existingNotations = $this->notationsRepository->findByUserAndEmployee($user, $employee);
+        $existingNotations = $this->notationsRepository->findByUserAndEmployee($user, $employee, $id);
         if (!empty($existingNotations)) {
             $this->context->buildViolation($constraint->message)
                 ->addViolation();

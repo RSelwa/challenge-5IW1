@@ -8,7 +8,6 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use App\Repository\EmployeeRepository;
 use App\State\UserPasswordHasher;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -30,13 +29,6 @@ use App\Validator\Constraints as AcmeAssert;
             processor: UserPasswordHasher::class,
             denormalizationContext: ['groups' => 'employee:create'],
             validationContext: ['groups' => 'employee:create'],
-        ),
-        new Put(
-            processor: UserPasswordHasher::class,
-            security: "is_granted('ROLE_ADMIN') or (is_granted('ROLE_EMPLOYEE') and object.getId() == user.getId())",
-            securityMessage: "Operation not permitted",
-            inputFormats: [ "json" ],
-            denormalizationContext: ['groups' => 'employee:update'],
         ),
         new Patch(
             processor: UserPasswordHasher::class,
@@ -74,7 +66,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $lastname = null;
 
     #[ORM\ManyToOne(inversedBy: 'employees')]
-    #[ORM\JoinColumn(nullable: true)]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[Groups(['employee:read', 'employee:update'])]
     private ?Establishment $establishment = null;
     
@@ -103,11 +95,16 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['establishment:read', 'employee:read'])]
     private Collection $services;
 
+    #[ORM\OneToMany(mappedBy: 'idNotationTarget', targetEntity: Notations::class, orphanRemoval: true)]
+    #[Groups(['employee:read'])]
+    private Collection $notations;
+
     public function __construct()
     {
         $this->employeeSpecificSchedules = new ArrayCollection();
         $this->employeeWeekSchedules = new ArrayCollection();
         $this->services = new ArrayCollection();
+        $this->notations = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -327,6 +324,33 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($service->getEmployee() === $this) {
                 $service->setEmployee(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getNotations(): Collection
+    {
+        return $this->notations;
+    }
+
+    public function addNotations(Notations $notations): static
+    {
+        if (!$this->notations->contains($notations)) {
+            $this->notations->add($notations);
+            $notations->setIdNotationTarget($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotations(Notations $notations): static
+    {
+        if ($this->notations->removeElement($notations)) {
+            // set the owning side to null (unless already changed)
+            if ($notations->getIdNotationTarget() === $this) {
+                $notations->setIdNotationTarget(null);
             }
         }
 

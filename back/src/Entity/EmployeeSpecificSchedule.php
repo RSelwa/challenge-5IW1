@@ -9,7 +9,6 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use App\Repository\EmployeeSpecificScheduleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -28,15 +27,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
             ",
             securityPostDenormalizeMessage: "Operation not permitted",
             denormalizationContext: ['groups' => 'employee-specific-schedule:create'],
-        ),
-        new Put(
-            security: "
-                is_granted('ROLE_ADMIN')
-                or (is_granted('ROLE_ORGANIZATION') and object.getEmployee().getEstablishment().getOrganization().getId() == user.getId())
-            ",
-            securityMessage: "Operation not permitted",
-            inputFormats: [ "json" ],
-            denormalizationContext: ['groups' => 'employee-specific-schedule:update'],
         ),
         new Patch(
             security: "
