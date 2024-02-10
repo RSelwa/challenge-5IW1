@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Cross2Icon, PlusIcon } from "@radix-ui/react-icons"
+import { CalendarIcon, Cross2Icon, PlusIcon } from "@radix-ui/react-icons"
 import * as Popover from "@radix-ui/react-popover"
 import { Translate } from "react-auto-translate"
 import { LoaderIcon } from "react-hot-toast"
@@ -89,22 +89,22 @@ const MyOrganisation = () => {
                     {establishment.employees.map((employee, index) => (
                       <div
                         key={index}
-                        className="cursor-pointer rounded  hover:bg-hover"
+                        className="flex w-fit cursor-pointer items-center gap-3 rounded"
                       >
                         <p>
                           {employee.firstname} {employee.lastname}
                         </p>
                         <Link
                           to={"/specific-schedule/" + employee.id}
-                          className="cursor-pointer rounded  hover:bg-hover"
+                          className="cursor-pointer rounded p-1 hover:bg-hover"
                         >
-                          edit specific schedule
+                          <CalendarIcon />
                         </Link>
                         <Link
                           to={"/schedule/" + employee.id}
                           className="cursor-pointer rounded  hover:bg-hover"
                         >
-                          edit schedule
+                          <CalendarIcon />
                         </Link>
                       </div>
                     ))}
