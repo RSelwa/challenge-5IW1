@@ -52,14 +52,18 @@ export const postEmployeeSpecificSchedule = async (
   employeeSpecificSchedule: PostSpecificSchedule
 ) => {
   try {
+    const newHeader = new Headers()
+    newHeader.append("Content-Type", "application/json")
+    newHeader.append(
+      "Authorization",
+      `Bearer ${localStorage.getItem("token")?.replaceAll('"', "") || ""}`
+    )
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}${EMPLOYEESPECIFICSCHEDULE_API_ROUTES}`,
       {
         method: "POST",
         body: JSON.stringify(employeeSpecificSchedule),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8"
-        }
+        headers: newHeader
       }
     )
     if (!response.ok) throw new Error("Something went wrong")

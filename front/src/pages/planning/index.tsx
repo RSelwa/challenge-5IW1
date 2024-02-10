@@ -98,8 +98,8 @@ const Planning = ({
 
       const reservationsDuringWeek = slotsData.filter(
         (slot) =>
-          new Date(slot.startTime).getTime() > mondayOfWeek &&
-          new Date(slot.startTime).getTime() < endOfWeek
+          parseInt(slot.startTime) * 1000 > mondayOfWeek &&
+          parseInt(slot.startTime) * 1000 < endOfWeek
       )
 
       // Create empty array of Slots[]
@@ -108,17 +108,19 @@ const Planning = ({
       // Attribute each reservations to the right days
       reservationsDuringWeek.forEach((reservation) => {
         weekDays.forEach((dayOfWeek, indexOfDay) => {
-          if (isInSameDay(dayOfWeek.date, new Date(reservation.startTime)))
+          if (
+            isInSameDay(
+              dayOfWeek.date,
+              new Date(parseInt(reservation.startTime) * 1000)
+            )
+          )
             weekDaysReservations[indexOfDay].push(reservation)
         })
       })
-
       setWeekDays((prevState) =>
         prevState.map((day, indexOfDay) => ({
           date: day.date,
-          reservations: weekDaysReservations[indexOfDay].sort(
-            (a, b) => parseInt(a.startTime) - parseInt(b.startTime)
-          )
+          reservations: weekDaysReservations[indexOfDay]
         }))
       )
     } catch (error) {

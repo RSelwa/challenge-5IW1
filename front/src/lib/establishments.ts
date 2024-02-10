@@ -46,14 +46,18 @@ export const editEstablishment = async (
 export const postEstablisment = async (
   establishment: Omit<Establishments, "employees">
 ) => {
+  const newHeader = new Headers()
+  newHeader.append("Content-Type", "application/json")
+  newHeader.append(
+    "Authorization",
+    `Bearer ${localStorage.getItem("token")?.replaceAll('"', "") || ""}`
+  )
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}${ESTABLISHMENT_API_ROUTES}`,
     {
       method: "POST",
       body: JSON.stringify(establishment),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8"
-      }
+      headers: newHeader
     }
   )
   if (!response.ok) throw new Error("Something went wrong")

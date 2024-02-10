@@ -1,8 +1,8 @@
-import { Dispatch, SetStateAction } from "react"
+import type { Dispatch, SetStateAction } from "react"
 import type { Slots, SlotsStatus } from "@/types/api/slots"
 import type { SlotsWithId } from "@/types/withId"
 import { SLOT_API_ROUTES } from "@/constants/db"
-import { formDataHeader, requestOptions } from "@/utils/db"
+import { requestOptions } from "@/utils/db"
 
 export const fetchSlots = async (): Promise<SlotsWithId[]> => {
   const response = await fetch(
@@ -28,7 +28,13 @@ export const editSlot = async (slot: SlotsWithId) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}${SLOT_API_ROUTES}/${slot.id}`,
-      requestOptions({ method: "PATCH", body: JSON.stringify(slot) })
+      requestOptions({
+        method: "PATCH",
+        body: JSON.stringify({
+          ...slot,
+          startTime: new Date(slot.startTime).getTime() / 1000
+        })
+      })
     )
     if (!response.ok) throw new Error("Something went wrong")
   } catch (error) {
@@ -36,15 +42,22 @@ export const editSlot = async (slot: SlotsWithId) => {
   }
 }
 export const postSlot = async (slot: Slots) => {
-  const { headers, formData } = formDataHeader(slot)
-
+  const newHeader = new Headers()
+  newHeader.append("Content-Type", "application/json")
+  newHeader.append(
+    "Authorization",
+    `Bearer ${localStorage.getItem("token")?.replaceAll('"', "") || ""}`
+  )
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}${SLOT_API_ROUTES}`,
-    requestOptions({
+    {
       method: "POST",
-      headers,
-      body: formData
-    })
+      body: JSON.stringify({
+        ...slot,
+        startTime: new Date(slot.startTime).getTime() / 1000
+      }),
+      headers: newHeader
+    }
   )
   if (!response.ok) throw new Error("Something went wrong")
   // const orga = await response.json()

@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react"
 import Rating from "@mui/material/Rating"
 import Typography from "@mui/material/Typography"
+import { Translate } from "react-auto-translate"
 import { LoaderIcon } from "react-hot-toast"
 import type { NotationType } from "@/types/api/notation"
 import { EMPLOYEE_API_ROUTES, USER_API_ROUTES } from "@/constants/db"
 import { fetchNotations, patchNotation, postNotation } from "@/lib/notations"
 import { parseJwt } from "@/utils/redux"
-import { Translate } from "react-auto-translate"
-
 
 type Props = {
   idNotationTarget: string
@@ -73,12 +72,8 @@ const Notation = ({ idNotationTarget }: Props) => {
       }
 
       if (isExistingNotation && notation.id) {
-        console.log("patch", newNotation)
-
         await patchNotation({ ...newNotation, id: notation.id })
       } else {
-        console.log("post", newNotation)
-
         await postNotation(newNotation)
       }
       fetchPotentialNotation()
@@ -106,7 +101,9 @@ const Notation = ({ idNotationTarget }: Props) => {
       }}
       className="flex flex-col gap-2"
     >
-      <Typography component="legend"><Translate>Notation</Translate></Typography>
+      <Typography component="legend">
+        <Translate>Notation</Translate>
+      </Typography>
       <Rating
         name="notation"
         value={notation.note}

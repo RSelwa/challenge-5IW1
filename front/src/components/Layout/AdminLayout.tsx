@@ -7,9 +7,6 @@ import { adminRoutes } from "@/routes"
 const AdminLayout = () => {
   return (
     <Fragment>
-      <DropdownMenu.Item className="DropdownMenuItem">
-        <div>Admin layout</div>
-      </DropdownMenu.Item>
       <DropdownMenu.Separator className="DropdownMenuSeparator" />
       {adminRoutes
         .filter((route) => !route.path?.includes(":id"))

@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import * as Popover from "@radix-ui/react-popover"
+import { Translate } from "react-auto-translate"
 import { LoaderIcon } from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
 import type { Slots } from "@/types/api/slots"
@@ -11,8 +12,6 @@ import { postSlot } from "@/lib/slots"
 import { getHoursMinutes, toIsoString } from "@/utils/date"
 import { requestOptions } from "@/utils/db"
 import { parseJwt } from "@/utils/redux"
-import { Translate } from "react-auto-translate"
-
 
 type Props = {
   dateOfReservation: Date
@@ -80,7 +79,7 @@ const AvailableSlot = ({
       if (!idReservation) return
       setIsLoading(true)
 
-      const newDate = { startTime: toIsoString(dateOfReservation) }
+      const newDate = { startTime: dateOfReservation.getTime() / 1000 }
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}${SLOT_API_ROUTES}/${idReservation}`,
         requestOptions({
@@ -105,12 +104,14 @@ const AvailableSlot = ({
       <Popover.Portal>
         <Popover.Content className="flex max-w-[350px] flex-col items-center gap-6 rounded bg-white p-4 shadow-xl">
           <p className="mx-auto  text-center">
-            <Translate>Vous voulez réserver <i className="font-bold">{serviceName}</i> le{" "}
-            {dayOfReservation} à {hourOfReservation} ? </Translate>
+            <Translate>
+              Vous voulez réserver <i className="font-bold">{serviceName}</i> le{" "}
+              {dayOfReservation} à {hourOfReservation} ?{" "}
+            </Translate>
           </p>
           <div className="flex w-fit items-center gap-4 ">
             <Popover.Close className="rounded bg-red-500 p-2 px-4 text-white transition-all hover:bg-red-700">
-             <Translate>Non</Translate> 
+              <Translate>Non</Translate>
             </Popover.Close>
             <button
               disabled={isLoading}
@@ -119,7 +120,6 @@ const AvailableSlot = ({
             >
               <Translate>Sauvegarder</Translate> {isLoading && <LoaderIcon />}
             </button>
-            
           </div>
         </Popover.Content>
       </Popover.Portal>
