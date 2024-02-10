@@ -78,7 +78,7 @@ const MyOrganisation = () => {
             {organisation.establishments.map((establishment, i) => (
               <div
                 key={i}
-                className="flex flex-col gap-2 rounded bg-background p-2"
+                className="bg-background flex flex-col gap-2 rounded p-2"
               >
                 <p className="text-center font-bold">{establishment.name}</p>
                 {establishment.employees.length > 0 && (
@@ -96,13 +96,13 @@ const MyOrganisation = () => {
                         </p>
                         <Link
                           to={"/specific-schedule/" + employee.id}
-                          className="cursor-pointer rounded p-1 hover:bg-hover"
+                          className="hover:bg-hover cursor-pointer rounded p-1"
                         >
                           <CalendarIcon />
                         </Link>
                         <Link
                           to={"/schedule/" + employee.id}
-                          className="cursor-pointer rounded  hover:bg-hover"
+                          className="hover:bg-hover cursor-pointer  rounded"
                         >
                           <CalendarIcon />
                         </Link>
@@ -119,7 +119,7 @@ const MyOrganisation = () => {
                   <Popover.Portal>
                     <Popover.Content className="relative flex max-w-[350px] flex-col items-center gap-6 rounded bg-white p-4 shadow-xl">
                       <Popover.Close
-                        className=" absolute right-[5px] top-[5px] inline-flex h-[25px] w-[25px] cursor-default items-center justify-center rounded-full outline-none focus:shadow-[0_0_0_2px]"
+                        className="absolute right-[5px] top-[5px] inline-flex size-[25px] cursor-default items-center justify-center rounded-full outline-none focus:shadow-[0_0_0_2px]"
                         aria-label="Close"
                       >
                         <Cross2Icon />

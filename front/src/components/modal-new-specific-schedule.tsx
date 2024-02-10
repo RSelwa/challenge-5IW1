@@ -11,12 +11,12 @@ import { TYPE_SPECIFIC_SCHEDULE } from "@/constants"
 
 type Props = {
   employeeId: string
-  fetchEmployeeSchedule: () => void
+  fetchEmployeeSpecificSchedule: () => void
 }
 
 const ModalNewSpecificSchedule = ({
   employeeId,
-  fetchEmployeeSchedule
+  fetchEmployeeSpecificSchedule
 }: Props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [isChecked, setIsChecked] = useState(false)
@@ -53,7 +53,7 @@ const ModalNewSpecificSchedule = ({
           await postEmployeeSpecificSchedule(newSchedule)
         })
       }
-      fetchEmployeeSchedule()
+      fetchEmployeeSpecificSchedule()
     } catch (error) {
       console.error(error)
     }

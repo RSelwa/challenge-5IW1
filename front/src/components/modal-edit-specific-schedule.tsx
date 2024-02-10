@@ -1,17 +1,17 @@
 import React, { Fragment, useState } from "react"
 import { Translate } from "react-auto-translate"
 import { useForm } from "react-hook-form"
-import { EmployeeSpecificSchedulesWithId } from "@/types/withId"
+import type { EmployeeSpecificSchedulesWithId } from "@/types/withId"
 import { editEmployeeSpecificSchedule } from "@/lib/employeeSpecificSchedules"
 import { TYPE_SPECIFIC_SCHEDULE } from "@/constants"
 
 type Props = {
   specificSchedule: EmployeeSpecificSchedulesWithId
-  fetchMySchedule: () => void
+  fetchEmployeeSpecificSchedule: () => void
 }
 
 const ModalEditSpecificSchedule = ({
-  fetchMySchedule,
+  fetchEmployeeSpecificSchedule,
   specificSchedule
 }: Props) => {
   const [isEditing, setIsEditing] = useState(false)
@@ -31,7 +31,7 @@ const ModalEditSpecificSchedule = ({
       ...data,
       date: new Date(data.date || "") as any
     })
-    fetchMySchedule()
+    fetchEmployeeSpecificSchedule()
   }
 
   return (
@@ -54,7 +54,7 @@ const ModalEditSpecificSchedule = ({
         </select>
       </fieldset>
       <fieldset className="flex flex-col gap-2">
-        <label htmlFor="date">Début du congé</label>
+        <label htmlFor="date">Date du congé</label>
         <input
           disabled={!isEditing}
           className="rounded border-2 border-gray-300 px-2 py-1"

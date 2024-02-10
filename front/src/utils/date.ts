@@ -1,4 +1,5 @@
 import type { HoraireType, SemaineType, Slots } from "@/types/api/slots"
+import type { EmployeeSpecificSchedulesWithId } from "@/types/withId"
 import { dayInSeconds, daysInWeek, weekInSeconds } from "@/constants/date"
 import { defaultHoraireType } from "@/constants"
 
@@ -188,8 +189,6 @@ export const excludeReservedSlots = (
   reservations: Slots[],
   durationOfSlot: number
 ): Date[] => {
-  console.log(availableSlots)
-
   return availableSlots.filter((slot) => {
     const endOfCurrentSlot = slot.getTime() + durationOfSlot * 3600000 // duration hour in seconds
 
@@ -216,7 +215,6 @@ export const excludeReservedSlots = (
         reservationCoverSlot
       )
     })
-    // console.log(isSlotsOccpedByReservation, slot)
 
     return !isSlotsOccpedByReservation
   })
@@ -226,18 +224,24 @@ export const getAvailableReservation = ({
   day,
   semaineTypeUser,
   reservations,
+  specificSchedule,
   duration
 }: {
   day: Date
   semaineTypeUser?: SemaineType[]
+  specificSchedule: EmployeeSpecificSchedulesWithId[]
   reservations: Slots[]
   duration: number
 }): Date[] => {
+  const isDayInSpecificSchedule = specificSchedule.some((daySpecificSchedule) =>
+    isInSameDay(new Date(daySpecificSchedule.date), day)
+  )
+  if (isDayInSpecificSchedule) return []
+
   const dayOfTheWeek = day.getDay()
   const horaireOfDay: HoraireType =
     semaineTypeUser?.find((dayType) => dayType.day === dayOfTheWeek) ||
     defaultHoraireType
-  console.log(horaireOfDay)
 
   const reservationsDuringTheDay = reservations.filter((reservation) =>
     isInPlageHoraire(new Date(reservation.startTime), defaultHoraireType)

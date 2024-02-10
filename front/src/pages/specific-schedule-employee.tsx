@@ -18,7 +18,7 @@ const SpecificScheduleEmployee = () => {
     EmployeeSpecificSchedulesWithId[]
   >([])
 
-  const fetchEmployeeSchedule = async () => {
+  const fetchEmployeeSpecificSchedule = async () => {
     if (!employeeId) return
     setIsLoading(true)
 
@@ -36,7 +36,7 @@ const SpecificScheduleEmployee = () => {
     setIsLoading(false)
   }
   useEffect(() => {
-    fetchEmployeeSchedule()
+    fetchEmployeeSpecificSchedule()
   }, [])
   return (
     <div className="space-y-4 p-2">
@@ -55,7 +55,7 @@ const SpecificScheduleEmployee = () => {
             <Popover.Portal>
               <Popover.Content className="relative flex max-w-[550px] flex-col items-center gap-6 rounded bg-white p-4 shadow-xl">
                 <Popover.Close
-                  className=" absolute right-[5px] top-[5px] inline-flex h-[25px] w-[25px] cursor-default items-center justify-center rounded-full outline-none focus:shadow-[0_0_0_2px]"
+                  className=" absolute right-[5px] top-[5px] inline-flex size-[25px] cursor-default items-center justify-center rounded-full outline-none focus:shadow-[0_0_0_2px]"
                   aria-label="Close"
                 >
                   <Cross2Icon />
@@ -63,7 +63,7 @@ const SpecificScheduleEmployee = () => {
                 <Popover.Arrow className="fill-white" />
                 <ModalNewSpecificSchedule
                   employeeId={employeeId}
-                  fetchEmployeeSchedule={fetchEmployeeSchedule}
+                  fetchEmployeeSpecificSchedule={fetchEmployeeSpecificSchedule}
                 />
               </Popover.Content>
             </Popover.Portal>
@@ -80,7 +80,7 @@ const SpecificScheduleEmployee = () => {
           {specificScheduleDays.map((day, i) => (
             <ModalEditSpecificSchedule
               specificSchedule={day}
-              fetchMySchedule={fetchEmployeeSchedule}
+              fetchEmployeeSpecificSchedule={fetchEmployeeSpecificSchedule}
               key={i}
             />
           ))}
