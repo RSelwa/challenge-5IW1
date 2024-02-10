@@ -67,7 +67,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(inversedBy: 'employees')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
-    #[Groups(['employee:read', 'employee:update'])]
+    #[Groups(['employee:read', 'employee:create'])]
     private ?Establishment $establishment = null;
     
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: EmployeeSpecificSchedule::class)]
