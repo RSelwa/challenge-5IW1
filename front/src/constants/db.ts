@@ -10,4 +10,4 @@ export const USER_API_ROUTES = "/api/users"
 export const NOTATION_API_ROUTES = "/api/notations"
 export const RESERVATION_API_ROUTES = "/api/reservations"
 export const EMAIL_API_ROUTES = "/api/email_dtos"
-
+export const ADMIN_API_ROUTES = "/api/admins"
