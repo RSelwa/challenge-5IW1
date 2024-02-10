@@ -3,7 +3,10 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons"
 import { Button } from "@radix-ui/themes"
 import { LoaderIcon } from "react-hot-toast"
 import type { PlanningWeekDay, Slots } from "@/types/api/slots"
-import type { SemaineTypeWithId } from "@/types/withId"
+import type {
+  EmployeeSpecificSchedulesWithId,
+  SemaineTypeWithId
+} from "@/types/withId"
 import { dayInSeconds, weekInSeconds } from "@/constants/date"
 import { fetchEmployee } from "@/lib/employees"
 import {
@@ -33,6 +36,9 @@ const Planning = ({
 }) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date())
   const [weekSchedule, setWeekSchedule] = useState<SemaineTypeWithId[]>([])
+  const [weekSpecificSchedule, setWeekSpecificSchedule] = useState<
+    EmployeeSpecificSchedulesWithId[]
+  >([])
   const [isPlanningExpanded, setIsPlanningExpanded] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [weekDays, setWeekDays] = useState<PlanningWeekDay[]>([])
@@ -75,9 +81,11 @@ const Planning = ({
 
   const fetchReservations = async (employeeId: string) => {
     try {
-      const { services, employeeWeekSchedules } =
+      const { services, employeeWeekSchedules, employeeSpecificSchedules } =
         await fetchEmployee(employeeId)
       setWeekSchedule(employeeWeekSchedules)
+      setWeekSpecificSchedule(employeeSpecificSchedules)
+
       // reservation pour tous les services toujours actif
       const slotsData = services
         .map((service) => service.slots)
@@ -127,10 +135,6 @@ const Planning = ({
     fetchDataForPlanning()
   }, [currentDate])
 
-  useEffect(() => {
-    console.log(weekSchedule)
-  }, [weekSchedule])
-
   return (
     <div className="flex w-fit gap-4 rounded bg-white p-2">
       <Button
@@ -160,6 +164,7 @@ const Planning = ({
                     day: day.date,
                     reservations: day.reservations,
                     semaineTypeUser: weekSchedule,
+                    specificSchedule: weekSpecificSchedule,
                     duration: duration
                   }).map((dateOfReservation, i) =>
                     isPlanningExpanded || i < 4 ? (

@@ -64,6 +64,7 @@ import ReservationCreneau from "@/pages/reservation-creneau"
 import ReservationService from "@/pages/reservation-service"
 import ReservationUser from "@/pages/reservations-user"
 import EmployeeSchedule from "@/pages/schedule-employee"
+import SpecificScheduleEmployee from "@/pages/specific-schedule-employee"
 
 const getLayout = (
   element: JSX.Element,
@@ -88,6 +89,10 @@ const organisationRoutes: RouteObject[] = [
   {
     path: "/schedule/:employeeId",
     element: getLayout(<EmployeeSchedule />)
+  },
+  {
+    path: "/specific-schedule/:employeeId",
+    element: getLayout(<SpecificScheduleEmployee />)
   },
   {
     path: "/my-services/:employeeId",

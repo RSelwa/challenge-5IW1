@@ -1,3 +1,4 @@
+import type { PostSpecificSchedule } from "@/types/api/employeeSpecificSchedule"
 import type { EmployeeSpecificSchedulesWithId } from "@/types/withId"
 import { EMPLOYEESPECIFICSCHEDULE_API_ROUTES } from "@/constants/db"
 import { requestOptions } from "@/utils/db"
@@ -30,7 +31,7 @@ export const fetchEmployeeSpecificSchedule = async (
   return organization
 }
 export const editEmployeeSpecificSchedule = async (
-  employeeSpecificSchedule: EmployeeSpecificSchedulesWithId
+  employeeSpecificSchedule: Partial<EmployeeSpecificSchedulesWithId>
 ) => {
   try {
     const response = await fetch(
@@ -41,6 +42,25 @@ export const editEmployeeSpecificSchedule = async (
         method: "PATCH",
         body: JSON.stringify(employeeSpecificSchedule)
       })
+    )
+    if (!response.ok) throw new Error("Something went wrong")
+  } catch (error) {
+    console.error(error)
+  }
+}
+export const postEmployeeSpecificSchedule = async (
+  employeeSpecificSchedule: PostSpecificSchedule
+) => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}${EMPLOYEESPECIFICSCHEDULE_API_ROUTES}`,
+      {
+        method: "POST",
+        body: JSON.stringify(employeeSpecificSchedule),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      }
     )
     if (!response.ok) throw new Error("Something went wrong")
   } catch (error) {
