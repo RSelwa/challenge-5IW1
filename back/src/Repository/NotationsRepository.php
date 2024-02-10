@@ -21,28 +21,17 @@ class NotationsRepository extends ServiceEntityRepository
         parent::__construct($registry, Notations::class);
     }
 
-//    /**
-//     * @return Notations[] Returns an array of Notations objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('n.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Notations
-//    {
-//        return $this->createQueryBuilder('n')
-//            ->andWhere('n.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findByUserAndEmployee($user, $employee, $id): array
+    {
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.id != :id')
+            ->andWhere('n.idNotationFrom = :user')
+            ->andWhere('n.idNotationTarget = :employee')
+            ->setParameter('user', $user)
+            ->setParameter('employee', $employee)
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

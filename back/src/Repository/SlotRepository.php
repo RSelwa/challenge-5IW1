@@ -20,29 +20,46 @@ class SlotRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Slot::class);
     }
+    
+    public function findByTime($startTime, $endTime, $service, $id)
+    {
+        $qb = $this->createQueryBuilder('s');
+        
+        return $qb
+            ->andWhere('s.id != :id')
+            ->andWhere('s.service = :service')
+            ->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->andX(
+                        $qb->expr()->lte('s.startTime', ':startTime'),
+                        $qb->expr()->gte('(s.startTime + (s.duration * 60))', ':startTime')
+                    ),
+                    $qb->expr()->andX(
+                        $qb->expr()->gte('s.startTime', ':startTime'),
+                        $qb->expr()->lte('s.startTime', ':endTime'),
+                    )
+                )
+            )
+            ->setParameter('service', $service)
+            ->setParameter('startTime', $startTime)
+            ->setParameter('endTime', $endTime)
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult();
+    }
 
-//    /**
-//     * @return Slot[] Returns an array of Slot objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('b.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Slot
-//    {
-//        return $this->createQueryBuilder('b')
-//            ->andWhere('b.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findByUserAndEmployee($user, $employee, $now): array
+    {
+        return $this->createQueryBuilder('s')
+            ->innerJoin('s.service', 'service')
+            ->andWhere('s.user = :user')
+            ->andWhere('service.employee = :employee')
+            ->andWhere('s.startTime < :now')
+            ->setParameter('user', $user)
+            ->setParameter('employee', $employee)
+            ->setParameter('now', $now)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

@@ -3,6 +3,10 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Repository\ServiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,32 +16,58 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ServiceRepository::class)]
 #[ApiResource(
-    normalizationContext: [ 'groups' => ['service:read', 'employee:read']]
+    normalizationContext: [ 'groups' => ['service:read', 'employee:read', 'user:read']],
+    operations: [
+        new Get(),
+        new Post(
+            securityPostDenormalize: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_EMPLOYEE') and object.getEmployee().getId() == user.getId())
+            ",
+            securityPostDenormalizeMessage: "Operation not permitted",
+            denormalizationContext: ['groups' => 'service:create'],
+        ),
+        new Patch(
+            security: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_EMPLOYEE') and object.getEmployee().getId() == user.getId())
+            ",
+            securityMessage: "Operation not permitted",
+            inputFormats: [ "json" ],
+            denormalizationContext: ['groups' => 'service:update'],
+        ),
+        new Delete(
+            security: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_EMPLOYEE') and object.getEmployee().getId() == user.getId())
+            ",
+            securityMessage: "Operation not permitted",
+        )
+    ]
 )]
-
 class Service
 {
     #[ORM\Id]
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    #[Groups(['service:read', 'employee:read'])]
+    #[Groups(['service:read', 'employee:read', 'user:read', 'slot:read'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['service:read', 'employee:read'])]
+    #[Groups(['service:read', 'employee:read', 'user:read', 'service:create', 'service:update'])]
     private ?string $name = null;
 
     #[ORM\Column]
-    #[Groups(['service:read', 'employee:read'])]
+    #[Groups(['service:read', 'employee:read', 'user:read', 'service:create', 'service:update'])]
     private ?int $duration = null;
 
     #[ORM\ManyToOne(inversedBy: 'services')]
-    #[Groups(['establishment:read', 'employee:read', 'slot:read'])]
+    #[Groups(['establishment:read', 'employee:read', 'user:read', 'service:create', 'slot:read'])]
     private ?Employee $employee = null;
 
     #[ORM\Column]
-    #[Groups(['employee:read', 'service:update', 'service:create', 'slot:read'])]
+    #[Groups(['employee:read', 'user:read', 'service:update', 'service:create', 'slot:read'])]
     private ?int $price = null;
 
     #[ORM\OneToMany(mappedBy: 'service', targetEntity: Slot::class)]
