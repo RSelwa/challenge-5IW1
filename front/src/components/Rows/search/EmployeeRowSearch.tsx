@@ -11,7 +11,7 @@ const EmployeeRowSearch = ({ employee }: Props) => {
     <ProfileSearch
       employeeId={employee.id}
       address={employee.establishment.address}
-      name={(employee.firstname, employee.lastname)}
+      name={`${employee.firstname} ${employee.lastname}`}
       urlImage=""
       zipCode={employee.establishment.zipCode}
     />

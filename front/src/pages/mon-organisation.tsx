@@ -7,6 +7,7 @@ import { Link } from "react-router-dom"
 import type { OrganizationsWithId } from "@/types/withId"
 import { fetchOrganization } from "@/lib/organizations"
 import { parseJwt } from "@/utils/redux"
+import Calendar from "@/components/icons/calendar"
 import ModalNewEmployee from "@/components/modal-new-employee"
 
 const MyOrganisation = () => {
@@ -78,7 +79,7 @@ const MyOrganisation = () => {
             {organisation.establishments.map((establishment, i) => (
               <div
                 key={i}
-                className="bg-background flex flex-col gap-2 rounded p-2"
+                className="flex flex-col gap-2 rounded bg-background p-2"
               >
                 <p className="text-center font-bold">{establishment.name}</p>
                 {establishment.employees.length > 0 && (
@@ -96,15 +97,15 @@ const MyOrganisation = () => {
                         </p>
                         <Link
                           to={"/specific-schedule/" + employee.id}
-                          className="hover:bg-hover cursor-pointer rounded p-1"
+                          className="cursor-pointer rounded p-1 hover:bg-hover"
                         >
                           <CalendarIcon />
                         </Link>
                         <Link
                           to={"/schedule/" + employee.id}
-                          className="hover:bg-hover cursor-pointer  rounded"
+                          className="cursor-pointer rounded  hover:bg-hover"
                         >
-                          <CalendarIcon />
+                          <Calendar />
                         </Link>
                       </div>
                     ))}

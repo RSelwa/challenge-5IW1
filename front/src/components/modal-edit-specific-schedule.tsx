@@ -1,8 +1,10 @@
 import React, { Fragment, useState } from "react"
+import { CheckIcon, Cross2Icon } from "@radix-ui/react-icons"
 import { Translate } from "react-auto-translate"
 import { useForm } from "react-hook-form"
 import type { EmployeeSpecificSchedulesWithId } from "@/types/withId"
 import { editEmployeeSpecificSchedule } from "@/lib/employeeSpecificSchedules"
+import { parseJwt } from "@/utils/redux"
 import { TYPE_SPECIFIC_SCHEDULE } from "@/constants"
 
 type Props = {
@@ -15,6 +17,7 @@ const ModalEditSpecificSchedule = ({
   specificSchedule
 }: Props) => {
   const [isEditing, setIsEditing] = useState(false)
+  const { roles } = parseJwt(localStorage.getItem("token") || "")
 
   const { register, handleSubmit, reset } =
     useForm<EmployeeSpecificSchedulesWithId>({
@@ -33,7 +36,16 @@ const ModalEditSpecificSchedule = ({
     })
     fetchEmployeeSpecificSchedule()
   }
-
+  const handleValidateSchedule = async (isValidated: boolean) => {
+    try {
+      await editEmployeeSpecificSchedule({
+        id: specificSchedule.id,
+        status: isValidated ? "ACCEPTED" : "REFUSED"
+      })
+    } catch (error) {
+      console.error(error)
+    }
+  }
   return (
     <form
       onSubmit={handleSubmit(editExistingSpecificSchedule)}
@@ -62,6 +74,31 @@ const ModalEditSpecificSchedule = ({
           {...register("date", { valueAsDate: true })}
         />
       </fieldset>
+      <fieldset className="flex gap-2">
+        <p>
+          <Translate>Statut:</Translate>
+          {specificSchedule.status}
+        </p>
+        {specificSchedule.status === "PENDING" &&
+          roles.includes("ROLE_ORGANIZATION") && (
+            <Fragment>
+              <button
+                className="flex size-4 items-center justify-center bg-green-500 text-white"
+                onClick={() => handleValidateSchedule(true)}
+                type="button"
+              >
+                <CheckIcon />
+              </button>
+              <button
+                className="flex size-4 items-center justify-center rounded bg-red-500 text-white"
+                onClick={() => handleValidateSchedule(false)}
+                type="button"
+              >
+                <Cross2Icon />
+              </button>
+            </Fragment>
+          )}
+      </fieldset>
       <div className="flex items-center gap-2">
         {isEditing && (
           <Fragment>
@@ -82,7 +119,7 @@ const ModalEditSpecificSchedule = ({
             </button>
           </Fragment>
         )}
-        {!isEditing && (
+        {!isEditing && roles.includes("ROLE_ORGANIZATION") && (
           <button
             className="rounded bg-blue-500 px-2 py-1 text-sm text-white hover:bg-blue-600"
             onClick={() => setIsEditing(true)}

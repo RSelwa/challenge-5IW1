@@ -12,6 +12,9 @@ const EmployeeLayout = () => {
         <Link to={`/my-services/${id}`}>Mes services</Link>
       </DropdownMenu.Item>
       <DropdownMenu.Item className="DropdownMenuItem">
+        <Link to={`/my-specific-schedule/${id}`}>Mes conges</Link>
+      </DropdownMenu.Item>
+      <DropdownMenu.Item className="DropdownMenuItem">
         <LogoutButton />
       </DropdownMenu.Item>
     </Fragment>

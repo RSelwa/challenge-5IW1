@@ -84,7 +84,11 @@ const Planning = ({
       const { services, employeeWeekSchedules, employeeSpecificSchedules } =
         await fetchEmployee(employeeId)
       setWeekSchedule(employeeWeekSchedules)
-      setWeekSpecificSchedule(employeeSpecificSchedules)
+      setWeekSpecificSchedule(
+        employeeSpecificSchedules.filter(
+          (schedule) => schedule.status === "ACCEPTED"
+        )
+      )
 
       // reservation pour tous les services toujours actif
       const slotsData = services

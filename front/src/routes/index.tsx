@@ -95,6 +95,10 @@ const organisationRoutes: RouteObject[] = [
     element: getLayout(<SpecificScheduleEmployee />)
   },
   {
+    path: "/my-specific-schedule/:employeeId",
+    element: getLayout(<SpecificScheduleEmployee />)
+  },
+  {
     path: "/my-services/:employeeId",
     element: getLayout(<MyServices />)
   }

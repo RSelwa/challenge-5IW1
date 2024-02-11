@@ -7,7 +7,8 @@ import type {
 import { EMPLOYEE_API_ROUTES } from "@/constants/db"
 import { postEmployeeSpecificSchedule } from "@/lib/employeeSpecificSchedules"
 import { getDatesBetween } from "@/utils/date"
-import { TYPE_SPECIFIC_SCHEDULE } from "@/constants"
+import { parseJwt } from "@/utils/redux"
+import { STATUS_SPECIFIC_SCHEDULE, TYPE_SPECIFIC_SCHEDULE } from "@/constants"
 
 type Props = {
   employeeId: string
@@ -18,6 +19,7 @@ const ModalNewSpecificSchedule = ({
   employeeId,
   fetchEmployeeSpecificSchedule
 }: Props) => {
+  const { roles } = parseJwt(localStorage.getItem("token") || "")
   const [isLoading, setIsLoading] = useState(false)
   const [isChecked, setIsChecked] = useState(false)
   const { register, handleSubmit } = useForm<SpecificScheduleForm>({
@@ -34,7 +36,8 @@ const ModalNewSpecificSchedule = ({
         const newSchedule: PostSpecificSchedule = {
           employee: data.employee,
           date: new Date(data.date),
-          type: data.type
+          type: data.type,
+          status: data.status
         }
 
         await postEmployeeSpecificSchedule(newSchedule)
@@ -47,7 +50,8 @@ const ModalNewSpecificSchedule = ({
           const newSchedule: PostSpecificSchedule = {
             employee: data.employee,
             date: date,
-            type: data.type
+            type: data.type,
+            status: data.status
           }
 
           await postEmployeeSpecificSchedule(newSchedule)
@@ -113,6 +117,19 @@ const ModalNewSpecificSchedule = ({
           })}
         />
       </fieldset>
+      {roles.includes("ROLE_ORGANIZATION") && (
+        <fieldset>
+          <label htmlFor="status">Status:</label>
+
+          <select {...register("status")}>
+            {STATUS_SPECIFIC_SCHEDULE.map((status, i) => (
+              <option key={i} value={status}>
+                {status}
+              </option>
+            ))}
+          </select>
+        </fieldset>
+      )}
 
       <button
         disabled={isLoading}
