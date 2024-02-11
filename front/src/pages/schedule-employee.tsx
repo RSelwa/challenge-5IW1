@@ -16,7 +16,7 @@ const EmployeeSchedule = () => {
       .map((_, index) => ({
         id: "",
         employee: employeeId || "",
-        day: index + 1,
+        day: index,
         startTimeMorning: defaultHoraireType.startTimeMorning,
         endTimeMorning: defaultHoraireType.endTimeMorning,
         startTimeAfternoon: defaultHoraireType.startTimeAfternoon,
@@ -38,7 +38,7 @@ const EmployeeSchedule = () => {
       employeeWeekSchedules.forEach((schedule) => {
         setScheduleDays((prevState) => {
           const index = schedule.day
-          prevState[index - 1] = schedule
+          prevState[index] = schedule
           return [...prevState]
         })
       })

@@ -1,4 +1,4 @@
-import { TypeSpecificScheduleEmployee } from "@/types/api/employeeSpecificSchedule"
+import type { TypeSpecificScheduleEmployee } from "@/types/api/employeeSpecificSchedule"
 import type { HoraireType, SemaineType } from "@/types/api/slots"
 
 export const dropdownMenuSideOffset = 0

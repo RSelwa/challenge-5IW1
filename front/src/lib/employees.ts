@@ -55,4 +55,5 @@ export const postEmployee = async (employee: EmployeePost) => {
     }
   )
   if (!response.ok) throw new Error("Something went wrong")
+  return response.json()
 }
