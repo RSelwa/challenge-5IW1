@@ -68,7 +68,7 @@ class EmployeeSpecificSchedule
     private ?string $type = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:update'])]
+    #[Groups(['establishment:read', 'employee:read', 'employee-specific-schedule:create', 'employee-specific-schedule:update'])]
     #[ApiProperty(
         securityPostDenormalize: "
             is_granted('ROLE_ADMIN') 
