@@ -244,7 +244,7 @@ export const getAvailableReservation = ({
     defaultHoraireType
 
   const reservationsDuringTheDay = reservations.filter((reservation) =>
-    isInPlageHoraire(new Date(reservation.startTime), defaultHoraireType)
+    isInPlageHoraire(new Date(reservation.startTime), horaireOfDay)
   )
 
   const availableReservations: Date[] = getSlotsByHoraireDay(

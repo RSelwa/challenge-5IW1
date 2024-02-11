@@ -15,9 +15,16 @@ export const loginUser = async (data: LoginFormData) => {
 }
 
 export const signInUser = async (data: SigninUserFormData) => {
+  const newHeader = new Headers()
+  newHeader.append("Content-Type", "application/json")
+
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}${USER_API_ROUTES}`,
-    requestOptions({ method: "POST", data: data })
+    {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: newHeader
+    }
   )
   if (!response.ok) throw new Error("Something went wrong")
   await loginUser({ email: data.email, password: data.plainPassword })

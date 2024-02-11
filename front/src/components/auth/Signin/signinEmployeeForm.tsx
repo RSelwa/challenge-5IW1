@@ -1,21 +1,18 @@
 import type { ChangeEvent } from "react"
 import React, { useState } from "react"
 import { Button } from "@radix-ui/themes"
+import { Translate } from "react-auto-translate"
 import { useForm } from "react-hook-form"
 import type { EmployeePost } from "@/types/api/employees"
 import { specialisationsDoctolib } from "@/constants/employee"
 import { postEmployee } from "@/lib/employees"
 import { postData } from "@/utils/db"
-import { Translate } from "react-auto-translate"
 
 const SigninEmployeeForm = () => {
   const { handleSubmit, register } = useForm<EmployeePost>()
   const [selected, setSelected] = useState("")
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    console.log("Label", event.target.selectedOptions[0].label)
-    console.log(event.target.value)
-
     setSelected(event.target.value)
   }
 
@@ -37,7 +34,7 @@ const SigninEmployeeForm = () => {
       />
       <select value={selected} onChange={handleChange}>
         <option disabled={true} value="">
-         <Translate>Selectionner une catégorie</Translate> 
+          <Translate>Selectionner une catégorie</Translate>
         </option>
         {specialisationsDoctolib.map((category, index) => (
           <option key={index} value={category}>
@@ -64,7 +61,7 @@ const SigninEmployeeForm = () => {
         className="col-span-2 w-full bg-amber-500 text-neutral-800"
         type="submit"
       >
-       <Translate>Envoyer</Translate> 
+        <Translate>Envoyer</Translate>
       </Button>
     </form>
   )
