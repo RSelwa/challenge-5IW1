@@ -33,3 +33,13 @@ export type HoraireType = {
 }
 
 export type PlanningWeekDay = { date: Date; reservations: Slots[] }
+
+
+
+export type ReservationCounts = {
+  [establishmentName: string]: number;
+};
+
+export type ReservationData = {
+  date: string;
+} & ReservationCounts;
