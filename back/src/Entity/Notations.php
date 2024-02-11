@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Repository\NotationsRepository;
@@ -15,6 +17,8 @@ use App\Validator\Constraints as AcmeAssert;
 #[ApiResource(
     normalizationContext: ['groups' => 'notation:read'],
     operations: [
+        new Get(),
+        new GetCollection(),
         new Post(
             securityPostDenormalize: "
                 is_granted('ROLE_ADMIN') 
