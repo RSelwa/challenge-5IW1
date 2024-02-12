@@ -35,3 +35,8 @@ export const employeesSpecificSchedulesHeader: HeaderTable[] = [
   { title: "email", width: "33%" },
   { title: "link", width: "10%" }
 ]
+export const employeesWeekSchedulesHeader: HeaderTable[] = [
+  { withCheckbox: true, title: "id", width: "56%" },
+  { title: "email", width: "33%" },
+  { title: "link", width: "10%" }
+]

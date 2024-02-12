@@ -12,13 +12,15 @@ type Props<T> = {
   dataKeyException: string[]
   dataKeyLink?: DataKeyLink
   editFunctions: (data: T) => Promise<void>
+  route: string
 }
 
 const ItemId = <T,>({
   fetchItem,
   dataKeyException,
   editFunctions,
-  dataKeyLink
+  dataKeyLink,
+  route
 }: Props<T>) => {
   const { id } = useParams()
   const [item, setItem] = useState<T>()
@@ -36,6 +38,8 @@ const ItemId = <T,>({
         data={item}
         dataKeyException={dataKeyException}
         dataKeyLink={dataKeyLink}
+        id={id || ""}
+        route={route}
       />
     </div>
   )
