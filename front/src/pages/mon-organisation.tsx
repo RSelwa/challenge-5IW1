@@ -19,7 +19,6 @@ const MyOrganisation = () => {
     try {
       const orga = await fetchOrganization(id)
       setOrganisation(orga)
-      console.log(orga.establishments)
     } catch (error) {
       console.error(error)
     }

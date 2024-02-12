@@ -1,33 +1,87 @@
-import { useEffect, useState } from "react"
-import { eachDayOfInterval, endOfWeek, format, startOfWeek } from "date-fns"
+import { useEffect, useRef, useState } from "react"
 import {
-  CartesianGrid,
+  ArcElement,
+  BarController,
+  BarElement,
+  CategoryScale,
+  Chart,
+  ChartDataset,
+  Chart as ChartJS,
+  Colors,
   Legend,
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis
-} from "recharts"
+  LinearScale,
+  LineController,
+  LineElement,
+  PointElement,
+  Tooltip
+} from "chart.js"
+import { Bar, Line } from "react-chartjs-2"
 import { ReservationCounts, ReservationData } from "@/types/api/slots"
 import { OrganizationsWithId } from "@/types/withId"
+import { establishmentsHeader } from "@/constants/tableHeaders"
 import { fetchOrganization } from "@/lib/organizations"
 import { parseJwt } from "@/utils/redux"
 
+type ChartData = {
+  // id: number
+  labels: string[]
+  datasets: { label?: string; data: number[] }[]
+}
 const DashboardOrga = () => {
   const { id } = parseJwt(localStorage.getItem("token") || "")
   const [isLoading, setIsLoading] = useState(false)
+  const [data, setData] = useState<ChartData>({
+    // id: 1,
+    datasets: [{ data: [], label: "slots" }],
+
+    labels: ["slots"]
+  })
   const [organisation, setOrganisation] = useState<OrganizationsWithId>()
-  const [reservationData, setReservationData] = useState<ReservationData[]>([])
-  const [barChartData, setBarChartData] = useState<
-    { name: string; reservations: number }[]
-  >([])
+  ChartJS.register(
+    ArcElement,
+    Tooltip,
+    Legend,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineController,
+    LineElement,
+    BarController,
+    BarElement,
+    Colors
+  )
+
+  const filterData = (
+    establishments: OrganizationsWithId["establishments"]
+  ) => {
+    const dataForBarChart: ChartData = {
+      labels: ["slots"],
+      datasets: [
+        {
+          data: []
+        }
+      ]
+    }
+    establishments.forEach((establishment, i) => {
+      const allOrganisationEmployees = establishment.employees
+      const allServices = allOrganisationEmployees
+        .map((employee) => employee.services)
+        .flat()
+
+      const allSlots = allServices.map((service) => service.slots).flat()
+
+      dataForBarChart.labels[i] = establishment.name
+      dataForBarChart.datasets[0].data.push(allSlots.length)
+    })
+
+    setData(dataForBarChart)
+  }
 
   const fechMyOrga = async () => {
     setIsLoading(true)
     try {
       const orga = await fetchOrganization(id)
+      if (!orga || !orga?.establishments) return
       setOrganisation(orga)
     } catch (error) {
       console.error(error)
@@ -39,90 +93,14 @@ const DashboardOrga = () => {
     fechMyOrga()
   }, [])
 
-  // useEffect(() => {
-  // if (organisation) {
-  //   // Déterminez la semaine actuelle
-  //   const start = startOfWeek(new Date(), { weekStartsOn: 1 });
-  //   const end = endOfWeek(new Date(), { weekStartsOn: 1 });
-  //   const daysOfWeek = eachDayOfInterval({ start, end });
-
-  //   // Créez un objet qui contient une clé pour chaque nom d'établissement avec une valeur de 0
-  //   const establishmentCounts: ReservationCounts = organisation.establishments.reduce((acc, establishment) => {
-  //     acc[establishment.name] = 0; // Initialisez chaque établissement avec 0 réservation
-  //     return acc;
-  //   }, {});
-
-  //   // Initialisez les données de réservation pour chaque jour de la semaine
-  //   const initialData: ReservationData[] = daysOfWeek.map(day => {
-  //     const dateFormatted = format(day, 'yyyy-MM-dd');
-  //     // Utilisez l'opérateur de propagation pour copier les comptes d'établissement initialisés
-  //     return { date: dateFormatted, ...establishmentCounts };
-  //   });
-
-  //   // Comptez les réservations pour chaque établissement et chaque jour
-  //   organisation.establishments.forEach(establishment => {
-  //     establishment.employees.forEach(service => {
-  //       service.slots.forEach(slot => {
-  //         const slotDate = format(new Date(slot.startTime), 'yyyy-MM-dd');
-  //         const dayData = initialData.find(d => d.date === slotDate);
-  //         if (dayData) {
-  //           dayData[establishment.name] += 1;
-  //         }
-  //       });
-  //     });
-  //   });
-
-  //   setReservationData(initialData);
-  //   // }
-  // }, [organisation]);
-
-  const filterData = (
-    establishments: OrganizationsWithId["establishments"]
-  ) => {
-    console.log(organisation?.establishments)
-
-    const dataForBarChart = establishments.map((establishment) => {
-      const totalReservations = 0
-      const x = establishment.employees
-        .map((employee) => employee.services)
-        .map((service) => (service ? service?.slots : []))
-      // .flat()
-      return {
-        name: establishment.name,
-        reservations: totalReservations
-      }
-    })
-    // console.log(dataForBarChart)
-    setBarChartData(dataForBarChart)
-  }
   useEffect(() => {
-    if (organisation) filterData(organisation.establishments)
+    if (organisation && organisation.establishments)
+      filterData(organisation.establishments)
   }, [organisation])
 
   return (
     <div>
-      <h1>Reservations This Week</h1>
-      <ResponsiveContainer width="100%" height={400}>
-        <LineChart
-          data={reservationData}
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
-          <YAxis allowDecimals={false} />
-          <Tooltip />
-          <Legend />
-          {organisation?.establishments.map((establishment) => (
-            <Line
-              key={establishment.id}
-              type="monotone"
-              dataKey={establishment.name}
-              stroke="#8884d8"
-              activeDot={{ r: 8 }}
-            />
-          ))}
-        </LineChart>
-      </ResponsiveContainer>
+      <Bar datasetIdKey="id" data={data} />
     </div>
   )
 }
