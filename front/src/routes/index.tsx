@@ -79,6 +79,7 @@ import MyServices from "@/pages/my-services"
 import MyAccount from "@/pages/MyAccount"
 import NewEstablisement from "@/pages/new-establishment"
 import ReservationCreneau from "@/pages/reservation-creneau"
+import ReservationHistory from "@/pages/reservation-history"
 import ReservationService from "@/pages/reservation-service"
 import ReservationUser from "@/pages/reservations-user"
 import EmployeeSchedule from "@/pages/schedule-employee"
@@ -130,6 +131,10 @@ const defaultRoutes: RouteObject[] = [
   {
     path: "/reservation-service/:idEmployee",
     element: getLayout(<ReservationService />)
+  },
+  {
+    path: "/reservation-history/:id", //id of employee or organisations
+    element: getLayout(<ReservationHistory />)
   },
   {
     path: "/reservations/:idUser",
