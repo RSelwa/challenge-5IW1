@@ -1,11 +1,11 @@
-FROM node:18.18-alpine
+FROM oven/bun
 
-WORKDIR /home/app
+WORKDIR /home
 
 COPY package.json ./
+RUN bun install
 
-RUN yarn
-
+RUN  bun install -g vite
 EXPOSE 3000
 
-CMD [ "yarn", "dev:docker" ]
+CMD [ "bun", "run", "dev:docker" ]

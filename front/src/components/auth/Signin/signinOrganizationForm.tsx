@@ -6,14 +6,13 @@ import type { SigninOrgaFormData } from "@/types/formData"
 import type { EmailType } from "@/types/mail"
 import { postEmail } from "@/lib/mail"
 import { postOrganization } from "@/lib/organizations"
-import { postData } from "@/utils/db"
 
 const SigninOrganizationForm = () => {
   const { handleSubmit, register } = useForm<SigninOrgaFormData>()
 
   const onSubmit = async (data: SigninOrgaFormData) => {
     try {
-      await postData(postOrganization(data))
+      await postOrganization(data)
       const emailData: EmailType = {
         to: "admin-test@yopmail.com",
         subject: "Nouvelle inscription à valider",
