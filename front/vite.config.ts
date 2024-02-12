@@ -6,12 +6,15 @@ import { defineConfig } from "vite"
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: [{ find: "@", replacement: path.resolve(__dirname, "src") }]
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+      "@radix-ui/": "/node_modules/@radix-ui"
+    }
   },
   server: {
     port: 3000,
     watch: {
-      usePolling: true
+      usePolling: true,
     }
-  }
+  },
 })

@@ -1,0 +1,11 @@
+name: 🧪 Test CI/CD
+
+on:
+  push:
+    paths:
+      - ".githubA/workflows/**"
+
+jobs:
+  test-github-actions:
+    uses: ./.github/workflows/base.yaml
+    secrets: inherit # <= this one

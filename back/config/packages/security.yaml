@@ -1,22 +1,54 @@
 security:
-
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
-
+        App\Entity\User: 'auto'
+        App\Entity\Organization: 'auto'
+        App\Entity\Employee: 'auto'
+        App\Entity\Admin: 'auto'
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    providers:
+        user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+        organization_provider:
+            entity:
+                class: App\Entity\Organization
+                property: email
+        employee_provider:
+            entity:
+                class: App\Entity\Employee
+                property: email
+        admin_provider:
+            entity:
+                class: App\Entity\Admin
+                property: email
+        users:
+            chain: 
+                providers: ['user_provider', 'organization_provider', 'employee_provider', 'admin_provider']
+            
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-
+        api:
+            pattern: ^/api/
+            stateless: true
+            provider: users
+            jwt: ~
         main:
-            security: false
-
-    role_hierarchy:
-        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ALLOWED_TO_SWITCH]
+            json_login:
+                check_path: /auth # The name in routes.yaml is enough for mapping
+                username_path: email
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            provider: users
 
     access_control:
-    # - { path: ^/admin, roles: ROLE_ADMIN }
-    # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/$, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI
+        - { path: ^/docs, roles: PUBLIC_ACCESS } # Allows accessing the Swagger UI docs
+        - { path: ^/auth, roles: PUBLIC_ACCESS }
 
 when@test:
     security:

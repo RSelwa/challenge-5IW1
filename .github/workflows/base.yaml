@@ -13,7 +13,7 @@ jobs:
       - name: 🧶 Install Yarn
         uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: "20"
           cache: "yarn"
           cache-dependency-path: front/yarn.lock
       - name: 🏎️ Cache Dependencies
@@ -26,3 +26,9 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
         working-directory: front
+      - name: 🖼️ Cache Cypress Binary
+        id: cache-cypress-binary
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/Cypress
+          key: binary-${{ hashFiles('**/yarn.lock') }}

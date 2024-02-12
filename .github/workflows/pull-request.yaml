@@ -1,0 +1,21 @@
+name: 🖌️ Front end
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  base:
+    uses: ./.github/workflows/base.yaml
+
+  build:
+    needs: base
+    uses: ./.github/workflows/build.yaml
+    secrets: inherit
+
+  units-test:
+    needs: build
+    uses: ./.github/workflows/test-units.yaml
+    secrets: inherit

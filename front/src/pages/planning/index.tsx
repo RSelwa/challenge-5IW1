@@ -1,19 +1,49 @@
 import { useEffect, useState } from "react"
-import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons"
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons"
 import { Button } from "@radix-ui/themes"
+import { LoaderIcon } from "react-hot-toast"
+import type { PlanningWeekDay, Slots } from "@/types/api/slots"
+import type {
+  EmployeeSpecificSchedulesWithId,
+  SemaineTypeWithId
+} from "@/types/withId"
 import { dayInSeconds, weekInSeconds } from "@/constants/date"
+import { fetchEmployee } from "@/lib/employees"
 import {
   dateToString,
   dayOfWeek,
   differenceDaysBetweenTwoDates,
+  getAvailableReservation,
   getDateFromWeek,
-  getInitialDay
+  getInitialDay,
+  isInSameDay
 } from "@/utils/date"
+import AvailableSlot from "@/pages/planning/available-slot"
+import { cn } from "@/utils"
 
-const Planning = () => {
+const Planning = ({
+  duration,
+  employeeId,
+  idReservation,
+  serviceId,
+  serviceName
+}: {
+  duration: number
+  employeeId: string
+  serviceId: string
+  serviceName: string
+  idReservation?: string
+}) => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date())
-  const [weekDays, setWeekDays] = useState<Date[]>([])
+  const [weekSchedule, setWeekSchedule] = useState<SemaineTypeWithId[]>([])
+  const [weekSpecificSchedule, setWeekSpecificSchedule] = useState<
+    EmployeeSpecificSchedulesWithId[]
+  >([])
+  const [isPlanningExpanded, setIsPlanningExpanded] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [weekDays, setWeekDays] = useState<PlanningWeekDay[]>([])
 
+  const scaleButton = 24
   const changeWeek = (nextWeek: boolean) =>
     setCurrentDate(
       (prevSate) =>
@@ -31,37 +61,151 @@ const Planning = () => {
     for (let index = 0; index < diff; index++)
       setWeekDays((prevState) => [
         ...prevState,
-        getInitialDay(
-          new Date(firstday.getTime() + index * dayInSeconds * 1000)
-        )
+        {
+          date: getInitialDay(
+            new Date(firstday.getTime() + index * dayInSeconds * 1000)
+          ),
+          reservations: []
+        }
       ])
   }
+  const cantChangePreviousWeek = (): boolean => {
+    const currentTime = new Date().getTime()
+    const begginingOfTheWeek = currentDate.getTime()
+    const endOfTheWeek = currentDate.getTime() + weekInSeconds * 1000
 
+    if (begginingOfTheWeek < currentTime && currentTime < endOfTheWeek)
+      return true
+    return false
+  }
+
+  const fetchReservations = async (employeeId: string) => {
+    try {
+      const { services, employeeWeekSchedules, employeeSpecificSchedules } =
+        await fetchEmployee(employeeId)
+      setWeekSchedule(employeeWeekSchedules)
+      setWeekSpecificSchedule(
+        employeeSpecificSchedules.filter(
+          (schedule) => schedule.status === "ACCEPTED"
+        )
+      )
+
+      // reservation pour tous les services toujours actif
+      const slotsData = services
+        .map((service) => service.slots)
+        .flat()
+        .filter((slot) => slot.status === "reserved")
+
+      // Filter reservations during this week
+      const mondayOfWeek = weekDays?.[0]?.date.getTime() || new Date().getTime()
+      const endOfWeek = mondayOfWeek + dayInSeconds * 1000 * 5 // Vendredi soir
+
+      const reservationsDuringWeek = slotsData.filter(
+        (slot) =>
+          parseInt(slot.startTime) * 1000 > mondayOfWeek &&
+          parseInt(slot.startTime) * 1000 < endOfWeek
+      )
+
+      // Create empty array of Slots[]
+      const weekDaysReservations: Slots[][] = [[], [], [], [], [], [], []]
+
+      // Attribute each reservations to the right days
+      reservationsDuringWeek.forEach((reservation) => {
+        weekDays.forEach((dayOfWeek, indexOfDay) => {
+          if (
+            isInSameDay(
+              dayOfWeek.date,
+              new Date(parseInt(reservation.startTime) * 1000)
+            )
+          )
+            weekDaysReservations[indexOfDay].push(reservation)
+        })
+      })
+      setWeekDays((prevState) =>
+        prevState.map((day, indexOfDay) => ({
+          date: day.date,
+          reservations: weekDaysReservations[indexOfDay]
+        }))
+      )
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  const fetchDataForPlanning = async () => {
+    setIsLoading(true)
+    await loadDatesWeek()
+    await fetchReservations(employeeId)
+    setIsLoading(false)
+  }
   useEffect(() => {
-    loadDatesWeek()
+    fetchDataForPlanning()
   }, [currentDate])
 
   return (
-    <div>
-      <div>{currentDate.toUTCString()}</div>
-      <div>
-        <Button onClick={() => changeWeek(false)}>
-          <ArrowLeftIcon />
-        </Button>
-        <Button onClick={() => changeWeek(true)}>
-          <ArrowRightIcon />
-        </Button>
-      </div>
-      <div className="flex gap-2">
-        {weekDays.map((e, i) => (
-          <div key={i} className="flex flex-col gap-2 bg-cyan-100 p-4 rounded">
-            <div className="flex flex-col items-center">
-              <span className="font-bold text-lg">{dayOfWeek(e, true)}</span>
-              <span>{dateToString(e)}</span>
-            </div>
+    <div className="flex w-fit gap-4 rounded bg-white p-2">
+      <Button
+        variant="ghost"
+        onClick={() => changeWeek(false)}
+        disabled={cantChangePreviousWeek()}
+        className={cn(
+          cantChangePreviousWeek() ? "text-gray-500" : "text-cyan-500"
+        )}
+      >
+        <ChevronLeftIcon height={scaleButton} width={scaleButton} />
+      </Button>
+      {isLoading && <LoaderIcon />}
+      {!isLoading && (
+        <div>
+          <div className="flex gap-2">
+            {weekDays.map((day, i) => (
+              <div key={i} className="flex flex-col gap-2 rounded ">
+                <div className="flex flex-col items-center">
+                  <span className="text-lg font-bold">
+                    {dayOfWeek(day.date, true)}
+                  </span>
+                  <span>{dateToString(day.date)}</span>
+                </div>
+                <div className="flex flex-col gap-2 ">
+                  {getAvailableReservation({
+                    day: day.date,
+                    reservations: day.reservations,
+                    semaineTypeUser: weekSchedule,
+                    specificSchedule: weekSpecificSchedule,
+                    duration: duration
+                  }).map((dateOfReservation, i) =>
+                    isPlanningExpanded || i < 4 ? (
+                      <AvailableSlot
+                        key={i}
+                        idReservation={idReservation}
+                        dateOfReservation={dateOfReservation}
+                        duration={duration}
+                        serviceId={serviceId}
+                        serviceName={serviceName}
+                      />
+                    ) : null
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+
+          <Button
+            variant="ghost"
+            className="mt-3 w-full font-bold text-cyan-500"
+            onClick={() => setIsPlanningExpanded((prevState) => !prevState)}
+          >
+            Voir {isPlanningExpanded ? "moins" : "plus"} d'horaires
+          </Button>
+        </div>
+      )}
+
+      <Button
+        variant="ghost"
+        onClick={() => changeWeek(true)}
+        className={cn("text-cyan-500")}
+      >
+        <ChevronRightIcon height={scaleButton} width={scaleButton} />
+      </Button>
     </div>
   )
 }

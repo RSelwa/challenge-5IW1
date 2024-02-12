@@ -1,0 +1,62 @@
+name: 🐳 Build and push Back
+
+on:
+  workflow_call:
+
+jobs:
+  docker-push-server:
+    name: 🐳 Build and push server
+    runs-on: ubuntu-latest
+    steps:
+      - name: ✨ Checkout
+        uses: actions/checkout@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          target: server
+          context: ./back
+          build-args: |
+            "APP_ENV=prod"
+          push: true
+          tags: rselwa/challenge-s1:server
+  docker-push-php:
+    name: 🐳 Build and push php
+    runs-on: ubuntu-latest
+    steps:
+      - name: ✨ Checkout
+        uses: actions/checkout@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          target: php
+          context: ./back
+          build-args: |
+            "APP_ENV=prod"
+          push: true
+          tags: rselwa/challenge-s1:php
+
+  # pull-and-deploy-server-php:
+  #   name: 🐋 Pull and deploy server php
+  #   runs-on: ubuntu-latest
+  #   needs: docker-push-server
+  #   steps:
+  #     - name: ✨ Checkout p
+  #       uses: actions/checkout@v3

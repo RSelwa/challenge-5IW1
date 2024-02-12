@@ -1,0 +1,21 @@
+export const specialisationsDoctolib = [
+  "Medecin generaliste",
+  "Dentiste",
+  "Gynecologue",
+  "Cardiologue",
+  "Pediatre",
+  "Dermatologue",
+  "Ophtalmologiste",
+  "Rhumatologue",
+  "Gastro-enterologue",
+  "Chirurgien orthopedique",
+  "Neurologue",
+  "Psychiatre",
+  "Urologue",
+  "Radiologue",
+  "Endocrinologue",
+  "Nephrologue",
+  "Orthodontiste",
+  "Oncologue",
+  "Allergologue"
+]

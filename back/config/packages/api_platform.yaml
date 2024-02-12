@@ -10,3 +10,21 @@ api_platform:
             vary: ['Content-Type', 'Authorization', 'Origin']
         extra_properties:
             standard_put: true
+
+    formats:
+        json: ['application/json']
+        jsonld: ['application/json+ld']
+        html: ['text/html']
+        multipart: ['multipart/form-data']
+    
+    swagger:
+         api_keys:
+             JWT:
+                name: Authorization
+                type: header
+
+
+    resource_class_directories:
+        - '%kernel.project_dir%/src/Dto'
+        - '%kernel.project_dir%/src/Controller'
+   

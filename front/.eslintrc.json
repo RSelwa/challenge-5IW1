@@ -1,13 +1,17 @@
 {
   "$schema": "https://json.schemastore.org/eslintrc",
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": { "sourceType": "module" },
+  "env": { "es6": true },
   "extends": [
     "plugin:import/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:tailwindcss/recommended",
     "prettier"
   ],
-  "plugins": ["@typescript-eslint", "unused-imports"],
+  "plugins": ["@typescript-eslint", "typescript-sort-keys", "unused-imports"],
   "rules": {
+    "import/no-unresolved": "off", //! FUCK this
     "unused-imports/no-unused-imports": "error",
     "unused-imports/no-unused-vars": [
       "warn",
@@ -46,9 +50,7 @@
     ],
     "comma-dangle": ["error", "never"],
     "react/no-unescaped-entities": "off",
-    "@next/next/no-img-element": "off",
     "react-hooks/rules-of-hooks": "off",
-    "@next/next/no-sync-scripts": "off",
     "object-curly-newline": "off",
     "react-hooks/exhaustive-deps": "off",
     "max-depth": ["error", 4],
@@ -57,5 +59,13 @@
     "@typescript-eslint/no-non-null-assertion": "warn",
     "@typescript-eslint/no-explicit-any": "off",
     "tailwindcss/no-custom-classname": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [["@", "./src"]],
+        "extensions": [".ts", ".js", ".jsx", ".tsx"]
+      }
+    }
   }
 }

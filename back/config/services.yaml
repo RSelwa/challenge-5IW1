@@ -19,6 +19,35 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+    
+    acme_api.event.jwt_created_listener:
+        class: App\EventListener\JWTCreatedListener
+        arguments: [ '@request_stack' ]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+    
+    api_platform.cache.metadata.property:
+        parent: cache.system
+        tags: [ cache.pool ]
+    api_platform.cache.metadata.resource:
+        parent: cache.system
+        tags: [ cache.pool ]
+    api_platform.cache.metadata.resource_collection:
+        parent: cache.system
+        tags: [ cache.pool ]
+    api_platform.cache.route_name_resolver:
+        parent: cache.system
+        tags: [ cache.pool ]
+    api_platform.cache.identifiers_extractor:
+        parent: cache.system
+        tags: [ cache.pool ]
+    api_platform.elasticsearch.cache.metadata.document:
+        parent: cache.system
+        tags: [ cache.pool ]
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    App\State\UserPasswordHasher:
+        bind:
+            $processor: '@api_platform.doctrine.orm.state.persist_processor'
+
+    App\Controller\EmailController:
+        tags: ['controller.service_arguments']
