@@ -103,27 +103,6 @@ const DashboardOrga = ({ establishment }: Props) => {
     Colors
   )
 
-  // const fechMyOrga = async () => {
-  //   setIsLoading(true)
-  //   try {
-  //     const orga = await fetchOrganization(id)
-  //     if (!orga || !orga?.establishments) return
-  //     setOrganisation(orga)
-  //   } catch (error) {
-  //     console.error(error)
-  //   }
-  //   setIsLoading(false)
-  // }
-
-  // useEffect(() => {
-  //   fechMyOrga()
-  // }, [])
-
-  // useEffect(() => {
-  //   if (organisation && organisation.establishments)
-  //     filterData(organisation.establishments)
-  // }, [organisation])
-
   return (
     <div className=" flex flex-col ">
       <div className="  flex items-center">
