@@ -12,9 +12,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use App\Validator\Constraints as AcmeAssert;
 
 #[ORM\Entity(repositoryClass: AdminRepository::class)]
-#[ApiResource(
-    normalizationContext: [ 'groups' => ['admin:read']],
-)]
 class Admin implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
