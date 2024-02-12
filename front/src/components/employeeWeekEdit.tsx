@@ -1,14 +1,13 @@
 import React, { Fragment, useState } from "react"
+import { Translate } from "react-auto-translate"
 import { useForm } from "react-hook-form"
 import type { SemaineTypeWithId } from "@/types/withId"
-import { daysInWeekSchedule } from "@/constants/date"
+import { daysInWeek } from "@/constants/date"
 import { EMPLOYEE_API_ROUTES } from "@/constants/db"
 import {
   editEmployeeWeekSchedule,
   postEmployeeWeekSchedule
 } from "@/lib/employeeSchedule"
-import { Translate } from "react-auto-translate"
-
 
 type Props = {
   day: SemaineTypeWithId
@@ -53,7 +52,7 @@ const EmployeeWeekEdit = ({ day, fetchEmployeeSchedule }: Props) => {
       onSubmit={handleSubmit(onSubmit)}
       className="space-y-4 rounded bg-white p-2"
     >
-      <p>{daysInWeekSchedule[day.day - 1]}</p>
+      <p>{daysInWeek[day.day]}</p>
       <div className="space-y-2">
         {values.map(({ value, label }) => (
           <fieldset key={value} className="grid grid-cols-5">
@@ -81,7 +80,7 @@ const EmployeeWeekEdit = ({ day, fetchEmployeeSchedule }: Props) => {
               }}
               className="rounded bg-red-500 px-2 py-1 text-sm text-white hover:bg-red-600"
             >
-             <Translate>Annuler</Translate> 
+              <Translate>Annuler</Translate>
             </button>
             <button
               type="submit"

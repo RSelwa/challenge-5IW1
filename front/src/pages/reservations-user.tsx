@@ -3,6 +3,7 @@ import React, { Fragment, useEffect, useState } from "react"
 import * as Dialog from "@radix-ui/react-dialog"
 import { Cross1Icon } from "@radix-ui/react-icons"
 import * as Popover from "@radix-ui/react-popover"
+import { Translate } from "react-auto-translate"
 import { Link, useParams } from "react-router-dom"
 import type { SlotsStatus } from "@/types/api/slots"
 import type { SlotsWithId } from "@/types/withId"
@@ -12,8 +13,6 @@ import { dateToString, getHoursMinutes } from "@/utils/date"
 import Notation from "@/components/Notations"
 import ReservationsPannel from "@/components/ui/reservations-pannel"
 import Planning from "@/pages/planning"
-import { Translate } from "react-auto-translate"
-
 
 const ReservationButton = ({
   reservations,
@@ -39,19 +38,9 @@ const ReservationButton = ({
     reservation.service as any
   ).employee.replace("/api/employees/", "")
 
-  // const slotId = () => {
-  //   const serviceWithId = (reservation.service as any).slots.find(
-  //     (slot: any) => slot.id !== undefined
-  //   )
-  //   return serviceWithId ? serviceWithId.id : undefined
-  // }
   const serviceId = () => {
-    const serviceWithId = (reservation.service as any).slots.find(
-      (slot: any) => slot.service !== undefined
-    )
-    return serviceWithId ? serviceWithId.service : undefined
+    return (reservation?.service as any)?.id || ""
   }
-
   return (
     <div
       key={i}
@@ -62,8 +51,8 @@ const ReservationButton = ({
       className="group flex items-center justify-between border p-4 text-gray-800 transition-all hover:bg-hover data-[state=first]:rounded-t-lg data-[state=last]:rounded-b-lg data-[state=first]:border-b-0 data-[state=middle]:border-b-0 data-[state=first]:border-gray-200 data-[state=last]:border-gray-200 data-[state=middle]:border-gray-200 data-[status=canceled]:bg-red-100 data-[status=passed]:bg-gray-300 data-[status=canceled]:hover:bg-red-100"
     >
       <p>
-        {dateToString(new Date(reservation.startTime))} -{" "}
-        {getHoursMinutes(new Date(reservation.startTime))}
+        {dateToString(new Date(parseInt(reservation.startTime) * 1000))} -{" "}
+        {getHoursMinutes(new Date(parseInt(reservation.startTime) * 1000))}
       </p>
       <div className="flex gap-2 text-sm">
         {reservation.status === "reserved" && (
@@ -78,7 +67,7 @@ const ReservationButton = ({
               )
             }
           >
-          <Translate> Marquer comme passé</Translate>
+            <Translate> Marquer comme passé</Translate>
           </button>
         )}
         {reservation.status === "reserved" && (
@@ -163,12 +152,7 @@ const ReservationUser = () => {
       if (!idUser) return
       const { slots } = await fetchUser(idUser)
 
-      setReservations(
-        slots.sort(
-          (a, b) =>
-            new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
-        )
-      )
+      setReservations(slots.sort((a, b) => a.startTime - b.startTime))
     } catch (error) {
       console.error(error)
     }

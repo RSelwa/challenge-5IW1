@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use App\Repository\OrganizationRepository;
 use App\State\UserPasswordHasher;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -20,18 +21,39 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use App\Validator\Constraints as AcmeAssert;
 
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: OrganizationRepository::class)]
 #[ApiResource(
     normalizationContext: [ 'groups' => ['organization:read', 'service:read', 'employee:read']],
-    denormalizationContext: [ 'groups' => ['organization:write']],
     operations: [
         new Get(),
-        new GetCollection(),
-        new Post(processor: UserPasswordHasher::class),
-        new Put(processor: UserPasswordHasher::class),
-        new Patch(processor: UserPasswordHasher::class),
+        new GetCollection(
+            security: "is_granted('ROLE_ADMIN')",
+        ),
+        new Post(
+            processor: UserPasswordHasher::class,
+            denormalizationContext: ['groups' => 'organization:create'],
+            validationContext: ['groups' => 'organization:create'],
+        ),
+        new Patch(
+            processor: UserPasswordHasher::class,
+            security: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_ORGANIZATION') and object.getId() == user.getId())
+            ",
+            securityMessage: "Operation not permitted",
+            inputFormats: [ "json" ],
+            denormalizationContext: ['groups' => 'organization:update'],
+        ),
+        new Delete(
+            security: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_ORGANIZATION') and object.getId() == user.getId())
+            ",
+            securityMessage: "Operation not permitted",
+        )
     ],
 )]
 
@@ -45,38 +67,46 @@ class Organization implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'organization:write', 'employee:read'])]
+    #[Groups(['organization:read', 'organization:create', 'employee:read', 'organization:update'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'organization:write', 'employee:read'])]
+    #[Groups(['organization:read', 'organization:create', 'employee:read', 'organization:update'])]
     private ?string $managerFirstname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'organization:write', 'employee:read'])]
+    #[Groups(['organization:read', 'organization:create', 'employee:read', 'organization:update'])]
     private ?string $managerLastname = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['organization:read'])]
+    #[ApiProperty(
+        security: "
+            is_granted('ROLE_ADMIN') 
+            or (is_granted('ROLE_ORGANIZATION') and object.getId() == user.getId())
+        ",
+    )]
     private ?string $kbis = null;
 
     #[Vich\UploadableField(mapping: 'kbis_upload', fileNameProperty: 'kbis')]
-    #[Groups(['organization:write'])]
+    #[Groups(['organization:create'])]
     private ?File $kbisFile = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['organization:read', 'organization:write', 'employee:read'])]
+    #[Groups(['organization:read', 'organization:create', 'employee:read'])]
     private ?string $siret = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'organization:write', 'employee:read'])]
+    #[Groups(['organization:read', 'organization:create', 'employee:read' ])]
+    #[AcmeAssert\UniqueEmail(groups: ['organization:create'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'put:admin', 'employee:read'])]
+    #[Groups(['organization:read', 'put:admin', 'employee:read', 'organization:update'])]
+    #[ApiProperty(security: "is_granted('ROLE_ADMIN')")]
     private ?string $status = 'PENDING';
 
     #[ORM\OneToMany(mappedBy: 'organization', targetEntity: Establishment::class)]
@@ -85,7 +115,7 @@ class Organization implements UserInterface, PasswordAuthenticatedUserInterface
 
     private ?array $roles = ['ROLE_ORGANIZATION'];
 
-    #[Groups(['organization:write'])]
+    #[Groups(['organization:create'])]
     private ?string $plainPassword = null;
 
     public function __construct()
@@ -156,7 +186,7 @@ class Organization implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getKbisFile(): File
+    public function getKbisFile(): ?File
     {
         return $this->kbisFile;
     }

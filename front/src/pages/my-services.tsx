@@ -5,7 +5,7 @@ import { Translate } from "react-auto-translate"
 import { LoaderIcon } from "react-hot-toast"
 import { useParams } from "react-router-dom"
 import type { ServicesWithId } from "@/types/withId"
-import { fetchServices } from "@/lib/services"
+import { fetchEmployee } from "@/lib/employees"
 import ModalEditService from "@/components/modal-edit-service"
 import ModalNewService from "@/components/modal-new-service"
 
@@ -16,11 +16,8 @@ const MyServices = () => {
   const fetchMyServices = async () => {
     try {
       setIsLoading(true)
-      const services = await fetchServices()
-      const myServices = services.filter(
-        (service) => service.employee.id === employeeId
-      )
-      setServices(myServices)
+      const { services } = await fetchEmployee(employeeId || "")
+      setServices(services)
     } catch (error) {
       console.log(error)
     }

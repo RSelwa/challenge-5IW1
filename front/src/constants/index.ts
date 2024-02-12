@@ -1,3 +1,7 @@
+import type {
+  StatusSpecificSchedule,
+  TypeSpecificScheduleEmployee
+} from "@/types/api/employeeSpecificSchedule"
 import type { HoraireType, SemaineType } from "@/types/api/slots"
 
 export const dropdownMenuSideOffset = 0
@@ -40,3 +44,15 @@ export const AVATAR_COLORS = {
     name: "Mother Frances"
   }
 }
+
+export const TYPE_SPECIFIC_SCHEDULE: TypeSpecificScheduleEmployee[] = [
+  "conges",
+  "maladie",
+  "formation",
+  "autre"
+]
+export const STATUS_SPECIFIC_SCHEDULE: StatusSpecificSchedule[] = [
+  "PENDING",
+  "ACCEPTED",
+  "REFUSED"
+]

@@ -14,7 +14,7 @@ const Home = () => {
   const [resultsSearch, setResultsSearch] = useState<EmployeesWithId[]>([])
   const [searchQuery, setSearchQuery] = useState<SearchQuery>({
     service: "",
-    radiusInKm: 99999,
+    radiusInKm: 5,
     localisation: {
       address: "",
       geometry: {

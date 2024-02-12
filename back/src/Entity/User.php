@@ -3,10 +3,10 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use ApiPlatform\Metadata\Get;
 use App\Repository\UserRepository;
 use App\State\UserPasswordHasher;
@@ -17,21 +17,38 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Validator\Constraints as AcmeAssert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: "\"user\"")]
 #[ApiResource(
-    normalizationContext: [ 'groups' => ['user:read', 'slot:read']],
+    normalizationContext: [ 'groups' => ['user:read']],
     operations: [
-        new Get(),
-        new GetCollection(),
-        new Post(processor: UserPasswordHasher::class),
-        new Put(processor: UserPasswordHasher::class),
-        new Patch(
-            normalizationContext: ['groups' => 'user-read-update'],
-            denormalizationContext: ['groups' => 'user-update'],
-            validationContext: ['groups' => 'user-update']
+        new Get(
+            security: "
+                is_granted('ROLE_ADMIN')
+                or (is_granted('ROLE_USER') and object.getId() == user.getId())
+            ",
         ),
+        new GetCollection(
+            security: "is_granted('ROLE_ADMIN')",
+        ),
+        new Post(
+            processor: UserPasswordHasher::class,
+            denormalizationContext: ['groups' => 'user:create'],
+            validationContext: ['groups' => 'user:create']
+        ),
+        new Patch(
+            processor: UserPasswordHasher::class,
+            security: "is_granted('ROLE_ADMIN') or (is_granted('ROLE_USER') and object.getId() == user.getId())",
+            securityMessage: "Operation not permitted",
+            inputFormats: [ "json" ],
+            denormalizationContext: ['groups' => 'user:update'],
+        ),
+        new Delete(
+            security: "is_granted('ROLE_ADMIN')",
+            securityMessage: "Operation not permitted",
+        )
     ],
 )]
 
@@ -41,19 +58,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'slot:read'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user-read-update', 'user-update'])]
+    #[Groups(['user:read', 'user:create', 'user:update'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user-read-update', 'user-update'])]
+    #[Groups(['user:read', 'user:create', 'user:update'])]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user-read-update', 'user-update'])]
+    #[Groups(['user:read', 'user:create'])]
+    #[AcmeAssert\UniqueEmail(groups: ['user:create'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
@@ -65,10 +83,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     private ?array $roles = ['ROLE_USER'];
 
-    #[Groups(['user:write'])]
+    #[Groups(['user:create', 'user:update'])]
     private ?string $plainPassword = null;
 
     #[ORM\OneToMany(mappedBy: 'idNotationFrom', targetEntity: Notations::class, orphanRemoval: true)]
+    #[Groups(['user:read'])]
     private Collection $notations;
 
 

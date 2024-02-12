@@ -5,6 +5,7 @@ import {
   EMPLOYEE_KEY_EXCEPTION,
   EMPLOYEE_KEY_LINK_EDIT,
   EMPLOYEE_SPECIFIC_SCHEDULE_KEY_EXCEPTION,
+  EMPLOYEE_WEEK_SCHEDULE_KEY_EXCEPTION,
   ESTABLISHMENT_KEY_EXCEPTION,
   ESTABLISHMENT_KEY_LINK_EDIT,
   ORGANIZATION_KEY_EXCEPTION,
@@ -14,8 +15,19 @@ import {
   USER_KEY_EXCEPTION
 } from "@/constants/admin"
 import {
+  EMPLOYEE_API_ROUTES,
+  EMPLOYEESPECIFICSCHEDULE_API_ROUTES,
+  EMPLOYEEWEEKSCHEDULE_API_ROUTES,
+  ESTABLISHMENT_API_ROUTES,
+  ORGANIZATION_API_ROUTES,
+  SERVICE_API_ROUTES,
+  SLOT_API_ROUTES,
+  USER_API_ROUTES
+} from "@/constants/db"
+import {
   employeesHeader,
   employeesSpecificSchedulesHeader,
+  employeesWeekSchedulesHeader,
   establishmentsHeader,
   organizationsHeader,
   servicesHeader,
@@ -23,6 +35,11 @@ import {
   usersHeader
 } from "@/constants/tableHeaders"
 import { editEmployee, fetchEmployee, fetchEmployees } from "@/lib/employees"
+import {
+  editEmployeeWeekSchedule,
+  fetchEmployeeWeekSchedule,
+  fetchEmployeeWeekSchedules
+} from "@/lib/employeeSchedule"
 import {
   editEmployeeSpecificSchedule,
   fetchEmployeeSpecificSchedule,
@@ -46,6 +63,7 @@ import AdminView from "@/components/AdminView"
 import Layout from "@/components/Layout"
 import EmployeeSpecificScheduleRows from "@/components/Rows/admin/EmployeeSpecificScheduleRows"
 import EmployeesRows from "@/components/Rows/admin/EmployeesRows"
+import EmployeeWeekScheduleRows from "@/components/Rows/admin/EmployeesWeekSchedulesRows"
 import EstablishmentsRows from "@/components/Rows/admin/EstablishmentsRows"
 import OrganizationsRows from "@/components/Rows/admin/OrganizationsRows"
 import ServicesRows from "@/components/Rows/admin/ServicesRows"
@@ -61,9 +79,11 @@ import MyServices from "@/pages/my-services"
 import MyAccount from "@/pages/MyAccount"
 import NewEstablisement from "@/pages/new-establishment"
 import ReservationCreneau from "@/pages/reservation-creneau"
+import ReservationHistory from "@/pages/reservation-history"
 import ReservationService from "@/pages/reservation-service"
 import ReservationUser from "@/pages/reservations-user"
 import EmployeeSchedule from "@/pages/schedule-employee"
+import SpecificScheduleEmployee from "@/pages/specific-schedule-employee"
 
 const getLayout = (
   element: JSX.Element,
@@ -90,6 +110,14 @@ const organisationRoutes: RouteObject[] = [
     element: getLayout(<EmployeeSchedule />)
   },
   {
+    path: "/specific-schedule/:employeeId",
+    element: getLayout(<SpecificScheduleEmployee />)
+  },
+  {
+    path: "/my-specific-schedule/:employeeId",
+    element: getLayout(<SpecificScheduleEmployee />)
+  },
+  {
     path: "/my-services/:employeeId",
     element: getLayout(<MyServices />)
   }
@@ -103,6 +131,10 @@ const defaultRoutes: RouteObject[] = [
   {
     path: "/reservation-service/:idEmployee",
     element: getLayout(<ReservationService />)
+  },
+  {
+    path: "/reservation-history/:id", //id of employee or organisations
+    element: getLayout(<ReservationHistory />)
   },
   {
     path: "/reservations/:idUser",
@@ -143,7 +175,6 @@ export const adminRoutes: RouteObject[] = [
       true
     )
   },
-
   {
     path: "/admin/slots",
     element: getLayout(
@@ -155,7 +186,6 @@ export const adminRoutes: RouteObject[] = [
       true
     )
   },
-
   {
     path: "/admin/services",
     element: getLayout(
@@ -167,7 +197,6 @@ export const adminRoutes: RouteObject[] = [
       true
     )
   },
-
   {
     path: "/admin/organizations",
     element: getLayout(
@@ -179,7 +208,6 @@ export const adminRoutes: RouteObject[] = [
       true
     )
   },
-
   {
     path: "/admin/establishments",
     element: getLayout(
@@ -191,7 +219,6 @@ export const adminRoutes: RouteObject[] = [
       true
     )
   },
-
   {
     path: "/admin/employees",
     element: getLayout(
@@ -203,7 +230,6 @@ export const adminRoutes: RouteObject[] = [
       true
     )
   },
-
   {
     path: "/admin/employeeSpecificSchedules",
     element: getLayout(
@@ -216,9 +242,21 @@ export const adminRoutes: RouteObject[] = [
     )
   },
   {
+    path: "/admin/employeeWeekSchedules",
+    element: getLayout(
+      <AdminView
+        Rows={EmployeeWeekScheduleRows}
+        promiseFetch={fetchEmployeeWeekSchedules}
+        header={employeesWeekSchedulesHeader}
+      />,
+      true
+    )
+  },
+  {
     path: "/admin/users/:id",
     element: getLayout(
       <ItemId
+        route={USER_API_ROUTES}
         fetchItem={fetchUser}
         dataKeyException={USER_KEY_EXCEPTION}
         editFunctions={editUser}
@@ -230,6 +268,7 @@ export const adminRoutes: RouteObject[] = [
     path: "/admin/slots/:id",
     element: getLayout(
       <ItemId
+        route={SLOT_API_ROUTES}
         fetchItem={fetchSlot}
         dataKeyException={SLOT_KEY_EXCEPTION}
         editFunctions={editSlot}
@@ -241,6 +280,7 @@ export const adminRoutes: RouteObject[] = [
     path: "/admin/services/:id",
     element: getLayout(
       <ItemId
+        route={SERVICE_API_ROUTES}
         fetchItem={fetchService}
         dataKeyException={SERVICE_KEY_EXCEPTION}
         editFunctions={editService}
@@ -252,6 +292,7 @@ export const adminRoutes: RouteObject[] = [
     path: "/admin/organizations/:id",
     element: getLayout(
       <ItemId
+        route={ORGANIZATION_API_ROUTES}
         fetchItem={fetchOrganization}
         dataKeyException={ORGANIZATION_KEY_EXCEPTION}
         editFunctions={editOrganization}
@@ -264,6 +305,7 @@ export const adminRoutes: RouteObject[] = [
     path: "/admin/establishments/:id",
     element: getLayout(
       <ItemId
+        route={ESTABLISHMENT_API_ROUTES}
         fetchItem={fetchEstablishment}
         dataKeyException={ESTABLISHMENT_KEY_EXCEPTION}
         editFunctions={editEstablishment}
@@ -276,6 +318,7 @@ export const adminRoutes: RouteObject[] = [
     path: "/admin/employees/:id",
     element: getLayout(
       <ItemId
+        route={EMPLOYEE_API_ROUTES}
         fetchItem={fetchEmployee}
         dataKeyException={EMPLOYEE_KEY_EXCEPTION}
         editFunctions={editEmployee}
@@ -288,9 +331,22 @@ export const adminRoutes: RouteObject[] = [
     path: "/admin/employeeSpecificSchedules/:id",
     element: getLayout(
       <ItemId
+        route={EMPLOYEESPECIFICSCHEDULE_API_ROUTES}
         fetchItem={fetchEmployeeSpecificSchedule}
         dataKeyException={EMPLOYEE_SPECIFIC_SCHEDULE_KEY_EXCEPTION}
         editFunctions={editEmployeeSpecificSchedule}
+      />,
+      true
+    )
+  },
+  {
+    path: "/admin/employeeWeekSchedules/:id",
+    element: getLayout(
+      <ItemId
+        route={EMPLOYEEWEEKSCHEDULE_API_ROUTES}
+        fetchItem={fetchEmployeeWeekSchedule}
+        dataKeyException={EMPLOYEE_WEEK_SCHEDULE_KEY_EXCEPTION}
+        editFunctions={editEmployeeWeekSchedule}
       />,
       true
     )

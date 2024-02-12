@@ -1,7 +1,7 @@
 export type Slots = {
   service: string
   user: string
-  startTime: string //timestamp
+  startTime: any //timestamp
   duration: string
   status: SlotsStatus
 }

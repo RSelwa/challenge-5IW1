@@ -1,8 +1,7 @@
-import type { EmployeesWithId } from "@/types/withId"
 import type { EmployeePost } from "@/types/api/employees"
-
+import type { EmployeesWithId } from "@/types/withId"
 import { EMPLOYEE_API_ROUTES } from "@/constants/db"
-import { formDataHeader, requestOptions } from "@/utils/db"
+import { requestOptions } from "@/utils/db"
 
 export const fetchEmployees = async (): Promise<EmployeesWithId[]> => {
   const response = await fetch(
@@ -41,16 +40,20 @@ export const editEmployee = async (employee: EmployeesWithId) => {
 }
 
 export const postEmployee = async (employee: EmployeePost) => {
-  const { headers, formData } = formDataHeader(employee)
-
+  const newHeader = new Headers()
+  newHeader.append("Content-Type", "application/json")
+  newHeader.append(
+    "Authorization",
+    `Bearer ${localStorage.getItem("token")?.replaceAll('"', "") || ""}`
+  )
   const response = await fetch(
     `${import.meta.env.VITE_API_URL}${EMPLOYEE_API_ROUTES}`,
-    requestOptions({
+    {
       method: "POST",
-      headers,
-      body: formData
-    })
+      body: JSON.stringify(employee),
+      headers: newHeader
+    }
   )
   if (!response.ok) throw new Error("Something went wrong")
-  
+  return response.json()
 }

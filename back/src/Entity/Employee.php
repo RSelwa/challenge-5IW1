@@ -3,11 +3,11 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use App\Repository\EmployeeRepository;
 use App\State\UserPasswordHasher;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,17 +17,34 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Validator\Constraints as AcmeAssert;
 
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
 #[ApiResource(
     normalizationContext: [ 'groups' => ['employee:read', 'slot:read']],
-    denormalizationContext: [ 'groups' => ['employee:write']],
     operations: [
         new Get(),
         new GetCollection(),
-        new Post(processor: UserPasswordHasher::class),
-        new Put(processor: UserPasswordHasher::class),
-        new Patch(processor: UserPasswordHasher::class),
+        new Post(
+            processor: UserPasswordHasher::class,
+            securityPostDenormalize: "
+                is_granted('ROLE_ADMIN') 
+                or (is_granted('ROLE_ORGANIZATION') and object.getEstablishment().getOrganization().getId() == user.getId())
+            ",
+            denormalizationContext: ['groups' => 'employee:create'],
+            validationContext: ['groups' => 'employee:create'],
+        ),
+        new Patch(
+            processor: UserPasswordHasher::class,
+            security: "is_granted('ROLE_ADMIN') or (is_granted('ROLE_EMPLOYEE') and object.getId() == user.getId())",
+            securityMessage: "Operation not permitted",
+            inputFormats: [ "json" ],
+            denormalizationContext: ['groups' => 'employee:update'],
+        ),
+        new Delete(
+            security: "is_granted('ROLE_ADMIN')",
+            securityMessage: "Operation not permitted",
+        )
     ],
 )]
 
@@ -37,24 +54,24 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    #[Groups(['organization:read', 'establishment:read', 'employee:read'])]
+    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'slot:read'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:write'])]
+    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:create', 'employee:update'])]
     private ?string $category = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:write'])]
+    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:create', 'employee:update'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:write'])]
+    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:create', 'employee:update'])]
     private ?string $lastname = null;
 
     #[ORM\ManyToOne(inversedBy: 'employees')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['employee:read', 'employee:write'])]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    #[Groups(['employee:read', 'employee:create'])]
     private ?Establishment $establishment = null;
     
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: EmployeeSpecificSchedule::class)]
@@ -62,7 +79,8 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $employeeSpecificSchedules;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['establishment:read', 'employee:read', 'employee:write'])]
+    #[Groups(['establishment:read', 'employee:read', 'employee:create'])]
+    #[AcmeAssert\UniqueEmail(groups: ['employee:create'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
@@ -70,7 +88,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
 
     private ?array $roles = ['ROLE_EMPLOYEE'];
 
-    #[Groups(['employee:write'])]
+    #[Groups(['employee:create'])]
     private ?string $plainPassword = null;
 
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: EmployeeWeekSchedule::class)]
@@ -81,11 +99,16 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['establishment:read', 'employee:read'])]
     private Collection $services;
 
+    #[ORM\OneToMany(mappedBy: 'idNotationTarget', targetEntity: Notations::class, orphanRemoval: true)]
+    #[Groups(['employee:read'])]
+    private Collection $notations;
+
     public function __construct()
     {
         $this->employeeSpecificSchedules = new ArrayCollection();
         $this->employeeWeekSchedules = new ArrayCollection();
         $this->services = new ArrayCollection();
+        $this->notations = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -305,6 +328,33 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($service->getEmployee() === $this) {
                 $service->setEmployee(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getNotations(): Collection
+    {
+        return $this->notations;
+    }
+
+    public function addNotations(Notations $notations): static
+    {
+        if (!$this->notations->contains($notations)) {
+            $this->notations->add($notations);
+            $notations->setIdNotationTarget($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotations(Notations $notations): static
+    {
+        if ($this->notations->removeElement($notations)) {
+            // set the owning side to null (unless already changed)
+            if ($notations->getIdNotationTarget() === $this) {
+                $notations->setIdNotationTarget(null);
             }
         }
 

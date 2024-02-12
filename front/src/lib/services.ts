@@ -1,4 +1,4 @@
-import { PostService } from "@/types/api/services"
+import type { PostService } from "@/types/api/services"
 import type { ServicesWithId } from "@/types/withId"
 import { SERVICE_API_ROUTES } from "@/constants/db"
 import { requestOptions } from "@/utils/db"
@@ -49,15 +49,19 @@ export const editService = async (service: Partial<ServicesWithId>) => {
 }
 export const postService = async (service: PostService) => {
   try {
+    const newHeader = new Headers()
+    newHeader.append("Content-Type", "application/json")
+    newHeader.append(
+      "Authorization",
+      `Bearer ${localStorage.getItem("token")?.replaceAll('"', "") || ""}`
+    )
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}${SERVICE_API_ROUTES}`,
 
       {
         method: "POST",
         body: JSON.stringify(service),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8"
-        }
+        headers: newHeader
       }
     )
     if (!response.ok) throw new Error("Something went wrong")

@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
 import type { DataKeyLink } from "@/types/admin"
+import { deleteEntity } from "@/lib/delete"
 import { cn } from "@/utils"
 
 type Props<T> = {
@@ -15,15 +16,20 @@ type Props<T> = {
   onSubmit: (data: T) => Promise<void>
   dataKeyException: string[]
   dataKeyLink?: DataKeyLink
+  id: string
+  route: string
 }
 
 const Edit = <T,>({
   data,
   onSubmit,
   dataKeyException,
-  dataKeyLink
+  dataKeyLink,
+  id,
+  route
 }: Props<T>) => {
   const [isEdit, setIsEdit] = useState(false)
+  const [isLoading, setIsloading] = useState(false)
 
   const { register, getValues, reset } = useForm({
     defaultValues: data as FieldValues
@@ -33,7 +39,16 @@ const Edit = <T,>({
     reset()
     setIsEdit(false)
   }
-  console.log(dataKeyException)
+  const deleteItem = async () => {
+    setIsloading(true)
+    try {
+      if (!id || !route) return
+      await deleteEntity(id, route)
+    } catch (error) {
+      console.error(error)
+    }
+    setIsloading(false)
+  }
 
   return (
     <Form.Root
@@ -46,6 +61,7 @@ const Edit = <T,>({
         })
         setIsEdit(false)
       }}
+      className="mx-auto w-1/2 space-y-4 p-8"
     >
       {Object.entries(data as any)
         .filter(([key]) => !dataKeyException.includes(key))
@@ -61,30 +77,46 @@ const Edit = <T,>({
             dataKeyLink={dataKeyLink}
           />
         ))}
-      <div>
+      <div className="flex gap-2">
         {isEdit ? (
           <Fragment>
             <Button
               type="button"
               className="bg-red-500"
+              disabled={isLoading}
               onClick={cancelChanges}
             >
               Cancel
             </Button>
             <Form.Submit asChild>
-              <Button type="submit" className="bg-green-500">
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="bg-green-500"
+              >
                 Save
               </Button>
             </Form.Submit>
           </Fragment>
         ) : (
-          <Button
-            className="bg-blue-500"
-            type="button"
-            onClick={() => setIsEdit(true)}
-          >
-            Edit
-          </Button>
+          <Fragment>
+            <Button
+              className="bg-blue-500"
+              type="button"
+              disabled={isLoading}
+              onClick={() => setIsEdit(true)}
+            >
+              Edit
+            </Button>
+            <Button
+              className="bg-red-500"
+              type="button"
+              disabled={isLoading}
+              onClick={deleteItem}
+            >
+              Delete
+            </Button>
+          </Fragment>
         )}
       </div>
     </Form.Root>
@@ -137,7 +169,7 @@ const FormItem = <T,>({
   console.log(linkToOther, value)
 
   return (
-    <Form.Field name="test">
+    <Form.Field name="test" className="flex flex-col gap-2">
       <Form.Label>{label} </Form.Label>
       {linkToOther ? (
         linkToOther.type === "array" ? (
