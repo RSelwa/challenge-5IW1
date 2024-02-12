@@ -194,19 +194,21 @@ export const excludeReservedSlots = (
 
     const isSlotsOccpedByReservation = reservations.some((reservation) => {
       const endOfReservation: number =
-        new Date(reservation.startTime).getTime() +
+        new Date(parseInt(reservation.startTime) * 1000).getTime() +
         parseInt(reservation.duration) * 3600000 // duration hour in seconds
 
       const reservationStartDuringSlot =
-        slot.getTime() <= new Date(reservation.startTime).getTime() &&
-        new Date(reservation.startTime).getTime() <= endOfCurrentSlot
+        slot.getTime() <=
+          new Date(parseInt(reservation.startTime) * 1000).getTime() &&
+        new Date(parseInt(reservation.startTime) * 1000).getTime() <
+          endOfCurrentSlot
 
       const reservationCoverSlot =
-        new Date(reservation.startTime).getTime() < slot.getTime() &&
-        endOfReservation > endOfCurrentSlot
+        new Date(parseInt(reservation.startTime) * 1000).getTime() <
+          slot.getTime() && endOfReservation > endOfCurrentSlot
 
       const reservationEndDuringSlot =
-        slot.getTime() <= endOfReservation &&
+        slot.getTime() < endOfReservation &&
         endOfReservation <= endOfCurrentSlot
 
       return (
@@ -244,7 +246,10 @@ export const getAvailableReservation = ({
     defaultHoraireType
 
   const reservationsDuringTheDay = reservations.filter((reservation) =>
-    isInPlageHoraire(new Date(reservation.startTime), horaireOfDay)
+    isInPlageHoraire(
+      new Date(parseInt(reservation.startTime) * 1000),
+      horaireOfDay
+    )
   )
 
   const availableReservations: Date[] = getSlotsByHoraireDay(
@@ -252,6 +257,7 @@ export const getAvailableReservation = ({
     horaireOfDay,
     duration
   )
+
   return excludeReservedSlots(
     availableReservations,
     reservationsDuringTheDay,
