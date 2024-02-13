@@ -117,14 +117,17 @@ export const isInPlageHoraire = (
 export const countRepetitions = (
   firstNumber: number,
   startInterval: number,
-  endInterval: number
+  endInterval: number,
+  isIncludesEndInterval: boolean = false
 ): number => {
   if (firstNumber <= 0 || startInterval >= endInterval) {
     // Cas invalides
     return 0
   }
 
-  const intervalLength = endInterval - startInterval
+  const intervalLength =
+    endInterval + (isIncludesEndInterval ? 1 : 0) - startInterval
+
   const repetitions = Math.floor(intervalLength / firstNumber)
 
   return repetitions
@@ -167,7 +170,8 @@ export const getSlotsByHoraireDay = (
   const availableAprem = countRepetitions(
     duration,
     horaireOfDay.startTimeAfternoon,
-    horaireOfDay.endTimeAfternoon
+    horaireOfDay.endTimeAfternoon,
+    true
   )
 
   const slotsMatin = getSlotsDatesFromRange(
