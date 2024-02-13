@@ -95,7 +95,7 @@ export const isInSameDay = (
 
   // Définir la première date du jour suivant à 29h59
   const finJourSuivant = new Date(premiereDate)
-  finJourSuivant.setHours(29, 59)
+  finJourSuivant.setHours(23, 59)
   finJourSuivant.setDate(finJourSuivant.getDate())
 
   // Vérifier si la deuxième date est comprise dans la plage
@@ -238,6 +238,7 @@ export const getAvailableReservation = ({
   const isDayInSpecificSchedule = specificSchedule.some((daySpecificSchedule) =>
     isInSameDay(new Date(daySpecificSchedule.date), day)
   )
+
   if (isDayInSpecificSchedule) return []
 
   const dayOfTheWeek = day.getDay()
