@@ -29,6 +29,7 @@ import {
   employeesSpecificSchedulesHeader,
   employeesWeekSchedulesHeader,
   establishmentsHeader,
+  notationsHeader,
   organizationsHeader,
   servicesHeader,
   slotsHeader,
@@ -50,6 +51,7 @@ import {
   fetchEstablishment,
   fetchEstablishments
 } from "@/lib/establishments"
+import { fetchNotations } from "@/lib/notations"
 import {
   editOrganization,
   fetchOrganization,
@@ -58,6 +60,15 @@ import {
 import { editService, fetchService, fetchServices } from "@/lib/services"
 import { editSlot, fetchSlot, fetchSlots } from "@/lib/slots"
 import { editUser, fetchUser, fetchUsers } from "@/lib/users"
+import FormPostEmployee from "@/components/admin/form-post-employee"
+import FormPostSpecificSchedules from "@/components/admin/form-post-employeeSpecificSchedules"
+import FormPostWeekSchedules from "@/components/admin/form-post-employeeWeekSchedules"
+import FormPostEstablishment from "@/components/admin/form-post-establishment"
+import FormPostNotation from "@/components/admin/form-post-notation"
+import FormPostOrganisation from "@/components/admin/form-post-organisation"
+import FormPostService from "@/components/admin/form-post-service"
+import FormPostSlot from "@/components/admin/form-post-slot"
+import FormPostUser from "@/components/admin/form-post-user"
 import ItemId from "@/components/admin/ItemId"
 import AdminView from "@/components/AdminView"
 import Layout from "@/components/Layout"
@@ -65,6 +76,7 @@ import EmployeeSpecificScheduleRows from "@/components/Rows/admin/EmployeeSpecif
 import EmployeesRows from "@/components/Rows/admin/EmployeesRows"
 import EmployeeWeekScheduleRows from "@/components/Rows/admin/EmployeesWeekSchedulesRows"
 import EstablishmentsRows from "@/components/Rows/admin/EstablishmentsRows"
+import NotationsRows from "@/components/Rows/admin/NotationsRows"
 import OrganizationsRows from "@/components/Rows/admin/OrganizationsRows"
 import ServicesRows from "@/components/Rows/admin/ServicesRows"
 import SlotsRows from "@/components/Rows/admin/SlotsRows"
@@ -168,6 +180,7 @@ export const adminRoutes: RouteObject[] = [
     path: "/admin/users",
     element: getLayout(
       <AdminView
+        ModalPost={FormPostUser}
         Rows={UsersRowsAdmin}
         promiseFetch={fetchUsers}
         header={usersHeader}
@@ -179,6 +192,7 @@ export const adminRoutes: RouteObject[] = [
     path: "/admin/slots",
     element: getLayout(
       <AdminView
+        ModalPost={FormPostSlot}
         Rows={SlotsRows}
         promiseFetch={fetchSlots}
         header={slotsHeader}
@@ -190,6 +204,7 @@ export const adminRoutes: RouteObject[] = [
     path: "/admin/services",
     element: getLayout(
       <AdminView
+        ModalPost={FormPostService}
         Rows={ServicesRows}
         promiseFetch={fetchServices}
         header={servicesHeader}
@@ -201,6 +216,7 @@ export const adminRoutes: RouteObject[] = [
     path: "/admin/organizations",
     element: getLayout(
       <AdminView
+        ModalPost={FormPostOrganisation}
         Rows={OrganizationsRows}
         promiseFetch={fetchOrganizations}
         header={organizationsHeader}
@@ -209,9 +225,22 @@ export const adminRoutes: RouteObject[] = [
     )
   },
   {
+    path: "/admin/notations",
+    element: getLayout(
+      <AdminView
+        ModalPost={FormPostNotation}
+        Rows={NotationsRows}
+        promiseFetch={fetchNotations}
+        header={notationsHeader}
+      />,
+      true
+    )
+  },
+  {
     path: "/admin/establishments",
     element: getLayout(
       <AdminView
+        ModalPost={FormPostEstablishment}
         Rows={EstablishmentsRows}
         promiseFetch={fetchEstablishments}
         header={establishmentsHeader}
@@ -223,6 +252,7 @@ export const adminRoutes: RouteObject[] = [
     path: "/admin/employees",
     element: getLayout(
       <AdminView
+        ModalPost={FormPostEmployee}
         Rows={EmployeesRows}
         promiseFetch={fetchEmployees}
         header={employeesHeader}
@@ -234,6 +264,7 @@ export const adminRoutes: RouteObject[] = [
     path: "/admin/employeeSpecificSchedules",
     element: getLayout(
       <AdminView
+        ModalPost={FormPostSpecificSchedules}
         Rows={EmployeeSpecificScheduleRows}
         promiseFetch={fetchEmployeeSpecificSchedules}
         header={employeesSpecificSchedulesHeader}
@@ -245,6 +276,7 @@ export const adminRoutes: RouteObject[] = [
     path: "/admin/employeeWeekSchedules",
     element: getLayout(
       <AdminView
+        ModalPost={FormPostWeekSchedules}
         Rows={EmployeeWeekScheduleRows}
         promiseFetch={fetchEmployeeWeekSchedules}
         header={employeesWeekSchedulesHeader}

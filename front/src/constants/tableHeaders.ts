@@ -15,6 +15,11 @@ export const organizationsHeader: HeaderTable[] = [
   { title: "email", width: "33%" },
   { title: "link", width: "10%" }
 ]
+export const notationsHeader: HeaderTable[] = [
+  { withCheckbox: true, title: "id", width: "56%" },
+  { title: "Utilisateur", width: "33%" },
+  { title: "Employée", width: "10%" }
+]
 export const servicesHeader: HeaderTable[] = [
   { withCheckbox: true, title: "id", width: "56%" },
   { title: "email", width: "33%" },
