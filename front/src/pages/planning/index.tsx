@@ -42,7 +42,6 @@ const Planning = ({
   const [isPlanningExpanded, setIsPlanningExpanded] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [weekDays, setWeekDays] = useState<PlanningWeekDay[]>([])
-
   const scaleButton = 24
   const changeWeek = (nextWeek: boolean) =>
     setCurrentDate(
@@ -53,22 +52,6 @@ const Planning = ({
         )
     )
 
-  const loadDatesWeek = () => {
-    setWeekDays([])
-    const { firstday, lastday } = getDateFromWeek(currentDate)
-    const diff = differenceDaysBetweenTwoDates(firstday, lastday)
-
-    for (let index = 0; index < diff; index++)
-      setWeekDays((prevState) => [
-        ...prevState,
-        {
-          date: getInitialDay(
-            new Date(firstday.getTime() + index * dayInSeconds * 1000)
-          ),
-          reservations: []
-        }
-      ])
-  }
   const cantChangePreviousWeek = (): boolean => {
     const currentTime = new Date().getTime()
     const begginingOfTheWeek = currentDate.getTime()
@@ -80,9 +63,27 @@ const Planning = ({
   }
 
   const fetchReservations = async (employeeId: string) => {
+    setIsLoading(true)
     try {
       const { services, employeeWeekSchedules, employeeSpecificSchedules } =
         await fetchEmployee(employeeId)
+
+      // Set days
+      const { firstday, lastday } = getDateFromWeek(currentDate)
+      const diff = differenceDaysBetweenTwoDates(firstday, lastday)
+      const newWeekDays: PlanningWeekDay[] = []
+
+      for (let index = 0; index < diff; index++)
+        newWeekDays.push({
+          date: getInitialDay(
+            new Date(firstday.getTime() + index * dayInSeconds * 1000)
+          ),
+          reservations: []
+        })
+
+      setWeekDays(newWeekDays)
+
+      // Filter all data
       setWeekSchedule(employeeWeekSchedules)
       setWeekSpecificSchedule(
         employeeSpecificSchedules.filter(
@@ -97,7 +98,8 @@ const Planning = ({
         .filter((slot) => slot.status === "reserved")
 
       // Filter reservations during this week
-      const mondayOfWeek = weekDays?.[0]?.date.getTime() || new Date().getTime()
+      const mondayOfWeek =
+        newWeekDays?.[0]?.date.getTime() || new Date().getTime()
       const endOfWeek = mondayOfWeek + dayInSeconds * 1000 * 5 // Vendredi soir
 
       const reservationsDuringWeek = slotsData.filter(
@@ -111,7 +113,7 @@ const Planning = ({
 
       // Attribute each reservations to the right days
       reservationsDuringWeek.forEach((reservation) => {
-        weekDays.forEach((dayOfWeek, indexOfDay) => {
+        newWeekDays.forEach((dayOfWeek, indexOfDay) => {
           if (
             isInSameDay(
               dayOfWeek.date,
@@ -121,8 +123,8 @@ const Planning = ({
             weekDaysReservations[indexOfDay].push(reservation)
         })
       })
-      setWeekDays((prevState) =>
-        prevState.map((day, indexOfDay) => ({
+      setWeekDays(
+        newWeekDays.map((day, indexOfDay) => ({
           date: day.date,
           reservations: weekDaysReservations[indexOfDay]
         }))
@@ -130,15 +132,11 @@ const Planning = ({
     } catch (error) {
       console.error(error)
     }
-  }
-  const fetchDataForPlanning = async () => {
-    setIsLoading(true)
-    await loadDatesWeek()
-    await fetchReservations(employeeId)
     setIsLoading(false)
   }
+
   useEffect(() => {
-    fetchDataForPlanning()
+    fetchReservations(employeeId)
   }, [currentDate])
 
   return (
