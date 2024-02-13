@@ -41,11 +41,13 @@ const ModalNewSpecificSchedule = ({
         }
 
         await postEmployeeSpecificSchedule(newSchedule)
+        fetchEmployeeSpecificSchedule()
       } else {
         const daysOfSchedule = getDatesBetween(
           new Date(data.date),
           new Date(data.endDate)
         )
+
         daysOfSchedule.forEach(async (date) => {
           const newSchedule: PostSpecificSchedule = {
             employee: data.employee,
@@ -56,8 +58,8 @@ const ModalNewSpecificSchedule = ({
 
           await postEmployeeSpecificSchedule(newSchedule)
         })
+        fetchEmployeeSpecificSchedule()
       }
-      fetchEmployeeSpecificSchedule()
     } catch (error) {
       console.error(error)
     }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import { LoaderIcon } from "react-hot-toast"
 import { useParams } from "react-router-dom"
 import type { SlotsWithId } from "@/types/withId"
 import { fetchEmployee } from "@/lib/employees"
@@ -10,6 +11,7 @@ const ReservationHistory = () => {
   const { id } = useParams()
   const { roles } = parseJwt(localStorage.getItem("token") || "")
   if (!id) return null
+  const [isLoading, setIsLoading] = useState(false)
   const [slots, setSlots] = useState<SlotsWithId[]>([])
   const fetchOrganisation = async () => {
     try {
@@ -45,16 +47,22 @@ const ReservationHistory = () => {
   return (
     <div className="mx-auto w-1/2 space-y-4 p-8">
       <h1>Réservations</h1>
-      <div className="">
-        {slots.map((slot, i) => (
-          <ReservationHistoryRow
-            slot={slot}
-            key={i}
-            i={i}
-            slotsLength={slots.length}
-          />
-        ))}
-      </div>
+      {isLoading ? (
+        <LoaderIcon />
+      ) : (
+        <div>
+          {slots.map((slot, i) => (
+            <ReservationHistoryRow
+              slot={slot}
+              key={i}
+              i={i}
+              slotsLength={slots.length}
+              fetchEmployeeData={fetchEmployeeData}
+              setIsLoading={setIsLoading}
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

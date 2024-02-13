@@ -2,6 +2,7 @@ import React from "react"
 import { Button } from "@radix-ui/themes"
 import { Translate } from "react-auto-translate"
 import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
 import type { SigninOrgaFormData } from "@/types/formData"
 import type { EmailType } from "@/types/mail"
 import { postEmail } from "@/lib/mail"
@@ -9,7 +10,7 @@ import { postOrganization } from "@/lib/organizations"
 
 const SigninOrganizationForm = () => {
   const { handleSubmit, register } = useForm<SigninOrgaFormData>()
-
+  const navigate = useNavigate()
   const onSubmit = async (data: SigninOrgaFormData) => {
     try {
       await postOrganization(data)
@@ -18,7 +19,7 @@ const SigninOrganizationForm = () => {
         subject: "Nouvelle inscription à valider",
         body: `Une nouvelle organisation "${data.name}" demande à être validée. Veuillez vous connecter à votre panel administrateur pour effectuer la validation.`
       }
-
+      navigate("/login")
       await postEmail(emailData)
     } catch (error) {
       console.error(error)

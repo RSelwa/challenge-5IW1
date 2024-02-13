@@ -59,7 +59,7 @@ const EmployeeSchedule = () => {
         </div>
       )}
       {!isLoading && employeeId && (
-        <div className="grid grid-cols-7 gap-3">
+        <div className="flex flex-wrap gap-3">
           {scheduleDays.map((day, i) => (
             <EmployeeWeekEdit
               fetchEmployeeSchedule={fetchEmployeeSchedule}

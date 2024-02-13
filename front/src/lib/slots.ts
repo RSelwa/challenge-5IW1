@@ -78,6 +78,7 @@ export const changeReservationStatus = async (
         body: JSON.stringify({ status: status })
       })
     )
+
     if (!response.ok) throw new Error("Something went wrong")
     callBack()
   } catch (error) {

@@ -57,21 +57,6 @@ const ReservationButton = ({
       <div className="flex gap-2 text-sm">
         {reservation.status === "reserved" && (
           <button
-            className="invisible rounded bg-green-400 px-4 py-2 text-white hover:bg-green-700 group-hover:visible"
-            onClick={() =>
-              changeReservationStatus(
-                reservation.id,
-                "passed",
-                fetchMyReservations,
-                setIsLoading
-              )
-            }
-          >
-            <Translate> Marquer comme passé</Translate>
-          </button>
-        )}
-        {reservation.status === "reserved" && (
-          <button
             className="invisible rounded bg-red-500 px-4 py-2 text-white hover:bg-red-700 group-hover:visible"
             onClick={() =>
               changeReservationStatus(
@@ -130,7 +115,10 @@ const ReservationButton = ({
         {reservation.status === "passed" && (
           <Link
             className="invisible rounded bg-cyan-500 px-4 py-2 text-white hover:bg-cyan-700 group-hover:visible"
-            to={`/reservation-creneau/${serviceId().replace("/api/services/", "")}?employeeId=${employeeId}`}
+            to={`/reservation-creneau/${serviceId().replace(
+              "/api/services/",
+              ""
+            )}?employeeId=${employeeId}`}
           >
             <Translate>Reprendre un rendez-vous</Translate>
           </Link>

@@ -44,6 +44,7 @@ const ModalEditSpecificSchedule = ({
         id: specificSchedule.id,
         status: isValidated ? "ACCEPTED" : "REFUSED"
       })
+      fetchEmployeeSpecificSchedule()
     } catch (error) {
       console.error(error)
     }
