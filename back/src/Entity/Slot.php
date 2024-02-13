@@ -19,6 +19,7 @@ use App\Validator\Constraints as AcmeAssert;
     normalizationContext: [ 'groups' => ['slot:read']],
     operations: [
         new Get(),
+        new GetCollection(),
         new Post(
             securityPostDenormalize: "
                 is_granted('ROLE_ADMIN') 
