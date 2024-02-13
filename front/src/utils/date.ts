@@ -302,3 +302,13 @@ export const getDatesBetween = (startDate: Date, endDate: Date) => {
 
   return datesArray
 }
+
+export const formaterDate = (maDate: Date) => {
+  const ajouterZero = (nombre) => (nombre < 10 ? "0" + nombre : nombre)
+
+  const jour = ajouterZero(maDate.getDate())
+  const mois = ajouterZero(maDate.getMonth() + 1) // Les mois commencent à 0
+  const annee = maDate.getFullYear()
+
+  return `${annee}-${mois}-${jour}`
+}

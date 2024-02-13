@@ -55,7 +55,7 @@ const SpecificScheduleEmployee = () => {
             <Popover.Portal>
               <Popover.Content className="relative flex max-w-[550px] flex-col items-center gap-6 rounded bg-white p-4 shadow-xl">
                 <Popover.Close
-                  className=" absolute right-[5px] top-[5px] inline-flex size-[25px] cursor-default items-center justify-center rounded-full outline-none focus:shadow-[0_0_0_2px]"
+                  className=" size-[25px] absolute right-[5px] top-[5px] inline-flex cursor-default items-center justify-center rounded-full outline-none focus:shadow-[0_0_0_2px]"
                   aria-label="Close"
                 >
                   <Cross2Icon />
@@ -76,7 +76,7 @@ const SpecificScheduleEmployee = () => {
         </div>
       )}
       {!isLoading && employeeId && (
-        <div className="grid grid-cols-7 gap-3">
+        <div className="flex flex-wrap gap-3">
           {specificScheduleDays.map((day, i) => (
             <ModalEditSpecificSchedule
               specificSchedule={day}

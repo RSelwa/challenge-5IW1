@@ -95,7 +95,7 @@ const Planning = ({
       const slotsData = services
         .map((service) => service.slots)
         .flat()
-        .filter((slot) => slot.status === "reserved")
+        .filter((slot) => slot.status !== "canceled")
 
       // Filter reservations during this week
       const mondayOfWeek =
