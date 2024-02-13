@@ -24,7 +24,7 @@ const PendingOrganizations = () => {
   const handleValidation = async (validate: boolean, id: string) => {
     try {
       setIsLoading(true)
-      await editOrganization({ id, status: validate ? "ACCEPTED" : "REFUSED" })
+      await editOrganization({ id, status: validate ? "VALIDATED" : "REFUSED" })
       fetchOrganisations()
     } catch (error) {
       console.log(error)
