@@ -40,6 +40,17 @@ const DashboardOrga = ({ establishment }: Props) => {
     "#00D96F"
   ]
 
+  useEffect(() => {
+    const chartData = filterData(establishment)
+    setData(chartData)
+
+    const totalReservations = chartData.datasets[0].data.reduce(
+      (acc, curr) => acc + curr,
+      0
+    )
+    setHasReservations(totalReservations > 0)
+  }, [establishment])
+
   const filterData = (
     establishments: OrganizationsWithId["establishments"]
   ) => {
@@ -89,6 +100,7 @@ const DashboardOrga = ({ establishment }: Props) => {
 
   const [data, setData] = useState<ChartData>(filterData(establishment))
   const [organisation, setOrganisation] = useState<OrganizationsWithId>()
+  const [hasReservations, setHasReservations] = useState<boolean>(false)
   ChartJS.register(
     ArcElement,
     Tooltip,
@@ -108,14 +120,20 @@ const DashboardOrga = ({ establishment }: Props) => {
       <div className="  flex items-center">
         <BarChartIcon />
 
-        <h1 className=" text-lg font-bold">
-          Total des réservations par établissements
+        <h1 className="text-lg font-bold">
+          <Translate>Total des réservations par établissements</Translate>
         </h1>
       </div>
 
-      <div className="w-3/5 min-w-80">
-        <Bar datasetIdKey="id" data={data} options={options} />
-      </div>
+      {hasReservations ? (
+        <div className="w-3/5 min-w-[320px]">
+          <Bar datasetIdKey="id" data={data} options={options} />
+        </div>
+      ) : (
+        <p>
+          <Translate>Vous n'avez aucun service réservé.</Translate>
+        </p>
+      )}
     </div>
   )
 }
