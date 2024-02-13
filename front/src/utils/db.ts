@@ -46,16 +46,16 @@ export const fetchData = async <T>(
   toast.promise(promise, {
     error: (err) => {
       console.trace(err)
-      return "error"
+      return "Erreur"
     },
-    loading: "fetching...",
+    loading: "Chargement en cours...",
     success: (dataFetched) => {
       if (Array.isArray(setter)) {
         setter.forEach((s) => s(dataFetched))
       } else {
         setter(dataFetched)
       }
-      return "fetched"
+      return "Chargement terminé"
     }
   })
 }
@@ -63,10 +63,10 @@ export const postData = async <T>(promise: Promise<T>) => {
   toast.promise(promise, {
     error: (err) => {
       console.trace(err)
-      return "error"
+      return "Erreur"
     },
-    loading: "posting...",
-    success: "fetched"
+    loading: "Chargement en cours...",
+    success: "Chargement terminé"
   })
 }
 
