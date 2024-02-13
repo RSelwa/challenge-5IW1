@@ -75,11 +75,11 @@ export const handleSubmitTextDb = (db: string) => {
     case "admin":
       return "Login as admin"
     case "practitioner":
-      return "Login as practitioner"
+      return "Se connecter en tant qu'employé"
     case "users":
-      return "Login"
+      return "Se connecter"
     default:
-      return "Login"
+      return "Se connecter"
   }
 }
 export const handleCorrespondingDb = (db: string) => {
