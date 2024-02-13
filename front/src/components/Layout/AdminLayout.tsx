@@ -7,7 +7,11 @@ import { adminRoutes } from "@/routes"
 const AdminLayout = () => {
   return (
     <Fragment>
+      <DropdownMenu.Item className="DropdownMenuItem ">
+        <Link to="/admin/pending-organizations">Organisations en attente</Link>
+      </DropdownMenu.Item>
       <DropdownMenu.Separator className="DropdownMenuSeparator" />
+
       {adminRoutes
         .filter((route) => !route.path?.includes(":id"))
         .map((route, index) => (
@@ -17,6 +21,7 @@ const AdminLayout = () => {
             </Link>
           </DropdownMenu.Item>
         ))}
+
       <DropdownMenu.Separator className="DropdownMenuSeparator" />
       <DropdownMenu.Item className="DropdownMenuItem">
         <LogoutButton />

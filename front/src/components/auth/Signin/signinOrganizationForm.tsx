@@ -73,7 +73,7 @@ const SigninOrganizationForm = () => {
         accept="application/pdf"
       />
       <Button
-        className="col-span-2 w-full bg-amber-500 text-neutral-800"
+        className="col-span-2 w-full bg-amber-500 font-bold text-white transition-colors hover:bg-amber-700"
         type="submit"
       >
         <Translate>Envoyer </Translate>

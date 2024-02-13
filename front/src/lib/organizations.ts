@@ -41,7 +41,9 @@ export const postOrganization = async (organization: OrganizationPost) => {
   // const orga = await response.json()
 }
 
-export const editOrganization = async (organization: OrganizationsWithId) => {
+export const editOrganization = async (
+  organization: Partial<OrganizationsWithId>
+) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}${ORGANIZATION_API_ROUTES}/${
