@@ -32,7 +32,8 @@ use App\Validator\Constraints as AcmeAssert;
         ),
         new Patch(
             security: "
-                is_granted('ROLE_ADMIN') 
+                is_granted('ROLE_ADMIN')
+                or (is_granted('ROLE_EMPLOYEE') and object.getEmployee().getId() == user.getId())
                 or (is_granted('ROLE_USER') and object.getUser().getId() == user.getId())
             ",
             securityMessage: "Operation not permitted",
