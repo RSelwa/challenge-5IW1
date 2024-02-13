@@ -33,7 +33,7 @@ const MyOrganisation = () => {
   return (
     <main
       data-status={organisation?.status}
-      className="mx-auto mt-12 w-10/12 rounded-lg bg-white p-8 ring data-[status=PENDING]:ring-orange-500 data-[status=REFUSED]:ring-red-500 data-[status=VALIDATED]:ring-green-500"
+      className="mx-auto mt-12 w-10/12 space-y-8 rounded-lg bg-white p-8 ring data-[status=PENDING]:ring-orange-500 data-[status=REFUSED]:ring-red-500 data-[status=VALIDATED]:ring-green-500"
     >
       <h1 className="mb-4 text-xl font-bold">
         <Translate>Mon organisation</Translate>
