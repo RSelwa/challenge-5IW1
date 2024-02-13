@@ -92,12 +92,10 @@ input[type="password"],
 .DropdownMenuRadioItem,
 .DropdownMenuSubTrigger {
   font-size: 13px;
-  line-height: 1;
   color: var(--violet-11);
   border-radius: 3px;
   display: flex;
   align-items: center;
-  height: 25px;
   position: relative;
   user-select: none;
   outline: none;
@@ -106,11 +104,9 @@ input[type="password"],
   text-align: start;
   justify-content: start;
   display: flex;
-  padding: 0 5px;
+  padding: 0px 5px;
   padding-left: 25px;
-  /* align-items: center; */
   width: 100%;
-  height: 100%;
 }
 .DropdownMenuSubTrigger[data-state="open"] {
   background-color: var(--violet-4);
