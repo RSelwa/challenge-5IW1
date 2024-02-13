@@ -4,6 +4,7 @@ import { Translate } from "react-auto-translate"
 import { useForm } from "react-hook-form"
 import type { EmployeeSpecificSchedulesWithId } from "@/types/withId"
 import { editEmployeeSpecificSchedule } from "@/lib/employeeSpecificSchedules"
+import { formaterDate } from "@/utils/date"
 import { parseJwt } from "@/utils/redux"
 import { TYPE_SPECIFIC_SCHEDULE } from "@/constants"
 
@@ -23,10 +24,11 @@ const ModalEditSpecificSchedule = ({
     useForm<EmployeeSpecificSchedulesWithId>({
       defaultValues: {
         id: specificSchedule.id,
-        date: new Date(specificSchedule.date).toISOString().substring(0, 10),
+        date: formaterDate(new Date(specificSchedule.date)),
         type: specificSchedule.type
       }
     })
+
   const editExistingSpecificSchedule = async (
     data: Partial<EmployeeSpecificSchedulesWithId>
   ) => {
@@ -83,14 +85,14 @@ const ModalEditSpecificSchedule = ({
           roles.includes("ROLE_ORGANIZATION") && (
             <Fragment>
               <button
-                className="flex size-4 items-center justify-center bg-green-500 text-white"
+                className="size-4 flex items-center justify-center bg-green-500 text-white"
                 onClick={() => handleValidateSchedule(true)}
                 type="button"
               >
                 <CheckIcon />
               </button>
               <button
-                className="flex size-4 items-center justify-center rounded bg-red-500 text-white"
+                className="size-4 flex items-center justify-center rounded bg-red-500 text-white"
                 onClick={() => handleValidateSchedule(false)}
                 type="button"
               >
