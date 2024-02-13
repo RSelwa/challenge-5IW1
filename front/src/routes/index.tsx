@@ -90,6 +90,7 @@ import MyOrganisation from "@/pages/mon-organisation"
 import MyServices from "@/pages/my-services"
 import MyAccount from "@/pages/MyAccount"
 import NewEstablisement from "@/pages/new-establishment"
+import PendingOrganizations from "@/pages/pending-organisations"
 import ReservationCreneau from "@/pages/reservation-creneau"
 import ReservationHistory from "@/pages/reservation-history"
 import ReservationService from "@/pages/reservation-service"
@@ -159,6 +160,10 @@ const defaultRoutes: RouteObject[] = [
   {
     path: "/profil",
     element: getLayout(<MyAccount />)
+  },
+  {
+    path: "admin/pending-organizations",
+    element: getLayout(<PendingOrganizations />, true)
   }
 ]
 const authRoutes: RouteObject[] = [
