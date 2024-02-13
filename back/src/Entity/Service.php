@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Repository\ServiceRepository;
@@ -19,6 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: [ 'groups' => ['service:read', 'employee:read', 'user:read']],
     operations: [
         new Get(),
+        new GetCollection(),
         new Post(
             securityPostDenormalize: "
                 is_granted('ROLE_ADMIN') 
