@@ -116,6 +116,7 @@ class Organization implements UserInterface, PasswordAuthenticatedUserInterface
     private ?array $roles = ['ROLE_ORGANIZATION'];
 
     #[Groups(['organization:create'])]
+    #[Assert\Length(min: 4)]
     private ?string $plainPassword = null;
 
     public function __construct()

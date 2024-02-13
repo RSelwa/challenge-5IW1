@@ -84,6 +84,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?array $roles = ['ROLE_USER'];
 
     #[Groups(['user:create', 'user:update'])]
+    #[Assert\Length(min: 4)]
     private ?string $plainPassword = null;
 
     #[ORM\OneToMany(mappedBy: 'idNotationFrom', targetEntity: Notations::class, orphanRemoval: true)]

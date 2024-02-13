@@ -89,6 +89,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     private ?array $roles = ['ROLE_EMPLOYEE'];
 
     #[Groups(['employee:create'])]
+    #[Assert\Length(min: 4)]
     private ?string $plainPassword = null;
 
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: EmployeeWeekSchedule::class)]
