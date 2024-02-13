@@ -1,4 +1,5 @@
 import React from "react"
+import { Translate } from "react-auto-translate"
 import type { HeaderTable } from "@/types/table"
 import { cn } from "@/utils"
 
@@ -25,7 +26,7 @@ const Table = <T,>({ header, Rows, dataT }: Props<T>) => {
               )}
             >
               <span className="inline-flex items-center gap-2">
-                {item.title}
+                <Translate>{item.title}</Translate>
               </span>
             </th>
           ))}

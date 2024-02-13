@@ -3,6 +3,7 @@ import * as Form from "@radix-ui/react-form"
 import type { FormMessageProps } from "@radix-ui/react-form"
 import { ArrowRightIcon } from "@radix-ui/react-icons"
 import { Button } from "@radix-ui/themes"
+import { Translate } from "react-auto-translate"
 import type { FieldValues, Path, UseFormRegister } from "react-hook-form"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
@@ -86,7 +87,7 @@ const Edit = <T,>({
               disabled={isLoading}
               onClick={cancelChanges}
             >
-              Cancel
+              <Translate>Annuler</Translate>
             </Button>
             <Form.Submit asChild>
               <Button
@@ -94,7 +95,7 @@ const Edit = <T,>({
                 disabled={isLoading}
                 className="bg-green-500"
               >
-                Save
+                <Translate>Sauvegarder</Translate>
               </Button>
             </Form.Submit>
           </Fragment>
@@ -106,7 +107,7 @@ const Edit = <T,>({
               disabled={isLoading}
               onClick={() => setIsEdit(true)}
             >
-              Edit
+              <Translate>Modifier</Translate>
             </Button>
             <Button
               className="bg-red-500"
@@ -114,7 +115,7 @@ const Edit = <T,>({
               disabled={isLoading}
               onClick={deleteItem}
             >
-              Delete
+              <Translate>Supprimer</Translate>
             </Button>
           </Fragment>
         )}
