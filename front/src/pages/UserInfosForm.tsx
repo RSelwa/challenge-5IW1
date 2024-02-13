@@ -1,12 +1,11 @@
 import React, { Fragment, useEffect, useState } from "react"
 import { Button } from "@radix-ui/themes"
+import { Translate } from "react-auto-translate"
 import { useForm } from "react-hook-form"
 import toast, { LoaderIcon } from "react-hot-toast"
 import type { UserInfosProfileFormData } from "@/types/formData"
 import { editProfileUser, fetchUser } from "@/lib/users"
 import { parseJwt } from "@/utils/redux"
-import { Translate } from "react-auto-translate"
-
 
 const UserInfosForm = () => {
   const { handleSubmit, register, setValue } =
@@ -72,7 +71,7 @@ const UserInfosForm = () => {
         {...register("lastname")}
       />
       <input
-        disabled={!isEditing}
+        disabled={true}
         required
         placeholder="Email"
         type="email"
@@ -89,7 +88,7 @@ const UserInfosForm = () => {
               className="bg-red-500 "
               type="button"
             >
-            <Translate>Annuler</Translate>  
+              <Translate>Annuler</Translate>
             </Button>
             <Button className="bg-green-500 " type="submit">
               <Translate>Sauvegarder</Translate>
