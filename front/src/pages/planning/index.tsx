@@ -87,7 +87,7 @@ const Planning = ({
       setWeekSchedule(employeeWeekSchedules)
       setWeekSpecificSchedule(
         employeeSpecificSchedules.filter(
-          (schedule) => schedule.status === "ACCEPTED"
+          (schedule) => schedule.status !== "REFUSED"
         )
       )
 
