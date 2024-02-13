@@ -9,6 +9,7 @@ type Props = {
 const EmployeeRowSearch = ({ employee }: Props) => {
   return (
     <ProfileSearch
+      profession={employee.category}
       employeeId={employee.id}
       address={employee.establishment.address}
       name={`${employee.firstname} ${employee.lastname}`}

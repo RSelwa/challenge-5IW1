@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 type Props = {
   urlImage: string
   name: string
+  profession: string
   // service: string
   address: string
   zipCode: string
@@ -21,7 +22,9 @@ const ProfileSearch = (props: Props) => {
           className="aspect-square h-24 rounded-full"
         />
         <div className="flex flex-col gap-2">
-          <p className="text-blue-500">{props.name}</p>
+          <p className="text-blue-500">
+            {props.name} - {props.profession}
+          </p>
           {/* <p className="text-sm font-bold text-gray-900">{props.service}</p> */}
           <div className="mt-3 flex gap-2 ">
             <SewingPinIcon color="gray" className="mt-1" />
