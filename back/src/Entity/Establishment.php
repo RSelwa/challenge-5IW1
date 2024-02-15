@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: EstablishmentRepository::class)]
 #[ApiResource(
-    normalizationContext: [ 'groups' => ['establishment:read', 'service:read, employee:read']],
+    normalizationContext: [ 'groups' => ['establishment:read', 'service:read', 'employee:read']],
     operations: [
         new Get(),
         new GetCollection(),
@@ -76,7 +76,7 @@ class Establishment
 
     #[ORM\ManyToOne(inversedBy: 'establishments')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['establishment:create', 'employee:read'])]
+    #[Groups(['establishment:create', 'establishment:read'])]
     private ?Organization $organization = null;
 
     #[ORM\OneToMany(mappedBy: 'establishment', targetEntity: Employee::class)]

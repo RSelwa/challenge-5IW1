@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: OrganizationRepository::class)]
 #[ApiResource(
-    normalizationContext: [ 'groups' => ['organization:read', 'service:read', 'employee:read']],
+    normalizationContext: [ 'groups' => ['organization:read', 'service:read']],
     operations: [
         new Get(),
         new GetCollection(
@@ -64,19 +64,19 @@ class Organization implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    #[Groups(['organization:read', 'employee:read'])]
+    #[Groups(['organization:read'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'organization:create', 'employee:read', 'organization:update'])]
+    #[Groups(['organization:read', 'organization:create', 'organization:update', 'establishment:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'organization:create', 'employee:read', 'organization:update'])]
+    #[Groups(['organization:read', 'organization:create', 'organization:update'])]
     private ?string $managerFirstname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'organization:create', 'employee:read', 'organization:update'])]
+    #[Groups(['organization:read', 'organization:create', 'organization:update'])]
     private ?string $managerLastname = null;
 
     #[ORM\Column(length: 255)]
@@ -94,11 +94,11 @@ class Organization implements UserInterface, PasswordAuthenticatedUserInterface
     private ?File $kbisFile = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['organization:read', 'organization:create', 'employee:read'])]
+    #[Groups(['organization:read', 'organization:create'])]
     private ?string $siret = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'organization:create', 'employee:read' ])]
+    #[Groups(['organization:read', 'organization:create'])]
     #[AcmeAssert\UniqueEmail(groups: ['organization:create'])]
     private ?string $email = null;
 
@@ -106,7 +106,7 @@ class Organization implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'put:admin', 'employee:read', 'organization:update'])]
+    #[Groups(['organization:read', 'put:admin', 'organization:update'])]
     #[ApiProperty(security: "is_granted('ROLE_ADMIN')")]
     private ?string $status = 'PENDING';
 
