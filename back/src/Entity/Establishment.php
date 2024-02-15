@@ -53,44 +53,44 @@ class Establishment
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    #[Groups(['organization:read', 'establishment:read', 'employee:read'])]
+    #[Groups(['organization:read', 'employee:read', 'establishment:read', 'employee:read'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
+    #[Groups(['organization:read', 'employee:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
+    #[Groups(['organization:read', 'employee:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
     private ?string $address = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
+    #[Groups(['organization:read', 'employee:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
     private ?string $zipCode = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
+    #[Groups(['organization:read', 'employee:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
+    #[Groups(['organization:read', 'employee:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
     private ?string $country = null;
 
     #[ORM\ManyToOne(inversedBy: 'establishments')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['establishment:create', 'establishment:read'])]
+    #[Groups(['establishment:create', 'establishment:read', 'employee:read'])]
     private ?Organization $organization = null;
 
     #[ORM\OneToMany(mappedBy: 'establishment', targetEntity: Employee::class)]
-    #[Groups(['organization:read', 'establishment:read'])]
+    #[Groups(['organization:read', 'employee:read', 'establishment:read'])]
     private Collection $employees;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['organization:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
+    #[Groups(['organization:read', 'employee:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
     private ?float $lat = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['organization:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
+    #[Groups(['organization:read', 'employee:read', 'establishment:read', 'establishment:create', 'establishment:update', 'employee:read'])]
     private ?float $lng = null;
 
     public function __construct()

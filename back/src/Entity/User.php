@@ -71,7 +71,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $lastname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'user:create'])]
+    #[Groups(['user:create'])]
     #[AcmeAssert\UniqueEmail(groups: ['user:create'])]
     private ?string $email = null;
 
