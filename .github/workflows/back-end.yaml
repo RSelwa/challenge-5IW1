@@ -1,0 +1,24 @@
+on:
+  push:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Connect to EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.sshHostEC2 }}
+        username: ${{ secrets.sshUsernameEC2 }}
+        key: ${{ secrets.sshKeyEC2 }}
+        port: ${{ secrets.sshPortEC2 }}
+        script: |
+          cd esgi-challenge-s3
+          git pull origin develop
+          sudo docker compose down
+          sudo docker compose up -d
+          sudo docker compose exec php chmod 777 var/cache
