@@ -52,11 +52,3 @@ jobs:
             "APP_ENV=prod"
           push: true
           tags: rselwa/challenge-s1:php
-
-  # pull-and-deploy-server-php:
-  #   name: 🐋 Pull and deploy server php
-  #   runs-on: ubuntu-latest
-  #   needs: docker-push-server
-  #   steps:
-  #     - name: ✨ Checkout p
-  #       uses: actions/checkout@v3
