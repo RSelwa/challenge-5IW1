@@ -4,9 +4,7 @@ import { ChevronDownIcon } from "@radix-ui/react-icons"
 import Avatar from "boring-avatars"
 import { Translator } from "react-auto-translate"
 import { Link, useNavigate } from "react-router-dom"
-import type { reduxUserFront } from "@/types/redux/user"
 import { parseJwt } from "@/utils/redux"
-import { useAppSelector } from "@/redux/hook"
 import FrenchFlag from "@/components/icons/fr"
 import GrandFuckigBritain from "@/components/icons/gb"
 import AdminLayout from "@/components/Layout/AdminLayout"
@@ -26,15 +24,13 @@ const Layout = ({
   adminSecurity: boolean
 }) => {
   const { isLoaded } = useGoogleMapsAPI()
-  const { roles } = parseJwt(localStorage.getItem("token") || "")
 
   const navigate = useNavigate()
   const [langage, setLangage] = useState<"fr" | "en">("fr")
-  const userStatus = useAppSelector(
-    (state) => (state.user as reduxUserFront).status
-  )
+  const { roles } =
+    parseJwt(localStorage.getItem("token")?.replaceAll('"', "") || "") || []
   useEffect(() => {
-    if (!userStatus?.includes("ROLE_ADMIN") && adminSecurity) navigate("/")
+    if (!roles?.includes("ROLE_ADMIN") && adminSecurity) navigate("/")
   }, [])
 
   return (
@@ -50,7 +46,7 @@ const Layout = ({
               DOCTOGES
             </h1>
           </Link>
-          {userStatus?.includes("VISTOR") ? (
+          {roles.length === 0 ? (
             <VisitorLayout />
           ) : (
             <DropdownMenu.Root>
@@ -69,12 +65,12 @@ const Layout = ({
 
               <DropdownMenu.Portal>
                 <DropdownMenu.Content className="absolute -right-5 top-0 z-10 w-52 space-y-3 rounded-md bg-white p-2 font-bold text-red-500 shadow-md">
-                  {userStatus?.includes("ROLE_USER") && <ClientLayout />}
-                  {userStatus?.includes("ROLE_ADMIN") && <AdminLayout />}
-                  {userStatus?.includes("ROLE_ORGANIZATION") && (
+                  {roles?.includes("ROLE_USER") && <ClientLayout />}
+                  {roles?.includes("ROLE_ADMIN") && <AdminLayout />}
+                  {roles?.includes("ROLE_ORGANIZATION") && (
                     <OrganisationLayout />
                   )}
-                  {userStatus?.includes("ROLE_EMPLOYEE") && <EmployeeLayout />}
+                  {roles?.includes("ROLE_EMPLOYEE") && <EmployeeLayout />}
                 </DropdownMenu.Content>
               </DropdownMenu.Portal>
             </DropdownMenu.Root>
