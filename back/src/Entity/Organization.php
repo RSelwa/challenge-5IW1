@@ -68,7 +68,7 @@ class Organization implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'organization:create', 'organization:update', 'establishment:read'])]
+    #[Groups(['organization:read', 'organization:create', 'organization:update'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
