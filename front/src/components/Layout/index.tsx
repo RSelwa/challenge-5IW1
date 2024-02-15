@@ -46,7 +46,7 @@ const Layout = ({
               DOCTOGES
             </h1>
           </Link>
-          {roles.length === 0 ? (
+          {!localStorage.getItem("token") ? (
             <VisitorLayout />
           ) : (
             <DropdownMenu.Root>
