@@ -82,6 +82,7 @@ class Slot
 
     #[ORM\Column(length: 255)]
     #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:response', 'user:read', 'slot:create', 'slot:update'])]
+    #[Assert\GreaterThanOrEqual('today')]
     private ?int $startTime = null;
 
     #[ORM\Column(length: 255)]
