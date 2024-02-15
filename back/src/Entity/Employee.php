@@ -109,7 +109,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $employeeWeekSchedules;
 
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Service::class)]
-    #[Groups(['establishment:read', 'employee:read', 'admin:employee:read'])]
+    #[Groups(['establishment:read', 'employee:read', 'admin:employee:read', 'organization:read'])]
     private Collection $services;
 
     #[ORM\OneToMany(mappedBy: 'idNotationTarget', targetEntity: Notations::class, orphanRemoval: true)]

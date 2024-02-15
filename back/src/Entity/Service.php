@@ -73,7 +73,7 @@ class Service
     private ?int $price = null;
 
     #[ORM\OneToMany(mappedBy: 'service', targetEntity: Slot::class)]
-    #[Groups(['establishment:read', 'employee:read', 'slot:read'])]
+    #[Groups(['establishment:read', 'employee:read', 'slot:read', 'organization:read'])]
     private Collection $slots;
 
     public function __construct()
