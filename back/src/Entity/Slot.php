@@ -87,6 +87,7 @@ class Slot
 
     #[ORM\Column(length: 255)]
     #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:response', 'user:read', 'slot:create'])]
+    #[Assert\Range(min: 1, max: 3)]
     private ?int $duration = null;
 
     #[ORM\Column(length: 255)]
