@@ -34,8 +34,10 @@ const ModalNewService = ({ employeeId, fetchMyServices }: Props) => {
       />
       <input
         className="rounded border-2 border-gray-300 px-2 py-1"
-        placeholder="Durée (en H)"
+        placeholder="Durée (max: 3h)"
         type="number"
+        max={3}
+        min={1}
         {...register("duration", { valueAsNumber: true })}
       />
       <input
