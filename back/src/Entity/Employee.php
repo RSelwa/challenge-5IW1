@@ -22,10 +22,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
 #[ApiResource(
+    normalizationContext: [ 'groups' => ['employee:read', 'slot:read']],
     operations: [
-        new Get(
-            normalizationContext: [ 'groups' => ['employee:read', 'slot:read']],
-        ),
+        new Get(),
         new GetCollection(),
         new Post(
             processor: UserPasswordHasher::class,

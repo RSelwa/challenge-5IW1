@@ -92,7 +92,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private Collection $notations;
 
-
     public function __construct()
     {
         $this->slots = new ArrayCollection();
