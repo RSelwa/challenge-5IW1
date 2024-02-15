@@ -82,7 +82,9 @@ class Slot
 
     #[ORM\Column(length: 255)]
     #[Groups(['establishment:read', 'employee:read', 'slot:read', 'slot:response', 'user:read', 'slot:create', 'slot:update'])]
-    #[Assert\GreaterThanOrEqual('today')]
+    #[Assert\GreaterThanOrEqual(
+        callback: ['self', 'getCurrentTimeInSeconds']
+    )]
     private ?int $startTime = null;
 
     #[ORM\Column(length: 255)]
@@ -169,5 +171,10 @@ class Slot
         $this->status = $status;
 
         return $this;
+    }
+
+    public static function getCurrentTimeInSeconds(): int
+    {
+        return time();
     }
 }
