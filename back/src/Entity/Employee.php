@@ -22,10 +22,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EmployeeRepository::class)]
 #[ApiResource(
-    normalizationContext: [ 'groups' => ['employee:read', 'slot:read']],
     operations: [
-        new Get(),
-        new GetCollection(),
+        new Get(
+            normalizationContext: [ 'groups' => ['employee:read', 'slot:read']],
+        ),
+        new Get(
+            security: "
+                is_granted('ROLE_ADMIN')
+                or (is_granted('ROLE_EMPLOYEE') and object.getId() == user.getId())
+                or (is_granted('ROLE_ORGANIZATION') and object.getEstablishment().getOrganization().getId() == user.getId())
+            ",
+            normalizationContext: [ 'groups' => ['admin:employee:read']]
+        ),
+        new GetCollection(
+            normalizationContext: [ 'groups' => ['employee:read', 'slot:read']]
+        ),
         new Post(
             processor: UserPasswordHasher::class,
             securityPostDenormalize: "
@@ -55,32 +66,32 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::GUID)]
     #[ORM\GeneratedValue('CUSTOM')]
     #[ORM\CustomIdGenerator('doctrine.uuid_generator')]
-    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'slot:read'])]
+    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'admin:employee:read', 'slot:read'])]
     private ?string $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:create', 'employee:update'])]
+    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'admin:employee:read', 'employee:create', 'employee:update'])]
     private ?string $category = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:create', 'employee:update'])]
+    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'admin:employee:read', 'employee:create', 'employee:update'])]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'employee:create', 'employee:update'])]
+    #[Groups(['organization:read', 'establishment:read', 'employee:read', 'admin:employee:read', 'employee:create', 'employee:update'])]
     private ?string $lastname = null;
 
     #[ORM\ManyToOne(inversedBy: 'employees')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
-    #[Groups(['employee:read', 'employee:create'])]
+    #[Groups(['employee:read', 'admin:employee:read', 'employee:create'])]
     private ?Establishment $establishment = null;
     
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: EmployeeSpecificSchedule::class)]
-    #[Groups(['establishment:read', 'employee:read'])]
+    #[Groups(['establishment:read', 'employee:read', 'admin:employee:read'])]
     private Collection $employeeSpecificSchedules;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['establishment:read', 'employee:read', 'employee:create'])]
+    #[Groups(['establishment:read', 'employee:create'])]
     #[AcmeAssert\UniqueEmail(groups: ['employee:create'])]
     private ?string $email = null;
 
@@ -94,11 +105,11 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $plainPassword = null;
 
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: EmployeeWeekSchedule::class)]
-    #[Groups(['establishment:read', 'employee:read'])]
+    #[Groups(['establishment:read', 'employee:read', 'admin:employee:read'])]
     private Collection $employeeWeekSchedules;
 
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Service::class)]
-    #[Groups(['establishment:read', 'employee:read'])]
+    #[Groups(['establishment:read', 'employee:read', 'admin:employee:read'])]
     private Collection $services;
 
     #[ORM\OneToMany(mappedBy: 'idNotationTarget', targetEntity: Notations::class, orphanRemoval: true)]
