@@ -3,6 +3,7 @@ import { Translate } from "react-auto-translate"
 import type { SlotsWithId } from "@/types/withId"
 import { changeReservationStatus } from "@/lib/slots"
 import { dateToString, getHoursMinutes } from "@/utils/date"
+import { parseJwt } from "@/utils/redux"
 
 type Props = {
   slot: SlotsWithId
@@ -19,6 +20,8 @@ const ReservationHistoryRow = ({
   fetchEmployeeData,
   setIsLoading
 }: Props) => {
+  const { roles } =
+    parseJwt(localStorage.getItem("token")?.replaceAll('"', "") || "") || []
   return (
     <div
       data-state={i === 0 ? "first" : i === slotsLength - 1 ? "last" : "middle"}
@@ -30,7 +33,7 @@ const ReservationHistoryRow = ({
         {slot.duration}H
       </p>
       <div className="flex items-center gap-2">
-        {slot.status === "reserved" && (
+        {slot.status === "reserved" && roles.includes("ROLE_EMPLOYEE") && (
           <button
             className="invisible rounded bg-green-400 px-4 py-2 text-xs text-white hover:bg-green-700 group-hover:visible"
             onClick={() =>
