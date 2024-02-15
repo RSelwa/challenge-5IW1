@@ -29,4 +29,9 @@ export const tranformEntityArrayToObject = <T extends BaseEntity>(
 }
 
 export const areStringEqual = (string1: string, string2: string) =>
-  string1.toUpperCase() === string2.toUpperCase()
+  removeAccents(string1)
+    .toUpperCase()
+    .includes(removeAccents(string2).toUpperCase())
+
+const removeAccents = (str) =>
+  str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
