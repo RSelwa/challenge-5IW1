@@ -26,17 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Get(
             normalizationContext: [ 'groups' => ['employee:read', 'slot:read']],
         ),
-        new Get(
-            security: "
-                is_granted('ROLE_ADMIN')
-                or (is_granted('ROLE_EMPLOYEE') and object.getId() == user.getId())
-                or (is_granted('ROLE_ORGANIZATION') and object.getEstablishment().getOrganization().getId() == user.getId())
-            ",
-            normalizationContext: [ 'groups' => ['admin:employee:read']]
-        ),
-        new GetCollection(
-            normalizationContext: [ 'groups' => ['employee:read', 'slot:read']]
-        ),
+        new GetCollection(),
         new Post(
             processor: UserPasswordHasher::class,
             securityPostDenormalize: "
@@ -91,7 +81,7 @@ class Employee implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $employeeSpecificSchedules;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['establishment:read', 'employee:create'])]
+    #[Groups(['employee:create'])]
     #[AcmeAssert\UniqueEmail(groups: ['employee:create'])]
     private ?string $email = null;
 
