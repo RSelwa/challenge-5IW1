@@ -4,15 +4,16 @@ Membres du groupe:
 
 - Raphael SELWA:
   - Planning front
-  - admin front
-  - différent pannel front
+  - Admin front
+  - Différent pannel front
 - Bastien PIEDALLU:
-  - sécurité back
-  - entités back
+  - Sécurité back
+  - Entités back
+  - API Google Map front
+  - CD Back
 - Clément BILLIEN:
-  - traduction front api
+  - Traduction front api
   - Dashboard statistiques
-  - envois de mail
-  -
+  - Envois de mail
 
 Lien de la prod: https://challenge-5-iw-1.vercel.app/
